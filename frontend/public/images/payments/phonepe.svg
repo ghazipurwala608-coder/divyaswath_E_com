@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 48" role="img" aria-labelledby="title">
+  <title id="title">PhonePe</title>
+  <circle cx="24" cy="24" r="17" fill="#5F259F"/>
+  <text x="24" y="31" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="21" font-weight="700">पे</text>
+  <text x="45" y="30" fill="#5F259F" font-family="Arial, sans-serif" font-size="17" font-weight="700">PhonePe</text>
+</svg>

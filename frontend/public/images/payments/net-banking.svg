@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 48" role="img" aria-labelledby="title">
+  <title id="title">Net Banking</title>
+  <g fill="#31445B">
+    <path d="m17 8 13 7v3H4v-3L17 8Zm-10 13h4v12H7V21Zm8 0h4v12h-4V21Zm8 0h4v12h-4V21ZM4 36h26v4H4v-4Z"/>
+    <text x="38" y="22" font-family="Arial, sans-serif" font-size="12" font-weight="700">Net</text>
+    <text x="38" y="36" font-family="Arial, sans-serif" font-size="12" font-weight="700">Banking</text>
+  </g>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 48" role="img" aria-labelledby="title">
+  <title id="title">RuPay</title>
+  <text x="9" y="31" fill="#17356B" font-family="Arial, sans-serif" font-size="25" font-style="italic" font-weight="800">RuPay</text>
+  <path fill="#F58220" d="m94 13 9 11-9 11h7l9-11-9-11Z"/>
+  <path fill="#149447" d="m101 13 9 11-9 11h6l9-11-9-11Z" opacity=".95"/>
+</svg>

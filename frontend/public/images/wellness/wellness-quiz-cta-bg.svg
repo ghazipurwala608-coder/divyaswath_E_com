@@ -1,0 +1,30 @@
+<svg width="1200" height="138" viewBox="0 0 1200 138" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="138" rx="10" fill="#063B25"/>
+  <circle cx="90" cy="92" r="72" fill="#0B4B2D"/>
+  <circle cx="1110" cy="65" r="66" fill="#0B4B2D"/>
+  <g opacity=".78" fill="#527C3C">
+    <ellipse cx="35" cy="116" rx="13" ry="34" transform="rotate(-50 35 116)"/>
+    <ellipse cx="68" cy="128" rx="12" ry="35" transform="rotate(-28 68 128)"/>
+    <ellipse cx="1135" cy="120" rx="13" ry="38" transform="rotate(42 1135 120)"/>
+    <ellipse cx="1174" cy="112" rx="11" ry="34" transform="rotate(63 1174 112)"/>
+    <ellipse cx="1080" cy="128" rx="10" ry="29" transform="rotate(-35 1080 128)"/>
+  </g>
+  <g transform="translate(75 10) rotate(-7 45 57)">
+    <rect x="7" y="5" width="76" height="108" rx="4" fill="#B87935" stroke="#E0B856" stroke-width="2"/>
+    <rect x="13" y="16" width="64" height="89" rx="2" fill="#F8EBC5"/>
+    <rect x="30" y="0" width="30" height="18" rx="5" fill="#A9A38C" stroke="#6E6B5A" stroke-width="2"/>
+    <text x="45" y="32" text-anchor="middle" fill="#21452E" font-family="Georgia, serif" font-size="7" font-weight="700">WELLNESS QUIZ</text>
+    <g stroke="#52724E" stroke-width="1.5">
+      <rect x="20" y="43" width="8" height="8"/><rect x="20" y="59" width="8" height="8"/><rect x="20" y="75" width="8" height="8"/><rect x="20" y="91" width="8" height="8"/>
+      <path d="M34 47h32M34 63h32M34 79h32M34 95h32"/>
+    </g>
+  </g>
+  <g transform="translate(151 103)">
+    <ellipse cx="28" cy="10" rx="31" ry="12" fill="#7B451E" stroke="#C18A38" stroke-width="2"/>
+    <ellipse cx="28" cy="7" rx="23" ry="7" fill="#3D5224"/>
+  </g>
+  <g opacity=".5" stroke="#D2AE55" stroke-width="1.5">
+    <circle cx="1085" cy="69" r="43"/><circle cx="1085" cy="69" r="38"/>
+  </g>
+  <g fill="#DDBB5E"><circle cx="1070" cy="113" r="3"/><circle cx="1090" cy="117" r="3"/><circle cx="1111" cy="110" r="3"/></g>
+</svg>
