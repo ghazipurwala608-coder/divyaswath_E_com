@@ -34,6 +34,7 @@ app.use(express.json({ limit: '100kb' }))
 app.use(express.urlencoded({ extended: false, limit: '100kb' }))
 if (process.env.NODE_ENV !== 'test') app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'))
 
+app.get('/', (req, res) => sendSuccess(res, { message: 'Divya Swasth API is running', data: { service: 'Divya Swasth API', version: '1.0.0' } }))
 app.get('/api/health', (req, res) => sendSuccess(res, { message: 'Divya Swasth API is healthy', data: { service: 'Divya Swasth API', timestamp: new Date().toISOString() } }))
 app.use('/api/auth', authRoutes)
 app.use('/api/products', productRoutes)
