@@ -1,4 +1,4 @@
-import { Facebook, Heart, Instagram, Mail, MapPin, Phone, Youtube } from 'lucide-react'
+import { Facebook, Heart, Instagram, Mail, MapPin, Phone,  Youtube } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const QUICK_LINKS = [
@@ -28,6 +28,7 @@ const PAYMENT_METHODS = [
   { name: 'PhonePe', image: '/images/payments/phonepe.svg' },
   { name: 'Net Banking', image: '/images/payments/net-banking.svg' },
 ]
+
 
 export default function Footer() {
   return (
@@ -193,6 +194,8 @@ export default function Footer() {
           </p>
         </div>
       </div>
+
+    
 
       {/* ── BOTTOM BAR ── */}
       <div className="border-t border-white/[.08]">

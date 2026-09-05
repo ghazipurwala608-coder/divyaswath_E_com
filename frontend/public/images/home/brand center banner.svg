@@ -1,0 +1,15 @@
+<svg width="720" height="300" viewBox="0 0 720 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="720" y2="300" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#004B2C"/>
+      <stop offset="1" stop-color="#00351F"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="300" rx="18" fill="url(#panel)"/>
+  <circle cx="8" cy="-4" r="112" stroke="#C99B32" stroke-opacity=".28" stroke-width="1.5"/>
+  <circle cx="714" cy="306" r="112" stroke="#C99B32" stroke-opacity=".28" stroke-width="1.5"/>
+  <image href="/images/divyaswasth.png" x="310" y="30" width="100" height="100" preserveAspectRatio="xMidYMid meet"/>
+  <text x="360" y="174" text-anchor="middle" fill="#F1DEA2" font-family="Georgia, serif" font-size="37" font-weight="700">सर्वे भवन्तु स्वस्थाः</text>
+  <text x="360" y="213" text-anchor="middle" fill="#E5B84D" font-family="Georgia, serif" font-size="19" font-weight="700" letter-spacing="1">SARVE BHAVANTU SVASTHAH</text>
+  <text x="360" y="246" text-anchor="middle" fill="#F8EFD5" fill-opacity=".9" font-family="Georgia, serif" font-size="15" letter-spacing="2">— MAY ALL BE HEALTHY —</text>
+</svg>

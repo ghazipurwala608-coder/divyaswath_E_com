@@ -61,6 +61,32 @@ button, a { outline-offset: 4px; }
 .auth-form-orb { animation: auth-orb-drift 9s ease-in-out infinite; }
 .auth-form-orb-delay { animation-delay: -4s; }
 
+/* The supplied hero artwork already includes the complete typography and layout. */
+.home-reference-hero > p { display: none; }
+
+/* Compact quality strip beneath the hero. */
+.home-reference-hero + section { padding: .45rem 0; }
+.home-reference-hero + section > div { max-width: none; border: 1px solid #17462c; border-left: 0; border-right: 0; border-radius: 0; background: linear-gradient(90deg, #002c19 0%, #003720 48%, #002b18 100%); box-shadow: none; }
+.home-reference-hero + section article { min-height: 5.35rem; padding: 1rem clamp(1rem, 2.4vw, 2.25rem); gap: .85rem; }
+.home-reference-hero + section article svg { color: #d8af4c !important; }
+.home-reference-hero + section h2 { max-width: none; color: #e2b64f; font-size: clamp(.62rem, .82vw, .78rem); line-height: 1.2; letter-spacing: .025em; }
+.home-reference-hero + section article p { max-width: none; margin-top: .25rem; color: #f5edcf; font-size: clamp(.58rem, .72vw, .69rem); line-height: 1.25; }
+
+.journey-showcase { isolation: isolate; padding-top: 1.25rem; padding-bottom: 1.4rem; background: #fbfaf3 url('/images/home/card bg.png') center center / cover no-repeat; }
+.journey-showcase::before, .journey-showcase::after { content: none; }
+.journey-showcase > .pointer-events-none { display: none; }
+.journey-showcase #premium-formulations { margin-top: 1.4rem; }
+
+/* Wellness journey card proportions. */
+.journey-showcase > div > div:nth-of-type(2) > article { border-color: #d8c695; border-radius: .65rem; box-shadow: none; }
+.journey-showcase > div > div:nth-of-type(2) > article > div:first-child { overflow: visible; }
+.journey-showcase > div > div:nth-of-type(2) > article > div:first-child > span { z-index: 10; bottom: -1.375rem; width: 2.75rem; height: 2.75rem; border-width: 3px; background-color: #064321; }
+.journey-showcase > div > div:nth-of-type(2) > article > div:last-child { padding: 1.65rem 1rem .75rem; }
+.journey-showcase > div > div:nth-of-type(2) h3 { font-size: .96rem; line-height: 1.15; }
+.journey-showcase > div > div:nth-of-type(2) p { min-height: 2.25rem; margin-top: .35rem; font-size: .68rem; line-height: 1.3; }
+.journey-showcase > div > div:nth-of-type(2) a { margin-top: .55rem; padding: .3rem .75rem; border-color: #cbb477; font-size: .54rem; line-height: 1; }
+
+
 @media (max-height: 700px) and (min-width: 1024px) {
   .auth-visual { padding-top: 1.75rem; padding-bottom: 1.75rem; }
   .auth-botanical-graphic { height: 10.5rem; width: 10.5rem; top: 39%; }

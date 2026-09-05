@@ -1,24 +1,20 @@
-import { ArrowRight, ShoppingBag } from 'lucide-react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useCart } from '../context/CartContext.jsx'
+import { ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import ProductVisual from './ProductVisual.jsx'
 
 export default function ProductCard({ product }) {
-  const { addToCart } = useCart()
-  const navigate = useNavigate()
-  const purchasable = product.availableForPurchase !== false && product.countInStock > 0 && product.price > 0
-  const buyNow = () => { if (!purchasable) return; addToCart(product); navigate('/checkout') }
-
   return (
-    <article className="group overflow-hidden rounded-[1.6rem] border border-[#dfe5d8] bg-white p-2 transition duration-500 hover:-translate-y-1 hover:border-[#c8a452]/60 hover:shadow-[0_20px_50px_rgba(31,58,39,0.11)]">
-      <Link to={`/products/${product.slug}`} className="relative block"><ProductVisual product={product} compact />{product.badge && <span className="absolute left-4 top-4 rounded-full bg-[#123b2a] px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-[0.15em] text-[#f5e4aa]">{product.badge}</span>}</Link>
-      <div className="px-3 pb-3 pt-4">
-        <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[#8b6927]">{product.category}</p>
-        <Link to={`/products/${product.slug}`} className="mt-1.5 block font-display text-2xl font-bold tracking-wide text-[#173824] transition group-hover:text-[#986818]">{product.name}</Link>
-        <p className="mt-1 min-h-9 text-xs leading-5 text-[#6a756d]">{product.subtitle}</p>
-        <p className="mt-3 text-[10px] font-bold uppercase tracking-wider text-[#738078]">{product.size}</p>
-        <div className="mt-3 border-t border-[#edf0e9] pt-3"><p className="text-lg font-black text-[#123b2a]">{product.price ? `₹${product.price.toLocaleString('en-IN')}` : 'Price to be confirmed'}</p><p className="mt-1 text-[8px] uppercase tracking-wider text-[#8b938d]">MRP inclusive of taxes</p></div>
-        <div className="mt-4 grid grid-cols-2 gap-2"><Link to={`/products/${product.slug}`} className="flex items-center justify-center gap-1.5 rounded-full border border-[#d5ddd0] py-3 text-[9px] font-black uppercase tracking-wider text-[#31503a] transition hover:border-[#a87922] hover:text-[#936519]">View product <ArrowRight className="h-3 w-3" /></Link><button type="button" onClick={buyNow} disabled={!purchasable} className="flex items-center justify-center gap-1.5 rounded-full bg-[#123b2a] py-3 text-[9px] font-black uppercase tracking-wider text-white transition hover:bg-[#b98524] disabled:cursor-not-allowed disabled:bg-[#a9afa9]"><ShoppingBag className="h-3 w-3" /> {purchasable ? 'Buy now' : 'Coming soon'}</button></div>
+    <article className="group flex min-h-[270px] overflow-hidden rounded-2xl border border-[#e5ddce] bg-[#fffdfa] p-2 shadow-[0_8px_22px_rgba(40,47,32,.06)] transition duration-300 hover:-translate-y-1 hover:border-[#c8a452] hover:shadow-[0_18px_34px_rgba(31,58,39,.13)]">
+      <Link to={`/products/${product.slug}`} aria-label={`View ${product.name}`} className="relative flex w-[45%] shrink-0 items-center overflow-hidden rounded-xl bg-[#f1eee4]">
+        <ProductVisual product={product} compact />
+        {product.badge && <span className="absolute left-2 top-2 rounded-full bg-[#123b2a] px-2 py-1 text-[7px] font-extrabold uppercase tracking-[.1em] text-[#f5e4aa]">{product.badge}</span>}
+      </Link>
+      <div className="flex min-w-0 flex-1 flex-col justify-center px-3 py-2 sm:px-4">
+        <Link to={`/products/${product.slug}`} className="font-sans text-lg font-black leading-[1.05] tracking-tight text-[#263027] transition group-hover:text-[#8e651c] sm:text-xl">{product.name}</Link>
+        <p className="mt-2 text-[11px] font-semibold leading-4 text-[#596058] sm:text-xs">{product.subtitle}</p>
+        <p className="mt-3 text-[10px] font-black uppercase tracking-[.07em] text-[#353b35]">{product.size}</p>
+        <p className="mt-1 text-xl font-black leading-none text-[#1e3023]">{product.price ? `₹${product.price.toLocaleString('en-IN')}/-` : 'Coming soon'}</p>
+        <Link to={`/products/${product.slug}`} className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-md bg-[#123b2a] px-3 py-2 text-[8px] font-black uppercase tracking-[.08em] text-white transition hover:bg-[#a87922]">View details <ArrowRight className="h-3 w-3" /></Link>
       </div>
     </article>
   )
