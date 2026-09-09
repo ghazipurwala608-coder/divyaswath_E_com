@@ -1,20 +1,55 @@
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ChevronRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import ProductVisual from './ProductVisual.jsx'
 
 export default function ProductCard({ product }) {
+  const image = product.cardImage || product.images?.[0] || '/images/home/Vital.png'
+
   return (
-    <article className="group flex min-h-[270px] overflow-hidden rounded-2xl border border-[#e5ddce] bg-[#fffdfa] p-2 shadow-[0_8px_22px_rgba(40,47,32,.06)] transition duration-300 hover:-translate-y-1 hover:border-[#c8a452] hover:shadow-[0_18px_34px_rgba(31,58,39,.13)]">
-      <Link to={`/products/${product.slug}`} aria-label={`View ${product.name}`} className="relative flex w-[45%] shrink-0 items-center overflow-hidden rounded-xl bg-[#f1eee4]">
-        <ProductVisual product={product} compact />
-        {product.badge && <span className="absolute left-2 top-2 rounded-full bg-[#123b2a] px-2 py-1 text-[7px] font-extrabold uppercase tracking-[.1em] text-[#f5e4aa]">{product.badge}</span>}
+    <article className="group flex flex-col overflow-hidden rounded-2xl border border-[#e3d9b8] bg-[#fffdf8] shadow-[0_7px_20px_rgba(49,68,40,.08)] transition duration-300 hover:-translate-y-1 hover:border-[#c8a452] hover:shadow-[0_16px_36px_rgba(49,68,40,.15)]">
+      {/* Product Image */}
+      <Link
+        to={`/products/${product.slug}`}
+        aria-label={`View ${product.name}`}
+        className="relative block aspect-[4/3] w-full overflow-hidden bg-[#f5f0e3]"
+      >
+        <img
+          src={image}
+          alt={product.name}
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <span className="absolute right-2.5 top-2.5 rounded-full bg-[#064321] px-3 py-1 text-[9px] font-black uppercase tracking-wider text-[#e9c35e] shadow-sm">
+          {product.badge || product.size || '60 CAPSULES'}
+        </span>
       </Link>
-      <div className="flex min-w-0 flex-1 flex-col justify-center px-3 py-2 sm:px-4">
-        <Link to={`/products/${product.slug}`} className="font-sans text-lg font-black leading-[1.05] tracking-tight text-[#263027] transition group-hover:text-[#8e651c] sm:text-xl">{product.name}</Link>
-        <p className="mt-2 text-[11px] font-semibold leading-4 text-[#596058] sm:text-xs">{product.subtitle}</p>
-        <p className="mt-3 text-[10px] font-black uppercase tracking-[.07em] text-[#353b35]">{product.size}</p>
-        <p className="mt-1 text-xl font-black leading-none text-[#1e3023]">{product.price ? `₹${product.price.toLocaleString('en-IN')}/-` : 'Coming soon'}</p>
-        <Link to={`/products/${product.slug}`} className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-md bg-[#123b2a] px-3 py-2 text-[8px] font-black uppercase tracking-[.08em] text-white transition hover:bg-[#a87922]">View details <ArrowRight className="h-3 w-3" /></Link>
+
+      {/* Product Details */}
+      <div className="flex flex-1 flex-col p-5 text-center">
+        <Link
+          to={`/products/${product.slug}`}
+          className="font-serif text-lg font-bold tracking-tight text-[#1c3827] transition hover:text-[#b58321] sm:text-xl"
+        >
+          {product.name}
+        </Link>
+        <p className="mt-1 text-xs text-[#526355] line-clamp-1">
+          {product.subtitle}
+        </p>
+
+        <div className="mt-3 mb-4">
+          <p className="font-serif text-2xl font-bold text-[#1a3827]">
+            {product.price ? `₹${product.price.toLocaleString('en-IN')}/-` : 'Coming soon'}
+          </p>
+        </div>
+
+        <div className="mt-auto">
+          <Link
+            to={`/products/${product.slug}`}
+            className="flex h-11 w-full items-center justify-center gap-1.5 rounded-lg bg-[#064321] px-4 text-xs font-black uppercase tracking-wider text-white transition hover:bg-[#0a5c2f] shadow-sm"
+          >
+            <span>View Details</span>
+            <ChevronRight className="h-4 w-4" />
+          </Link>
+        </div>
       </div>
     </article>
   )

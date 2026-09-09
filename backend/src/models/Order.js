@@ -44,6 +44,13 @@ const orderSchema = new mongoose.Schema({
   trackingNumber: { type: String, trim: true, uppercase: true, maxlength: 100, default: '' },
   trackingUrl: { type: String, trim: true, maxlength: 500, default: '' },
   currentLocation: { type: String, trim: true, maxlength: 120, default: '' },
+  deliveryPerson: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null, index: true },
+  deliveryAssignedAt: Date,
+  deliveryCoordinates: { latitude: Number, longitude: Number, updatedAt: Date },
+  deliveryOtp: { type: String, select: false },
+  deliveryOtpExpiresAt: { type: Date, select: false },
+  deliveryOtpAttempts: { type: Number, default: 0, select: false },
+  deliveryOtpVerifiedAt: Date,
   estimatedDelivery: Date,
   trackingEvents: { type: [trackingEventSchema], default: [] },
   confirmedAt: Date,
@@ -54,6 +61,6 @@ const orderSchema = new mongoose.Schema({
   deliveredAt: Date,
   cancelledAt: Date,
   cancellationReason: { type: String, trim: true, maxlength: 200, default: '' },
-}, { timestamps: true })
+}, { timestamps: true, optimisticConcurrency: true })
 
 export default mongoose.model('Order', orderSchema)

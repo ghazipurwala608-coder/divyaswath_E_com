@@ -1,0 +1,4 @@
+Generated with the built-in image_gen tool.
+Asset: frontend/public/images/wellness/privacy-hero.png
+
+Use case: ads-marketing. Asset type: wide website hero background for the privacy policy page of an Ayurvedic wellness store. Create a premium photorealistic still life: a small elegant brushed brass padlock resting on a closed dark green linen journal, surrounded by fresh tulsi leaves and a few delicate botanical sprigs on a warm natural stone surface. Deep forest green softly blurred botanical background, subtle golden morning rim light, sophisticated calm atmosphere, realistic material details. Composition: landscape 1536x1024, objects grouped in the right third, left half dark forest green uncluttered negative space for cream headline text placed by the website. Generous breathing room, refined editorial photography. No text, no letters, no logos, no watermark, no digital interfaces, no exaggerated glowing effects.

@@ -7,6 +7,9 @@ const userSchema = new mongoose.Schema({
   phone: { type: String, required: true, trim: true },
   password: { type: String, required: true, minlength: 8, select: false },
   isAdmin: { type: Boolean, default: false },
+  isDriver: { type: Boolean, default: false },
+  deliveryActive: { type: Boolean, default: true },
+  deliveryArea: { type: String, trim: true, maxlength: 120, default: '' },
 }, { timestamps: true })
 
 userSchema.pre('save', async function hashPassword(next) {

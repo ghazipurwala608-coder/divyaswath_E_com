@@ -1,0 +1,1020 @@
+/* ==========================================================================
+   TRACK YOUR ORDER PAGE - DIVYA SWASTH PREMIUM AYURVEDIC THEME
+   ========================================================================== */
+
+.tracking-page {
+  background-color: #fbf9f4;
+  color: #1a3928;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Hero Section */
+.tracking-hero {
+  position: relative;
+  background: #f7f3e8 url('/images/conac/con image.png') center/cover no-repeat;
+  border-bottom: 1px solid #e7e3d6;
+  padding: 40px 24px 70px;
+  overflow: hidden;
+}
+
+.tracking-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(248, 244, 234, 0.95) 0%, rgba(248, 244, 234, 0.85) 50%, rgba(248, 244, 234, 0.4) 100%);
+  pointer-events: none;
+}
+
+.tracking-hero-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+.tracking-hero-copy {
+  max-width: 580px;
+}
+
+.tracking-hero-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #174229;
+  margin-bottom: 10px;
+}
+
+.tracking-hero-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.15;
+  color: #173824;
+  font-weight: 600;
+  margin: 0 0 14px;
+}
+
+.tracking-hero-gold {
+  color: #c9882b;
+  font-style: italic;
+  font-weight: 700;
+}
+
+.tracking-hero-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #4f6354;
+  margin: 0;
+}
+
+/* Parcel Artwork */
+.tracking-hero-artwork {
+  position: relative;
+  flex-shrink: 0;
+  width: 220px;
+  height: 160px;
+}
+
+.tracking-parcel-box {
+  position: relative;
+  width: 190px;
+  height: 145px;
+  background: linear-gradient(135deg, #c79e65 0%, #e2bf8b 60%, #b88b52 100%);
+  border: 1px solid #aa804c;
+  border-radius: 4px;
+  box-shadow: 0 20px 30px rgba(60, 45, 25, 0.25);
+  transform: rotate(4deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tracking-parcel-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.25);
+  border-bottom: 1px solid #aa804c;
+  transform: skewX(-20deg);
+  transform-origin: bottom;
+}
+
+.tracking-parcel-tape {
+  position: absolute;
+  left: 45%;
+  top: 0;
+  bottom: 0;
+  width: 22px;
+  background: rgba(240, 218, 175, 0.65);
+  border-left: 1px dashed rgba(160, 120, 60, 0.4);
+  border-right: 1px dashed rgba(160, 120, 60, 0.4);
+}
+
+.tracking-parcel-emblem {
+  position: relative;
+  z-index: 3;
+  width: 65%;
+  height: auto;
+  opacity: 0.88;
+  mix-blend-mode: multiply;
+}
+
+/* Main Content Wrapper */
+.tracking-content-wrapper {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  margin: -40px auto 0;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Card General Style */
+.tracking-card {
+  background: #ffffff;
+  border: 1px solid #e7e5dc;
+  border-radius: 8px;
+  padding: 22px 26px;
+  box-shadow: 0 2px 8px rgba(35, 50, 40, 0.04);
+}
+
+.tracking-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f2f0ea;
+}
+
+.tracking-card-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #153a25;
+  margin: 0;
+}
+
+/* Box 1: Search Card */
+.tracking-search-card {
+  padding: 24px 28px;
+}
+
+.tracking-search-card .tracking-card-title {
+  margin-bottom: 14px;
+}
+
+.tracking-search-form {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.tracking-input-group {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.tracking-input-icon {
+  position: absolute;
+  left: 14px;
+  color: #89968b;
+  pointer-events: none;
+}
+
+.tracking-input-group input {
+  width: 100%;
+  padding: 12px 14px 12px 42px;
+  font-size: 13px;
+  color: #173824;
+  background: #ffffff;
+  border: 1px solid #d3d9ce;
+  border-radius: 4px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.tracking-input-group input:focus {
+  border-color: #0c3d26;
+  box-shadow: 0 0 0 3px rgba(12, 61, 38, 0.1);
+}
+
+.tracking-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #0b3d27;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 26px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  white-space: nowrap;
+}
+
+.tracking-submit-btn:hover {
+  background-color: #115234;
+}
+
+.tracking-submit-btn:active {
+  transform: scale(0.99);
+}
+
+.tracking-search-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  font-size: 11px;
+  color: #728074;
+}
+
+.tracking-help-link {
+  color: #2b613e;
+  font-weight: 600;
+  text-decoration: underline;
+  transition: color 0.15s;
+}
+
+.tracking-help-link:hover {
+  color: #0c3d26;
+}
+
+/* State cards (loading / error) */
+.tracking-state-card {
+  text-align: center;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: #55695b;
+}
+
+.tracking-error-card {
+  border-color: #e8d0c8;
+  background: #fdf8f6;
+  color: #924538;
+}
+
+/* Box 2: Timeline Tracker */
+.tracking-status-card {
+  padding: 22px 26px 26px;
+}
+
+.tracking-last-updated {
+  font-size: 11px;
+  color: #7d8b7e;
+}
+
+.tracking-timeline-container {
+  padding: 12px 0 6px;
+  overflow-x: auto;
+}
+
+.tracking-timeline-track {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  min-width: 680px;
+  position: relative;
+}
+
+.tracking-step {
+  position: relative;
+  text-align: center;
+}
+
+.tracking-step-node {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tracking-node-circle {
+  position: relative;
+  z-index: 3;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #ffffff;
+  border: 2px solid #d5dbd1;
+  color: #8a968d;
+  transition: all 0.3s ease;
+}
+
+.tracking-step.is-completed .tracking-node-circle {
+  background: #124d32;
+  border-color: #124d32;
+  color: #ffffff;
+}
+
+.tracking-step.is-active .tracking-node-circle {
+  background: #124d32;
+  border-color: #124d32;
+  color: #ffffff;
+  box-shadow: 0 0 0 5px rgba(18, 77, 50, 0.15);
+}
+
+.tracking-step.is-pending .tracking-node-circle {
+  background: #fcfcfb;
+  border: 2px dashed #cbd4c8;
+  color: #9ba89f;
+}
+
+.tracking-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: #dbe2d8;
+  z-index: 1;
+  transform: translateY(-50%);
+}
+
+.tracking-line.is-done {
+  background: #124d32;
+}
+
+.tracking-step-info {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tracking-step-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1c3c2a;
+  margin: 0;
+}
+
+.tracking-step.is-active .tracking-step-name {
+  color: #124d32;
+}
+
+.tracking-step.is-pending .tracking-step-name {
+  color: #849187;
+  font-weight: 600;
+}
+
+.tracking-step-date {
+  font-size: 11px;
+  color: #5d6e61;
+}
+
+.tracking-step-time {
+  font-size: 10px;
+  color: #869489;
+}
+
+/* Box 3: Order Details Card */
+.tracking-order-id-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: #174229;
+}
+
+.tracking-details-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr 0.9fr 1.3fr 1.1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.tracking-col-product {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tracking-product-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.tracking-product-thumb {
+  width: 52px;
+  height: 64px;
+  border-radius: 4px;
+  border: 1px solid #e7e5db;
+  background: #fbfbf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.tracking-product-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 4px;
+}
+
+.tracking-product-meta h4 {
+  font-size: 12px;
+  font-weight: 700;
+  color: #183b27;
+  margin: 0 0 2px;
+  line-height: 1.3;
+}
+
+.tracking-product-sub {
+  font-size: 10px;
+  color: #7b887d;
+  margin: 0;
+}
+
+.tracking-product-qty {
+  font-size: 10px;
+  color: #556758;
+  margin: 2px 0 0;
+}
+
+.tracking-product-price {
+  font-size: 12px;
+  font-weight: 700;
+  color: #143823;
+  margin: 2px 0 0;
+}
+
+.tracking-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tracking-col-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  color: #7f8e81;
+}
+
+.tracking-col-val {
+  font-size: 12px;
+  color: #183c28;
+  margin: 0;
+}
+
+.tracking-col-sub {
+  font-size: 11px;
+  color: #6a7b6d;
+}
+
+.tracking-col-address {
+  font-size: 11px;
+  line-height: 1.5;
+  color: #4f6153;
+  margin: 0;
+}
+
+.tracking-badge-paid {
+  display: inline-block;
+  align-self: flex-start;
+  background: #e5f5ea;
+  color: #186638;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-top: 2px;
+}
+
+.tracking-courier-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #276941;
+  text-decoration: underline;
+  margin-top: 4px;
+  transition: color 0.15s;
+}
+
+.tracking-courier-link:hover {
+  color: #0b3d27;
+}
+
+/* Box 4: Estimated Delivery & Route Map */
+.tracking-delivery-route-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.tracking-route-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+}
+
+.tracking-eta-pane {
+  padding: 28px 26px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid #ebe9df;
+}
+
+.tracking-eta-headline {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #173b26;
+  line-height: 1.25;
+  margin: 8px 0 14px;
+}
+
+.tracking-eta-headline span {
+  color: #274d35;
+  font-weight: 400;
+}
+
+.tracking-partner-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fbf8f0;
+  border: 1px solid #ebdec0;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 11px;
+  color: #645638;
+  margin-bottom: 20px;
+}
+
+.tracking-need-help-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  padding: 8px 18px;
+  border: 1px solid #ced5c9;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #1b422d;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.tracking-need-help-btn:hover {
+  background: #f3f6f1;
+  border-color: #1b422d;
+}
+
+.tracking-map-pane {
+  position: relative;
+  min-height: 220px;
+  background: #eaf0e6;
+}
+
+.tracking-map-view {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+}
+
+.tracking-map-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  filter: saturate(0.85) contrast(1.05);
+}
+
+.tracking-delivery-floating-card {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 14px 18px;
+  box-shadow: 0 8px 20px rgba(25, 45, 30, 0.15);
+  border: 1px solid #e2ded0;
+  max-width: 250px;
+  z-index: 5;
+}
+
+.tracking-float-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #798a7b;
+  margin: 0 0 4px;
+}
+
+.tracking-float-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #173b26;
+  margin: 0 0 2px;
+}
+
+.tracking-float-addr {
+  font-size: 10px;
+  line-height: 1.4;
+  color: #556758;
+  margin: 0 0 10px;
+}
+
+.tracking-call-agent-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #0b3d27;
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.tracking-call-agent-btn:hover {
+  background: #115536;
+}
+
+/* Box 5: 4 Trust Badges */
+.tracking-trust-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  background: #ffffff;
+  border: 1px solid #e7e5dc;
+  border-radius: 8px;
+  padding: 20px 24px;
+  box-shadow: 0 2px 8px rgba(35, 50, 40, 0.04);
+}
+
+.tracking-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tracking-trust-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #f2f7ef;
+  border: 1px solid #d4dfce;
+  color: #276941;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.tracking-trust-item h4 {
+  font-size: 12px;
+  font-weight: 700;
+  color: #173824;
+  margin: 0 0 2px;
+}
+
+.tracking-trust-item p {
+  font-size: 10px;
+  color: #68796b;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Box 6: Support Banner */
+.tracking-support-banner {
+  background: #f1f6ed;
+  border: 1px solid #d7e4d0;
+  border-radius: 8px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: 0 2px 8px rgba(35, 50, 40, 0.03);
+}
+
+.tracking-support-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.tracking-support-leaf-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e0ebd9;
+  color: #2e6e44;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.tracking-support-left h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #153925;
+  margin: 0 0 2px;
+}
+
+.tracking-support-left p {
+  font-size: 11px;
+  color: #556758;
+  margin: 0;
+}
+
+.tracking-support-channels {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.tracking-channel-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: inherit;
+  transition: opacity 0.2s;
+}
+
+.tracking-channel-link:hover {
+  opacity: 0.8;
+}
+
+.tracking-channel-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #cbdbca;
+  color: #276941;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.tracking-channel-tag {
+  display: block;
+  font-size: 9px;
+  color: #728475;
+  text-transform: uppercase;
+}
+
+.tracking-channel-link strong {
+  font-size: 11px;
+  color: #153925;
+}
+
+.tracking-contact-support-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 1px solid #174229;
+  color: #174229;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tracking-contact-support-btn:hover {
+  background: #174229;
+  color: #ffffff;
+}
+
+/* Box 7: Newsletter Strip */
+.tracking-newsletter-bar {
+  background: #083c26;
+  border-radius: 8px;
+  padding: 20px 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  color: #ffffff;
+  border-top: 2px solid #caa151;
+}
+
+.tracking-news-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.tracking-news-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #caa151;
+  color: #caa151;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.tracking-news-left h3 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #f7edd4;
+  margin: 0 0 3px;
+}
+
+.tracking-news-left p {
+  font-size: 11px;
+  color: #b5c7ba;
+  margin: 0;
+}
+
+.tracking-news-form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 320px;
+}
+
+.tracking-news-input-wrap {
+  display: flex;
+  background: #ffffff;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.tracking-news-input-wrap input {
+  flex: 1;
+  border: none;
+  padding: 10px 14px;
+  font-size: 12px;
+  outline: none;
+  color: #173824;
+}
+
+.tracking-news-btn {
+  background: #c59e47;
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.tracking-news-btn:hover {
+  background: #b58d34;
+}
+
+.tracking-news-spam-note {
+  font-size: 9.5px;
+  color: #a4baa9;
+}
+
+/* ==========================================================================
+   RESPONSIVE STYLES
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .tracking-details-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .tracking-route-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tracking-eta-pane {
+    border-right: none;
+    border-bottom: 1px solid #ebe9df;
+  }
+
+  .tracking-support-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tracking-newsletter-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tracking-news-form {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .tracking-hero-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tracking-hero-artwork {
+    display: none;
+  }
+
+  .tracking-hero {
+    padding: 30px 16px 50px;
+  }
+
+  .tracking-content-wrapper {
+    margin-top: -30px;
+    padding: 0 12px;
+  }
+
+  .tracking-card {
+    padding: 18px 16px;
+  }
+
+  .tracking-search-form {
+    flex-direction: column;
+  }
+
+  .tracking-input-group,
+  .tracking-submit-btn {
+    width: 100%;
+  }
+
+  .tracking-details-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .tracking-trust-strip {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  .tracking-support-channels {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .tracking-delivery-floating-card {
+    position: static;
+    transform: none;
+    max-width: 100%;
+    margin: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tracking-hero-title {
+    font-size: 28px;
+  }
+
+  .tracking-trust-strip {
+    grid-template-columns: 1fr;
+  }
+}

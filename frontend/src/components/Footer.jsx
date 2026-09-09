@@ -1,24 +1,23 @@
-import { Facebook, Heart, Instagram, Mail, MapPin, Phone,  Youtube } from 'lucide-react'
+import { useSiteContent } from '../context/SiteContentContext.jsx'
+import { Facebook, Instagram, Mail, MapPin, Phone, Youtube } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-const QUICK_LINKS = [
+const DEFAULT_QUICK_LINKS = [
   ['Home', '/'],
   ['Our Products', '/shop'],
   ['Our Ingredients', '/ingredients'],
   ['Wellness Quiz', '/wellness'],
-  ['Blog', '/blog'],
-  ['Contact Us', '/contact'],
+  ['Blog', '/blog']
 ]
 
-const CUSTOMER_CARE = [
-  ['FAQs', '/faq'],
+const DEFAULT_CUSTOMER_CARE = [
   ['Shipping & Delivery', '/shipping'],
   ['Returns & Refunds', '/returns'],
   ['Terms & Conditions', '/terms'],
-  ['Privacy Policy', '/privacy'],
+  ['Privacy Policy', '/privacy']
 ]
 
-const PAYMENT_METHODS = [
+const DEFAULT_PAYMENT_METHODS = [
   { name: 'Visa', image: '/images/payments/visa.svg' },
   { name: 'Mastercard', image: '/images/payments/mastercard.svg' },
   { name: 'RuPay', image: '/images/payments/rupay.svg' },
@@ -26,34 +25,41 @@ const PAYMENT_METHODS = [
   { name: 'Paytm', image: '/images/payments/paytm.svg' },
   { name: 'Google Pay', image: '/images/payments/google-pay.svg' },
   { name: 'PhonePe', image: '/images/payments/phonepe.svg' },
-  { name: 'Net Banking', image: '/images/payments/net-banking.svg' },
+  { name: 'Net Banking', image: '/images/payments/net-banking.svg' }
 ]
 
-
 export default function Footer() {
+  const siteContent = useSiteContent('footer', siteIcons)
+
+  const quickLinks = (siteContent?.sections?.QUICK_LINKS || DEFAULT_QUICK_LINKS).filter(([, href]) => href !== '/contact')
+  const customerCareLinks = (siteContent?.sections?.CUSTOMER_CARE || DEFAULT_CUSTOMER_CARE).filter(([, href]) => href !== '/faq')
+  const paymentMethods = siteContent?.sections?.PAYMENT_METHODS || DEFAULT_PAYMENT_METHODS
+
   return (
-    <footer className="bg-[#0d1f11] text-white">
+    <footer className="bg-[#0a1c0e] text-white border-t border-[#1a3822]">
       {/* ── MAIN FOOTER ── */}
-      <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-8 px-6 py-8 sm:px-8 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.1fr_1.1fr_1.55fr] lg:gap-5 lg:py-8">
+      <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-6 px-6 pt-8 pb-4 sm:px-8 md:grid-cols-2 lg:grid-cols-[1.3fr_0.85fr_0.85fr_1.1fr_1.2fr] lg:gap-6 lg:pt-8 lg:pb-4">
 
         {/* ── COL 1: Brand ── */}
         <div className="flex flex-col gap-3">
           {/* Logo + Brand Name */}
-          <Link to="/" className="group flex items-center gap-3" aria-label="Divya Swasth home">
-            <span className="relative h-[52px] w-[52px] shrink-0 overflow-hidden rounded-full border-2 border-[#c8973a]/60 bg-[#0d1f11]">
+          <Link to={siteContent.media?.to_1 || '/'} className="group flex items-center gap-3" aria-label="Divya Swasth home">
+            <span className="relative h-[52px] w-[52px] shrink-0 overflow-hidden rounded-full border-2 border-[#c8973a]/70 bg-[#0d1f11] shadow-md">
               <img
-                src="/images/divyaswasth.png"
-                alt="Divya Swasth"
-                className="absolute -left-[19px] -top-[2px] w-[90px] max-w-none transition duration-300 group-hover:scale-105"
+                src={siteContent.media?.src_2 || '/images/logo.jpeg'}
+                alt={siteContent.media?.alt_3 || 'Divya Swasth'}
+                className="absolute -left-[70%] -top-[20%] w-[240%] max-w-none transition duration-300 group-hover:scale-105"
               />
             </span>
             <div>
               <span className="block font-display text-[22px] font-extrabold leading-none tracking-wide">
-                <span className="text-[#8ab96e]">DIVYA</span>{' '}
-                <span className="text-[#c8973a]">SWASTH</span>
+                <span className="text-[#8ab96e]">{siteContent.text?.divya || 'DIVYA'}</span>{' '}
+                <span className="text-[#c8973a]">{siteContent.text?.swasth || 'SWASTH'}</span>
               </span>
               <span className="mt-1.5 block text-[8px] font-semibold uppercase tracking-[.13em] text-white/55 leading-[1.7]">
-                Natural Healing<br />Holistic Wellness<br />Healthy Future
+                {siteContent.text?.natural_healing || 'Natural Healing'}<br />
+                {siteContent.text?.holistic_wellness || 'Holistic Wellness'}<br />
+                {siteContent.text?.healthy_future || 'Healthy Future'}
               </span>
             </div>
           </Link>
@@ -61,37 +67,65 @@ export default function Footer() {
           {/* Sanskrit tagline */}
           <div className="mt-1">
             <p className="font-display text-[15px] font-bold text-[#c8973a] leading-snug">
-              सर्वे भवन्तु सुखिनः:
+              {siteContent.text?.label || 'सर्वे भवन्तु सुखिनः:'}
             </p>
             <p className="mt-0.5 text-[8px] font-semibold uppercase tracking-[.1em] text-white/45">
-              Sarve Bhavantu Svastham
+              {siteContent.text?.sarve_bhavantu_svastham || 'Sarve Bhavantu Svastham'}
             </p>
             <p className="mt-0.5 text-[8px] uppercase tracking-[.08em] text-white/35">
-              — May All Be Healthy —
+              {siteContent.text?._may_all_be_healthy || '— May All Be Healthy —'}
             </p>
           </div>
 
           {/* Social icons */}
           <div className="mt-2 flex items-center gap-2.5">
-            {[
-              { href: 'https://facebook.com', label: 'Facebook', Icon: Facebook },
-              { href: 'https://instagram.com', label: 'Instagram', Icon: Instagram },
-              { href: 'https://youtube.com', label: 'YouTube', Icon: Youtube },
-            ].map(({ href, label, Icon }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={label}
-                className="flex h-7 w-7 items-center justify-center rounded-full border border-white/25 bg-white/[.06] text-white/55 transition hover:border-[#c8973a]/60 hover:bg-[#c8973a]/15 hover:text-[#c8973a]"
-              >
-                <Icon className="h-3.5 w-3.5" />
-              </a>
-            ))}
+            {siteContent.sections?.cards4 ? (
+              siteContent.sections.cards4.map(({ href, label, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="flex h-7 w-7 items-center justify-center rounded-full border border-white/25 bg-white/[.06] text-white/55 transition hover:border-[#c8973a]/60 hover:bg-[#c8973a]/15 hover:text-[#c8973a]"
+                >
+                  <Icon className="h-3.5 w-3.5" />
+                </a>
+              ))
+            ) : (
+              <>
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="flex h-7 w-7 items-center justify-center rounded-full border border-white/25 bg-white/[.06] text-white/55 transition hover:border-[#c8973a]/60 hover:bg-[#c8973a]/15 hover:text-[#c8973a]"
+                >
+                  <Instagram className="h-3.5 w-3.5" />
+                </a>
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="flex h-7 w-7 items-center justify-center rounded-full border border-white/25 bg-white/[.06] text-white/55 transition hover:border-[#c8973a]/60 hover:bg-[#c8973a]/15 hover:text-[#c8973a]"
+                >
+                  <Facebook className="h-3.5 w-3.5" />
+                </a>
+                <a
+                  href="https://youtube.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="YouTube"
+                  className="flex h-7 w-7 items-center justify-center rounded-full border border-white/25 bg-white/[.06] text-white/55 transition hover:border-[#c8973a]/60 hover:bg-[#c8973a]/15 hover:text-[#c8973a]"
+                >
+                  <Youtube className="h-3.5 w-3.5" />
+                </a>
+              </>
+            )}
             {/* WhatsApp */}
             <a
-              href="https://wa.me/919876543210"
+              href="https://wa.me/919747007253"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
@@ -107,14 +141,14 @@ export default function Footer() {
         {/* ── COL 2: Quick Links ── */}
         <div>
           <h3 className="text-[14px] font-black uppercase tracking-[.14em] text-[#c8973a]">
-            Quick Links
+            {siteContent.text?.quick_links || 'QUICK LINKS'}
           </h3>
           <ul className="mt-4 flex flex-col gap-3">
-            {QUICK_LINKS.map(([label, href]) => (
+            {quickLinks.map(([label, href]) => (
               <li key={label}>
                 <Link
                   to={href}
-                  className="text-[14px] text-white/60 transition duration-200 hover:text-[#c8973a] inline-block"
+                  className="text-[14px] text-[#9eb59d] transition duration-200 hover:text-[#c8973a] inline-block font-normal"
                 >
                   {label}
                 </Link>
@@ -126,14 +160,14 @@ export default function Footer() {
         {/* ── COL 3: Customer Care ── */}
         <div>
           <h3 className="text-[14px] font-black uppercase tracking-[.14em] text-[#c8973a]">
-            Customer Care
+            {siteContent.text?.customer_care || 'CUSTOMER CARE'}
           </h3>
           <ul className="mt-4 flex flex-col gap-3">
-            {CUSTOMER_CARE.map(([label, href]) => (
+            {customerCareLinks.map(([label, href]) => (
               <li key={label}>
                 <Link
                   to={href}
-                  className="text-[14px] text-white/60 transition duration-200 hover:text-[#c8973a] inline-block"
+                  className="text-[14px] text-[#9eb59d] transition duration-200 hover:text-[#c8973a] inline-block font-normal"
                 >
                   {label}
                 </Link>
@@ -145,26 +179,29 @@ export default function Footer() {
         {/* ── COL 4: Contact Us ── */}
         <div>
           <h3 className="text-[14px] font-black uppercase tracking-[.14em] text-[#c8973a]">
-            Contact Us
+            {siteContent.text?.contact_us || 'CONTACT US'}
           </h3>
-          <ul className="mt-4 flex flex-col gap-4">
+          <ul className="mt-4 flex flex-col gap-3.5">
             <li className="flex items-start gap-3">
               <Phone className="mt-0.5 h-4 w-4 shrink-0 text-[#c8973a]" />
-              <span className="text-[14px] leading-snug text-white/65">+91 98765 43210</span>
+              <a href="tel:+919747007253" className="text-[13px] leading-snug text-[#9eb59d] hover:text-[#c8973a] transition">
+                +91 97470 07253
+              </a>
             </li>
             <li className="flex items-start gap-3">
               <Mail className="mt-0.5 h-4 w-4 shrink-0 text-[#c8973a]" />
               <a
-                href="mailto:care@divyaswasth.com"
-                className="text-[14px] leading-snug text-white/65 transition hover:text-[#c8973a]"
+                href="mailto:divyaswasth@gmail.com"
+                className="text-[13px] leading-snug text-[#9eb59d] transition hover:text-[#c8973a]"
               >
-                care@divyaswasth.com
+                divyaswasth@gmail.com
               </a>
             </li>
             <li className="flex items-start gap-3">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#c8973a]" />
-              <span className="text-[14px] leading-snug text-white/65">
-                Saketri, Panchkula,<br />Haryana 134114, India
+              <span className="text-[13px] leading-snug text-[#9eb59d]">
+                Pocket 1, Okhla Phase 1,<br />
+                New Delhi, Delhi 110020, India
               </span>
             </li>
           </ul>
@@ -173,36 +210,41 @@ export default function Footer() {
         {/* ── COL 5: We Accept ── */}
         <div>
           <h3 className="text-[14px] font-black uppercase tracking-[.14em] text-[#c8973a]">
-            We Accept
+            {siteContent.text?.we_accept || 'WE ACCEPT'}
           </h3>
-          <div className="mt-4 grid grid-cols-4 gap-2.5" aria-label="Accepted payment methods">
-            {PAYMENT_METHODS.map(({ name, image }) => (
-              <div key={name} className="flex h-[50px] min-w-0 items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-white px-2 py-1.5 shadow-sm">
+          <div className="mt-4 grid grid-cols-4 gap-2 max-w-[260px]">
+            {paymentMethods.map((method) => (
+              <div
+                key={method.name}
+                className="flex h-[38px] items-center justify-center rounded-[6px] bg-white p-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.18)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+                title={method.name}
+              >
                 <img
-                  src={image}
-                  alt={name}
-                  loading="lazy"
+                  src={method.image}
+                  alt={method.name}
                   className="h-full w-full object-contain"
+                  loading="lazy"
                 />
               </div>
             ))}
           </div>
-          <p className="mt-4 flex items-center gap-1.5 whitespace-nowrap text-[11px] font-medium text-white/45">
-            Designed with
-            <Heart className="h-3.5 w-3.5 fill-[#d6a63f] text-[#d6a63f]" aria-hidden="true" />
-            for a Healthy Future
-          </p>
         </div>
-      </div>
 
-    
+      </div>
 
       {/* ── BOTTOM BAR ── */}
       <div className="border-t border-white/[.08]">
-        <div className="mx-auto flex max-w-[1440px] items-center justify-center px-6 py-3 text-[10px] text-white/30 sm:px-8">
+        <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-2 px-6 py-2.5 text-[11px] text-white/50 sm:flex-row sm:px-8">
           <p>© {new Date().getFullYear()} Divya Swasth. All rights reserved.</p>
+          <p className="flex items-center gap-1.5 text-[11px] text-white/60">
+            <span>{siteContent.text?.designed_with || 'Designed with'}</span>
+            <span className="text-[#c8973a]">💛</span>
+            <span>{siteContent.text?.for_a_healthy_future || 'for a Healthy Future'}</span>
+          </p>
         </div>
       </div>
     </footer>
   )
 }
+
+const siteIcons = { Facebook, Instagram, Youtube }

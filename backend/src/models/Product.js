@@ -25,10 +25,12 @@ const productSchema = new mongoose.Schema({
   storage: { type: String, default: 'Store in a cool, dry and dark place' },
   disclaimer: { type: String, required: true },
   images: [{ type: String, trim: true }],
+  cardImage: { type: String, default: '' },
+  sortOrder: { type: Number, default: 0 },
   imageStatus: { type: String, enum: ['Pending', 'Concept', 'Approved'], default: 'Pending' },
   availableForPurchase: { type: Boolean, default: true },
   isActive: { type: Boolean, default: true },
-}, { timestamps: true })
+}, { timestamps: true, optimisticConcurrency: true })
 
 productSchema.index({ name: 'text', subtitle: 'text', category: 'text', ingredients: 'text' })
 

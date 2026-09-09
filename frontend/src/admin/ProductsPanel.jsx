@@ -1,0 +1,44 @@
+import { Edit3, ImagePlus, Plus, Save, Search, X } from 'lucide-react'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
+import { apiRequest } from '../api/client.js'
+import { Badge, currency, DataState, EmptyState, Modal, useAdminData } from './AdminUI.jsx'
+import MediaLibrary from './MediaLibrary.jsx'
+
+const blank = { name: '', slug: '', subtitle: '', category: '', price: 0, mrp: 0, countInStock: 0, sortOrder: 6, badge: '', theme: 'gold', featured: false, availableForPurchase: false, shortDescription: '', description: '', benefits: [], ingredients: [], size: '', form: 'Capsules', classification: '', vegetarian: '', storage: '', usage: '', disclaimer: '', images: [], cardImage: '', imageStatus: 'Pending' }
+const groups = [
+  ['Product essentials', [['name', 'Product name', true], ['slug', 'Permanent URL slug', true], ['subtitle', 'Subtitle', true], ['category', 'Category', true], ['badge', 'Badge'], ['size', 'Pack size']]],
+  ['Pricing & stock', [['price', 'Selling price (₹)', true, 'number'], ['mrp', 'MRP (₹)', true, 'number'], ['countInStock', 'Stock quantity', true, 'number'], ['sortOrder', 'Display order', true, 'number']]],
+  ['Description & formula', [['shortDescription', 'Short description', true, 'textarea'], ['description', 'Full description', true, 'textarea'], ['benefits', 'Benefits — one per line', false, 'lines'], ['ingredients', 'Ingredients — one per line', false, 'lines']]],
+  ['Product information', [['usage', 'How to use', true, 'textarea'], ['disclaimer', 'Safety information', true, 'textarea'], ['form', 'Product form'], ['classification', 'Classification'], ['vegetarian', 'Vegetarian information'], ['storage', 'Storage instructions']]],
+]
+export default function ProductsPanel() {
+  const { data, setData, loading, error, reload } = useAdminData('/admin/products')
+  const [query, setQuery] = useState('')
+  const [filter, setFilter] = useState('All')
+  const [draft, setDraft] = useState(null)
+  const [saving, setSaving] = useState(false)
+  const [imageTarget, setImageTarget] = useState('')
+  const [dirty, setDirty] = useState(false)
+  const products = data?.products.filter(item => `${item.name} ${item.category} ${item.slug}`.toLowerCase().includes(query.toLowerCase()) && (filter === 'All' || (filter === 'Low stock' ? item.countInStock <= 5 : item.availableForPurchase && item.countInStock > 0))) || []
+  const field = (key, value) => { setDraft(current => ({ ...current, [key]: value })); setDirty(true) }
+  const close = () => { if (!saving && (!dirty || window.confirm('Discard unsaved product edits?'))) { setDraft(null); setImageTarget(''); setDirty(false) } }
+  const edit = item => { setDraft(structuredClone(item)); setDirty(false) }
+  const save = async event => {
+    event.preventDefault()
+    setSaving(true)
+    try {
+      const body = { ...draft, benefits: typeof draft.benefits === 'string' ? draft.benefits.split('\n').filter(Boolean) : draft.benefits, ingredients: typeof draft.ingredients === 'string' ? draft.ingredients.split('\n').filter(Boolean) : draft.ingredients }
+      const { product } = await apiRequest(draft._id ? `/products/id/${draft._id}` : '/products', { method: draft._id ? 'PUT' : 'POST', body: JSON.stringify(body) })
+      setData(current => ({ products: draft._id ? current.products.map(item => item._id === product._id ? product : item) : [...current.products, product] }))
+      window.dispatchEvent(new Event('products-updated'))
+      toast.success('Product saved to your store')
+      setDraft(null); setDirty(false)
+    } catch (err) { toast.error(err.message) } finally { setSaving(false) }
+  }
+  return <><div className="admin-toolbar"><label className="admin-search"><Search size={17} /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search products, category or slug…" /></label><select aria-label="Product filter" value={filter} onChange={event => setFilter(event.target.value)}>{['All', 'Available', 'Low stock'].map(item => <option key={item}>{item}</option>)}</select><button className="admin-button" onClick={() => edit(blank)}><Plus size={17} />Add product</button></div><DataState loading={loading} error={error} retry={reload}><section className="admin-panel"><div className="admin-panel-heading"><div><h2>Your product collection</h2><p>{products.length} products · All original products are preserved</p></div><Badge>Catalog & inventory</Badge></div>{products.length ? <div className="admin-table-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Price / MRP</th><th>Stock</th><th>Availability</th><th /></tr></thead><tbody>{products.map(product => <tr key={product._id}><td><div className="admin-product-cell">{product.images?.[0] ? <img src={product.images[0]} alt="" /> : <span className="admin-image-placeholder"><ImagePlus /></span>}<span><strong>{product.name}</strong><small>{product.size}</small></span></div></td><td>{product.category}</td><td><strong>{currency(product.price)}</strong><small className="admin-block">MRP {currency(product.mrp)}</small></td><td><Badge tone={product.countInStock <= 5 ? 'gold' : 'green'}>{product.countInStock} units</Badge></td><td><Badge tone={product.availableForPurchase && product.countInStock > 0 ? 'green' : ''}>{product.availableForPurchase && product.countInStock > 0 ? 'Available' : 'Coming soon'}</Badge></td><td><button className="admin-icon-button" onClick={() => edit(product)} aria-label={`Edit ${product.name}`}><Edit3 size={17} /></button></td></tr>)}</tbody></table></div> : <EmptyState title="No matching products" text="Try another search or filter." />}</section></DataState>
+    {draft && <Modal title={draft._id ? `Edit ${draft.name}` : 'Add a product'} onClose={close} wide>{imageTarget ? <div className="admin-modal-body"><button className="admin-text-button" onClick={() => setImageTarget('')}>← Back to product</button><MediaLibrary onSelect={url => { field(imageTarget, imageTarget === 'images' ? [...draft.images, url] : url); setImageTarget('') }} /></div> : <form onSubmit={save}><div className="admin-modal-body"><div className="admin-form-note">Edit product details without changing the storefront design. Existing product URLs stay the same.</div>{groups.map(([title, fields]) => <fieldset key={title}><legend>{title}</legend><div className="admin-form-grid">{fields.map(([key, label, required, type = 'text']) => <label key={key} className={['textarea', 'lines'].includes(type) ? 'wide' : ''}><span>{label}{required && ' *'}</span>{['textarea', 'lines'].includes(type) ? <textarea required={required} rows={type === 'lines' ? 4 : 3} value={Array.isArray(draft[key]) ? draft[key].join('\n') : draft[key] || ''} onChange={event => field(key, event.target.value)} /> : <input required={required} type={type} min={type === 'number' ? 0 : undefined} step={type === 'number' ? ['countInStock', 'sortOrder'].includes(key) ? 1 : '.01' : undefined} readOnly={key === 'slug' && !!draft._id} value={draft[key] ?? ''} onChange={event => field(key, type === 'number' ? event.target.value === '' ? '' : Number(event.target.value) : event.target.value)} />}</label>)}</div></fieldset>)}
+      <fieldset><legend>Product photography</legend><div className="admin-product-images">{draft.images.map((url, index) => <div key={`${url}-${index}`}><img src={url} alt={`Product view ${index + 1}`} /><button type="button" aria-label="Remove this image from the product" onClick={() => field('images', draft.images.filter((_, i) => i !== index))}><X size={13} /></button></div>)}<button type="button" className="admin-image-add" onClick={() => setImageTarget('images')}><ImagePlus /><span>Add image</span></button></div><label className="admin-inline-field"><span>Homepage card image</span><input value={draft.cardImage || ''} onChange={event => field('cardImage', event.target.value)} /><button type="button" className="admin-button secondary" onClick={() => setImageTarget('cardImage')}>Choose image</button></label><label className="admin-inline-field"><span>Image status</span><select value={draft.imageStatus} onChange={event => field('imageStatus', event.target.value)}>{['Pending', 'Concept', 'Approved'].map(item => <option key={item}>{item}</option>)}</select></label></fieldset>
+      <fieldset><legend>Store visibility</legend>{[['featured', 'Feature this product'], ['availableForPurchase', 'Allow purchases when stock is available']].map(([key, label]) => <label className="admin-checkbox" key={key}><input type="checkbox" checked={draft[key]} onChange={event => field(key, event.target.checked)} />{label}</label>)}</fieldset></div><footer className="admin-modal-footer"><button type="button" className="admin-button secondary" disabled={saving} onClick={close}>Cancel</button><button className="admin-button" disabled={saving}><Save size={16} />{saving ? 'Saving…' : 'Save product'}</button></footer></form>}</Modal>}
+  </>
+}

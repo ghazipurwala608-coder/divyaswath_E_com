@@ -1,0 +1,37 @@
+.member-dashboard{background:#f8f6ef;padding-bottom:12px}
+.member-hero{position:relative;isolation:isolate;overflow:hidden;background:#09271c;color:#fff7e5}
+.member-hero-image{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;object-position:center}
+.member-hero-shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#09271cf5 0%,#09271ce8 28%,#09271c85 49%,transparent 75%)}
+.member-hero-inner{width:calc(100% - 64px);max-width:1220px;margin:auto;min-height:400px;padding:25px 0 90px}
+.member-hero-top{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.member-hero-top>span{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:#e0c177}
+.member-hero-top button{display:flex;align-items:center;gap:8px;padding:9px 15px;border:1px solid #e8d7aa70;border-radius:5px;background:#08281dd9;color:#fff4d6;font-size:11px;cursor:pointer}
+.member-hero-top button:hover{background:#234937}
+.member-welcome{max-width:530px;padding-top:32px}
+.member-eyebrow{font-size:11px;color:#c4d0ba;letter-spacing:1px;margin-bottom:12px}
+.member-welcome h1{font:400 clamp(38px,4.4vw,62px)/1.12 Georgia,serif;letter-spacing:-1.5px;overflow-wrap:anywhere;text-wrap:balance;margin:0}
+.member-welcome-description{max-width:415px;margin-top:16px;color:#d3dbcb;font-size:14px;line-height:1.8}
+.member-hero-actions{display:flex;align-items:center;flex-wrap:wrap;gap:22px;margin-top:24px}
+.member-hero-actions a{display:inline-flex;align-items:center;justify-content:center;gap:12px;font-size:12px;font-weight:600}
+.member-hero-actions a:first-child{padding:12px 19px;border-radius:4px;background:#dfbd6c;color:#173827;border:1px solid #dfbd6c}
+.member-hero-actions a:first-child:hover{background:#f0d490}
+.member-hero-actions a:last-child{color:#f0e2bd;border-bottom:1px solid #b8a47580;padding-block:9px}
+.member-hero a:focus-visible,.member-hero button:focus-visible{outline:2px solid #efd594;outline-offset:4px}
+.member-dashboard .member-content{max-width:1284px}
+.member-stats{gap:18px!important;margin-bottom:26px!important}
+.member-stats>div{min-height:100px;border-radius:12px;padding:22px;box-shadow:0 9px 26px #203c2110}
+.member-stats>div>span{height:46px;width:46px;border-radius:12px}
+.member-stats>div>div>p:first-child{font-size:10px;letter-spacing:1px}
+.member-stats>div>div>p:last-child{font-size:27px;line-height:1.3;margin-top:4px}
+.member-dashboard aside>div,.member-dashboard aside>nav,.member-orders{border-radius:14px;box-shadow:0 6px 25px #263c2410}
+.member-dashboard .text-\[7px\]{font-size:10px}
+.member-dashboard .text-\[8px\]{font-size:10px}
+.member-dashboard .text-\[9px\]{font-size:11px}
+.member-dashboard .text-\[10px\]{font-size:12px}
+.member-orders{scroll-margin-top:110px}
+.member-dashboard .member-empty{min-height:365px;border:1px solid #e6e5d8;border-radius:10px;background:radial-gradient(ellipse at center,#fffef9,#f6f5ed)}
+.member-empty h3{font-size:32px}
+.member-empty a{border-radius:5px;font-size:11px;padding:13px 22px;box-shadow:none}
+.member-empty p{line-height:1.8}
+@media(max-width:900px){.member-hero-inner{min-height:390px;width:calc(100% - 48px)}.member-welcome{max-width:52%}.member-welcome h1{font-size:43px}.member-welcome-description{font-size:13px}.member-hero-actions{gap:14px}.member-hero-image{object-position:60% center}}
+@media(max-width:600px){.member-hero-inner{width:calc(100% - 36px);min-height:535px;padding:20px 0 230px}.member-hero-top>span{font-size:8px;letter-spacing:1px}.member-hero-top button{font-size:10px;padding:8px 10px}.member-welcome{max-width:100%;padding-top:29px}.member-welcome h1{font-size:40px}.member-welcome-description{max-width:340px;font-size:13px}.member-hero-image{top:auto;bottom:0;height:250px;object-position:right bottom}.member-hero-shade{background:linear-gradient(180deg,#09271c 0%,#09271c 51%,#09271c00 79%)}.member-hero-actions{margin-top:20px}.member-stats{gap:10px!important;grid-template-columns:1fr 1fr}.member-stats>div{min-height:88px;padding:14px;gap:10px}.member-stats>div:last-child{grid-column:1/-1;min-height:72px}.member-stats>div>span{width:36px;height:36px}.member-stats>div>div>p:first-child{font-size:9px}.member-stats>div>div>p:last-child{font-size:23px}.member-dashboard .member-empty{min-height:320px}.member-empty h3{font-size:28px}}

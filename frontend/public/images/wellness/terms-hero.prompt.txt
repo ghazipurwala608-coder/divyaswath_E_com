@@ -1,0 +1,4 @@
+Generated with the built-in image_gen tool.
+Asset: frontend/public/images/wellness/terms-hero.png
+
+Use case: ads-marketing. Asset type: photorealistic hero background for an Ayurvedic wellness store Terms and Conditions webpage. Landscape 1536x1024. Premium editorial still life: an open cream paper journal with blank unmarked pages and a fine brass fountain pen on a warm natural stone desk, fresh tulsi leaves and delicate botanical sprigs surrounding it. Objects grouped on the right third; the left half is uncluttered deep forest green negative space for cream website headline overlay. Soft golden morning light, sophisticated calm reassuring mood, rich green and muted brass palette, realistic paper and stone texture. No text, no writing, no logos, no watermark, no interface, no padlock. Keep journal and pen in the center-right zone so they remain visible in a wide banner crop.

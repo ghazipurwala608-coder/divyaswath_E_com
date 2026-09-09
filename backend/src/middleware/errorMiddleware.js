@@ -6,6 +6,7 @@ export function notFound(req, res, next) {
 export function errorHandler(error, req, res, next) {
   let statusCode = res.statusCode === 200 ? 500 : res.statusCode
   let message = error.message || 'Internal server error'
+  if (error.name === 'VersionError') { statusCode = 409; message = 'This record changed. Reload before saving.' }
 
   if (error.name === 'CastError') {
     statusCode = 404

@@ -10,6 +10,7 @@
     "dev": "nodemon src/server.js",
     "seed": "node src/data/seed.js",
     "check": "node --check src/server.js"
+    ,"test": "node --test src/tests/*.test.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

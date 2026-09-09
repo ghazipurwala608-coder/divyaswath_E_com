@@ -1,13 +1,262 @@
-import { AlertCircle, FileText } from 'lucide-react'
+import { useSiteContent } from '../context/SiteContentContext.jsx'
+import { AlertCircle, ArrowRight, CheckCircle2, FileText, Headphones, Leaf, RotateCcw, ShieldCheck, Truck } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import './PolicyPage.css'
 
-const policies = {
-  shipping: { eyebrow: 'Shipping & delivery', title: 'From our care to your doorstep.', intro: 'This pre-launch policy structure covers serviceability, timelines, charges and delivery support. Final operational values must be approved before orders go live.', sections: [['Delivery areas', 'Orders will be accepted only for serviceable Indian PIN codes shown at checkout. Confirm excluded regions and courier coverage before launch.'], ['Estimated delivery time', 'Display order processing and transit estimates at checkout after courier agreements are finalised. Delays may occur due to weather, public holidays or remote-area serviceability.'], ['Shipping charges', 'The current demo checkout applies ₹99 shipping and free delivery from ₹999. Confirm these commercial rules before launch.'], ['Order tracking', 'A dispatch and tracking reference will be shared through the verified email or mobile number attached to the order.'], ['Delivery issues', 'Customers should report delays, missing parcels or an incorrect delivery status using the contact form and order number.'], ['Damaged package', 'Photograph the outer package, shipping label and product immediately. Keep all packaging until the support team completes its review.']] },
-  returns: { eyebrow: 'Returns & refunds', title: 'A fair, safety-first process.', intro: 'Wellness products need careful return rules. The final policy must reflect actual business operations and applicable Indian consumer and ecommerce requirements.', sections: [['Return eligibility', 'State the exact return request window and require proof of purchase. Products should remain unused, sealed and in original packaging unless the issue is damage or an incorrect item.'], ['Opened products', 'Opened or used ingestible products are generally restricted for health and safety reasons. Publish the final exception rules after legal review.'], ['Damaged or incorrect order', 'Ask customers to report the issue promptly with order number, photographs and an unboxing record where available.'], ['Refund processing', 'Approved refunds should return to the original payment method within the final published banking timeline. COD refund handling must also be defined.'], ['Cancellations', 'State when cancellation is possible before packing or dispatch. Dispatched orders follow the applicable return rules.'], ['Policy review', 'This page is a pre-launch template and requires approval against the actual business policy before accepting orders.']] },
-  privacy: { eyebrow: 'Privacy policy', title: 'Your information, handled with care.', intro: 'This summary explains the intended data flow. It must be completed with the legal business identity, processors, retention periods and grievance contact before launch.', sections: [['Information collected', 'Account details, name, email, mobile number, delivery address, order records and messages submitted through the contact form.'], ['Why it is used', 'To create accounts, authenticate sessions, fulfil orders, provide support, prevent abuse and improve store operations.'], ['Payment information', 'The demo supports COD and payment-pending online orders. A live payment provider should process sensitive card or UPI credentials; the store should not store full payment credentials.'], ['Cookies and local storage', 'The storefront uses local storage for the cart and JWT session. Add consent controls for non-essential analytics or marketing tools before enabling them.'], ['Marketing communications', 'Send promotional communications only with appropriate consent and provide a clear opt-out.'], ['Protection and contact', 'Use HTTPS, access controls, limited retention and security monitoring. Publish the official privacy or grievance contact after verification.']] },
-  terms: { eyebrow: 'Terms & conditions', title: 'Clear rules for a trusted store.', intro: 'These pre-launch terms outline the required topics. They must be reviewed with the final business identity, policies, product status and applicable law before publication.', sections: [['Website use', 'Users must provide accurate information, use the site lawfully and not interfere with its security or operation.'], ['Accounts', 'Customers are responsible for protecting login credentials and informing support of suspected unauthorised access.'], ['Products and information', 'Final products, labels, ingredients, classification, claims, images, prices and availability may be published only after verification. Website information is not medical advice.'], ['Orders and payments', 'An order is accepted only after confirmation. Pricing errors, stock issues, payment failure, suspected fraud or serviceability problems may require cancellation and refund.'], ['Intellectual property', 'Brand assets, copy and original site materials remain protected by applicable intellectual-property rights.'], ['Liability and governing terms', 'Add legally reviewed limitations, applicable Indian law, jurisdiction, grievance contact and consumer rights without excluding rights that cannot lawfully be limited.']] },
+export default function PolicyPage({ type = 'shipping' }) {
+  const siteContent = useSiteContent('policy', siteIcons)
+
+  const defaultPolicies = {
+    shipping: {
+      eyebrow: 'SHIPPING & DELIVERY',
+      title: 'From our care to your doorstep.',
+      intro: 'Pure Ayurvedic wellness, carefully packaged and securely dispatched across all PIN codes in India.',
+      sections: [
+        [
+          'Delivery areas',
+          'We ship to all serviceable PIN codes across India. Every order is dispatched directly from our authentic Ayurvedic facility in tamper-evident packaging.'
+        ],
+        [
+          'Estimated delivery time',
+          'Orders are processed within 24-48 hours. Metro cities typically receive deliveries within 2 to 4 business days; other regions within 4 to 6 business days.'
+        ],
+        [
+          'Shipping charges',
+          'Enjoy FREE standard shipping on all prepaid orders or orders above ₹499. A nominal convenience fee applies to low-value cash on delivery orders.'
+        ],
+        [
+          'Order tracking',
+          'As soon as your parcel is dispatched, a real-time tracking number and live SMS/WhatsApp notification are sent to your registered contact details.'
+        ],
+        [
+          'Delivery issues',
+          'If you face any delivery delay or incorrect status update, contact our care team immediately at +91 97470 07253 or divyaswasth@gmail.com.'
+        ],
+        [
+          'Damaged package',
+          'If you receive an open or damaged parcel, photograph the outer box and contact us within 48 hours for an instant replacement.'
+        ]
+      ]
+    },
+    returns: {
+      eyebrow: 'RETURNS & REFUNDS',
+      title: 'A fair, safety-first process.',
+      intro: 'We strive for 100% satisfaction with our authentic formulations while upholding the highest health and hygiene standards.',
+      sections: [
+        [
+          'Return eligibility',
+          'Unopened and sealed products in their original packaging can be returned within 7 days of delivery.'
+        ],
+        [
+          'Opened products',
+          'For health and safety compliance, opened or consumed health supplements cannot be returned unless verified as damaged or defective.'
+        ],
+        [
+          'Damaged or incorrect order',
+          'If you received a defective or wrong item, report it with unboxing photos/video within 48 hours for an immediate reshipment.'
+        ],
+        [
+          'Refund processing',
+          'Approved refunds are credited to the original payment source within 5-7 business days after package inspection.'
+        ],
+        [
+          'Cancellations',
+          'Orders can be cancelled before they are packed and handed over to our courier partner.'
+        ],
+        [
+          'Support assistance',
+          'For any return assistance, reach out via WhatsApp at +91 97470 07253 or email divyaswasth@gmail.com.'
+        ]
+      ]
+    },
+    privacy: {
+      eyebrow: 'PRIVACY POLICY',
+      title: 'Your information, handled with care.',
+      intro: 'We respect your privacy and protect your personal information with 256-bit encryption.',
+      sections: [
+        [
+          'Information collection',
+          'We only collect essential details (name, address, email, phone) required to process orders and provide customer support.'
+        ],
+        [
+          'Data protection',
+          'Your personal information is never sold or rented to third-party advertisers.'
+        ],
+        [
+          'Payment security',
+          'All payment transactions are encrypted and processed through RBI-compliant, secure payment gateways.'
+        ],
+        [
+          'Cookies & browsing',
+          'We use cookies strictly to improve your shopping experience and remember cart selections.'
+        ],
+        [
+          'Your rights',
+          'You may request access to, correction of, or deletion of your personal account details at any time.'
+        ],
+        [
+          'Contact privacy team',
+          'For privacy queries, reach out to our grievance officer at divyaswasth@gmail.com.'
+        ]
+      ]
+    },
+    terms: {
+      eyebrow: 'TERMS & CONDITIONS',
+      title: 'Clear terms for a trustworthy journey.',
+      intro: 'These terms outline the rules and guidelines for using the Divya Swasth online storefront.',
+      sections: [
+        [
+          'Use of storefront',
+          'By accessing this website, you agree to comply with our terms of service and applicable laws.'
+        ],
+        [
+          'Product availability',
+          'All formulations and promotional offers are subject to stock availability.'
+        ],
+        [
+          'Accuracy of information',
+          'We strive for accuracy in product descriptions, ingredients, and pricing.'
+        ],
+        [
+          'Intellectual property',
+          'All brand trademarks, logos, content, and images belong exclusively to Divya Swasth.'
+        ],
+        [
+          'Limitation of liability',
+          'Supplements are designed for holistic wellness and are not intended to replace professional medical advice.'
+        ],
+        [
+          'Governing law',
+          'Any disputes arising from purchases are subject to the jurisdiction of the courts of New Delhi, India.'
+        ]
+      ]
+    }
+  }
+
+  const policy = siteContent?.sections?.policies?.[type] || defaultPolicies[type] || defaultPolicies.shipping
+  const isShipping = type === 'shipping'
+  const isPrivacy = type === 'privacy'
+  const isTerms = type === 'terms'
+  const isReturns = type === 'returns'
+  const isEditorial = isPrivacy || isTerms || isReturns
+  const highlights = isPrivacy
+    ? [[FileText, 'Your information', 'What we collect'], [ShieldCheck, 'How it is used', 'Understand the details'], [Leaf, 'Your preferences', 'Cookies & communication'], [Headphones, 'Here to help', 'Questions & support']]
+    : isReturns
+      ? [[RotateCcw, 'Return eligibility', 'Understand the policy'], [ShieldCheck, 'Product condition', 'Packaging & safety'], [CheckCircle2, 'Refund process', 'What happens next'], [Headphones, 'Return assistance', 'Speak with our team']]
+      : [[FileText, 'Website use', 'Know the essentials'], [ShieldCheck, 'Your account', 'Account responsibilities'], [CheckCircle2, 'Orders & purchases', 'Shopping with clarity'], [Headphones, 'Need a hand?', 'Questions & support']]
+
+  return (
+    <div className={`policy-page${isEditorial ? ` policy-editorial ${type}-page` : ''}`}>
+      {/* ── HERO ── */}
+      <section className="policy-hero">
+        {isEditorial && <img className="privacy-hero-image" src={`/images/wellness/${type}-hero.png`} alt="" fetchPriority="high" />}
+        <div className="policy-hero-inner">
+          <div className="policy-hero-badge">
+            {isShipping ? <Truck size={24} /> : type === 'returns' ? <RotateCcw size={24} /> : isPrivacy ? <ShieldCheck size={24} /> : <FileText size={24} />}
+          </div>
+          <p className="policy-hero-eyebrow">{policy.eyebrow}</p>
+          <h1 className="policy-hero-title">{policy.title}</h1>
+          <p className="policy-hero-intro">{policy.intro}</p>
+          {isEditorial && <a href={`#${type}-details`} className="privacy-read-link">{isPrivacy ? 'Explore our privacy policy' : isReturns ? 'Explore returns & refunds' : 'Explore our terms & conditions'} <ArrowRight size={17} /></a>}
+        </div>
+      </section>
+
+      {/* ── MAIN CONTENT ── */}
+      <div className="policy-container">
+        {/* Visual Artwork Card (Specifically for Shipping) */}
+        {isShipping && (
+          <div className="policy-visual-card">
+            <div className="policy-visual-wrapper">
+              <img
+                src="/images/wellness/shipping-hero.jpg"
+                alt="Ayurvedic Packaging and Safe Delivery"
+                className="policy-visual-img"
+              />
+              <div className="policy-visual-overlay">
+                <div className="policy-visual-text">
+                  <span className="policy-visual-tag">
+                    <ShieldCheck size={13} />
+                    100% Tamper-Evident & Safe Transit
+                  </span>
+                  <h3>Crafted with Authenticity. Delivered with Care.</h3>
+                  <p>Every parcel is packed using eco-friendly protective materials to preserve the potency of fresh herbs.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── 4 TRUST HIGHLIGHTS STRIP ── */}
+        {isEditorial ? <section className="policy-trust-bar" aria-label={isPrivacy ? 'Privacy topics' : isReturns ? 'Return and refund topics' : 'Terms topics'}>
+          {highlights.map(([Icon, title, description]) => <div className="policy-trust-item" key={title}><div className="policy-trust-icon-box"><Icon size={21} /></div><div><h4>{title}</h4><p>{description}</p></div></div>)}
+        </section> : <section className="policy-trust-bar">
+          <div className="policy-trust-item">
+            <div className="policy-trust-icon-box">
+              <Truck size={18} />
+            </div>
+            <div>
+              <h4>24-48h Dispatch</h4>
+              <p>Fast dispatch from our facility</p>
+            </div>
+          </div>
+
+          <div className="policy-trust-item">
+            <div className="policy-trust-icon-box">
+              <ShieldCheck size={18} />
+            </div>
+            <div>
+              <h4>Tamper-Proof Box</h4>
+              <p>100% sealed & private</p>
+            </div>
+          </div>
+
+          <div className="policy-trust-item">
+            <div className="policy-trust-icon-box">
+              <CheckCircle2 size={18} />
+            </div>
+            <div>
+              <h4>Pan-India Delivery</h4>
+              <p>All Indian PIN codes covered</p>
+            </div>
+          </div>
+
+          <div className="policy-trust-item">
+            <div className="policy-trust-icon-box">
+              <Headphones size={18} />
+            </div>
+            <div>
+              <h4>Dedicated Care</h4>
+              <p>+91 97470 07253</p>
+            </div>
+          </div>
+        </section>}
+
+        {/* ── 6-GRID POLICY CARDS ── */}
+        {isEditorial && <div className="privacy-section-heading" id={`${type}-details`}><div><span>{isPrivacy ? 'TRANSPARENCY, AT EVERY STEP' : isReturns ? 'HERE TO HELP, AT EVERY STEP' : 'THE DETAILS THAT MATTER'}</span><h2>{isPrivacy ? 'A little clarity. A lot of care.' : isReturns ? 'Clarity for your next step.' : 'Good experiences start with clarity.'}</h2></div><p>{isPrivacy ? 'Explore how your information is collected, used and managed when you shop with us.' : isReturns ? 'Read about return eligibility, product condition and the refund process before contacting our team.' : 'Find the terms for using our website, managing your account and shopping with Divya Swasth.'}</p></div>}
+        <div className="policy-cards-grid">
+          {policy.sections.map(([title, text], index) => (
+            <article key={title} className="policy-card-item">
+              <span className="policy-card-num">0{index + 1}</span>
+              <h2 className="policy-card-title">{title}</h2>
+              <p className="policy-card-desc">{text}</p>
+            </article>
+          ))}
+        </div>
+
+        {/* ── TRACK ORDER CTA BOX ── */}
+        <div className="policy-track-cta">
+          <div className="policy-track-cta-left">
+            <h3>{isPrivacy ? 'A question about your privacy?' : isTerms ? 'Need a little more clarity?' : isReturns ? 'Need help with a return?' : 'Have an ongoing delivery?'}</h3>
+            <p>{isPrivacy ? 'Reach out to our team for help with your personal information or account.' : isTerms ? 'Our team is here to help with questions about these terms, your account or an order.' : isReturns ? 'Share your order ID and the issue with our care team so we can help you with the next steps.' : 'Track your package status in real-time with your Order ID or mobile number.'}</p>
+          </div>
+          <Link to={isEditorial ? '/contact' : '/orders'} className="policy-track-btn">
+            {isEditorial ? 'CONTACT OUR TEAM' : 'TRACK YOUR ORDER'}
+            <ArrowRight size={14} />
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
 }
 
-export default function PolicyPage({ type }) {
-  const policy = policies[type] || policies.shipping
-  return <div><section className="bg-[#0b271b] px-4 py-20 text-center text-white"><FileText className="mx-auto h-8 w-8 text-[#d9b45f]" strokeWidth={1.3} /><p className="mt-6 text-[10px] font-black uppercase tracking-[.25em] text-[#dfb75e]">{policy.eyebrow}</p><h1 className="mx-auto mt-4 max-w-4xl font-display text-6xl leading-tight text-[#fff6df]">{policy.title}</h1><p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-white/58">{policy.intro}</p></section><section className="px-4 py-16 sm:px-6"><div className="mx-auto max-w-5xl"><div className="mb-8 flex gap-3 rounded-2xl border border-[#e4cb85] bg-[#fff7df] p-5 text-xs leading-6 text-[#715923]"><AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-[#a8761b]" /><p><strong>Pre-launch review required:</strong> replace all operational items with the actual approved business policy and official contact details before accepting live orders.</p></div><div className="grid gap-4 md:grid-cols-2">{policy.sections.map(([title, text], index) => <article key={title} className="rounded-[1.75rem] border border-[#dfe5da] bg-white p-7"><span className="font-display text-3xl text-[#c3973d]">0{index + 1}</span><h2 className="mt-5 font-display text-2xl text-[#193824]">{title}</h2><p className="mt-3 text-sm leading-7 text-[#69766d]">{text}</p></article>)}</div></div></section></div>
-}
+const siteIcons = { AlertCircle, FileText, Truck, ShieldCheck, RotateCcw }

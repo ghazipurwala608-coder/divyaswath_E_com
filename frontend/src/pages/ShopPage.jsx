@@ -1,15 +1,19 @@
-import { Search, SlidersHorizontal, Leaf, X } from 'lucide-react'
+import { useSiteContent } from '../context/SiteContentContext.jsx'
+import { Search, SlidersHorizontal, Leaf, X, ArrowRight, ChevronRight } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
+import './ShopPage.css'
 import ProductCard from '../components/ProductCard.jsx'
-import { categories } from '../data/products.js'
 import { useProducts } from '../hooks/useProducts.js'
 
 export default function ShopPage() {
+  const siteContent = useSiteContent('shop', siteIcons)
+
   const [searchParams, setSearchParams] = useSearchParams()
   const [category, setCategory] = useState(searchParams.get('category') || 'All')
   const [sort, setSort] = useState('featured')
   const { products } = useProducts()
+  const categories = ['All', ...new Set(products.map(product => product.category))]
   const search = searchParams.get('search') || ''
 
   const filtered = useMemo(() => {
@@ -47,39 +51,27 @@ export default function ShopPage() {
         .animate-floatSlower { animation: floatY 9s ease-in-out infinite }
       `}</style>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-[#0b271b] px-4 py-24 text-center text-white">
-        <img
-          src="/images/botanical-hero-bg.png"
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover opacity-25"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0b271b]/80 via-[#0b271b]/70 to-[#0b271b]" />
-        <LeafBackdrop />
-
-        <div className="relative mx-auto max-w-3xl animate-fadeUp">
-          <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full border border-[#d9b45f]/40 bg-white/5 backdrop-blur-sm">
-            <Leaf className="h-6 w-6 text-[#d9b45f]" strokeWidth={1.4} />
+      <section className="shop-collection-hero" aria-labelledby="shop-heading">
+        <img className="shop-collection-art" src={siteContent.media.collection_hero || '/images/shop-collection-hero.png'} alt="Fresh Ayurvedic herbs and amla with a brass mortar on a stone display" fetchPriority="high" />
+        <div className="shop-collection-shade" />
+        <div className="shop-collection-inner">
+          <nav className="shop-collection-breadcrumb" aria-label="Breadcrumb"><Link to="/">Home</Link><ChevronRight size={12} /><span aria-current="page">Our Products</span></nav>
+          <div className="shop-collection-copy">
+            <p className="shop-collection-eyebrow"><Leaf size={16} />{siteContent.text.the_divya_collection || 'The Divya Collection'}</p>
+            <h1 id="shop-heading">{siteContent.text.wellness_for_every_day || 'Wellness for every day.'}</h1>
+            <p className="shop-collection-description">{siteContent.text.explore_mindful_ayurvedic_blends_designed_aro || 'Explore mindful Ayurvedic blends designed around the rhythms and needs of modern life.'}</p>
+            <a className="shop-collection-cta" href="#shop-products">Explore the collection <ArrowRight size={17} /></a>
+            <div className="shop-collection-note"><span />Rooted in Ayurveda. Made for your everyday.</div>
           </div>
-          <p className="text-[11px] font-extrabold uppercase tracking-[0.28em] text-[#dfba65]">
-            The Divya collection
-          </p>
-          <h1 className="mt-4 font-serif text-5xl sm:text-6xl">
-            Wellness for every day.
-          </h1>
-          <p className="mx-auto mt-5 max-w-xl text-sm leading-7 text-white/60">
-            Explore mindful Ayurvedic blends designed around the rhythms and
-            needs of modern life.
-          </p>
         </div>
       </section>
 
       {/* Filter / sort bar */}
-      <section className="px-4 py-14 sm:px-6 lg:px-8">
+      <section id="shop-products" className="shop-products px-4 py-14 sm:px-6 lg:px-8" aria-label="Browse products">
         <div className="mx-auto max-w-7xl">
           <div className="sticky top-4 z-20 mb-10 flex flex-col gap-5 rounded-[1.5rem] border border-[#e0e4da] bg-white/90 p-4 shadow-[0_10px_30px_rgba(20,40,27,.06)] backdrop-blur-md lg:flex-row lg:items-center lg:justify-between">
             {/* category pills */}
-            <div className="flex gap-2 overflow-x-auto pb-1 lg:pb-0">
+            <div className="flex min-w-0 gap-2 overflow-x-auto overflow-y-hidden pb-1 lg:flex-1 lg:pb-0">
               {categories.map((item) => (
                 <button
                   key={item}
@@ -96,7 +88,7 @@ export default function ShopPage() {
             </div>
 
             {/* search + sort */}
-            <div className="flex items-center gap-3">
+            <div className="flex shrink-0 items-center gap-3">
               <div className="group relative min-w-0 flex-1 lg:w-64">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#758179] transition-colors group-focus-within:text-[#a16e18]" />
                 <input
@@ -106,7 +98,7 @@ export default function ShopPage() {
                       event.target.value ? { search: event.target.value } : {}
                     )
                   }
-                  placeholder="Search products"
+                  placeholder={siteContent.media.placeholder_2}
                   className="w-full rounded-full border border-[#dfe4da] py-2.5 pl-10 pr-9 text-sm outline-none transition-colors focus:border-[#b58529] focus:ring-2 focus:ring-[#d9b45f]/20"
                 />
                 {search && (
@@ -139,15 +131,14 @@ export default function ShopPage() {
           <div className="mb-6 flex items-center gap-2">
             <span className="h-px w-6 bg-[#d9b45f]" />
             <p className="text-xs font-bold uppercase tracking-wider text-[#738078]">
-              {filtered.length} product{filtered.length === 1 ? '' : 's'} found
-            </p>
+              {filtered.length}{siteContent.text.product}{filtered.length === 1 ? '' : 's'}{siteContent.text.found}</p>
           </div>
 
           {filtered.length ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {filtered.map((product, i) => (
                 <div
-                  key={product._id}
+                  key={product._id || product.slug}
                   className="animate-cardIn"
                   style={{ animationDelay: `${Math.min(i, 10) * 60}ms` }}
                 >
@@ -160,22 +151,15 @@ export default function ShopPage() {
               <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-[#d9b45f]/40 bg-white">
                 <Leaf className="h-6 w-6 text-[#a37622]" strokeWidth={1.4} />
               </div>
-              <p className="font-serif text-3xl text-[#1c2e20]">
-                No wellness match found.
-              </p>
-              <p className="mx-auto mt-2 max-w-xs text-sm text-[#738078]">
-                Try a different search term or clear your filters to see the
-                full collection.
-              </p>
+              <p className="font-serif text-3xl text-[#1c2e20]">{siteContent.text.no_wellness_match_found}</p>
+              <p className="mx-auto mt-2 max-w-xs text-sm text-[#738078]">{siteContent.text.try_a_different_search_term_or_clear_your_fil}</p>
               <button
                 onClick={() => {
                   setCategory('All')
                   setSearchParams({})
                 }}
                 className="mt-5 rounded-full border border-[#a16e18]/30 px-5 py-2 text-sm font-bold text-[#a16e18] transition-colors hover:bg-[#a16e18] hover:text-white"
-              >
-                Clear filters
-              </button>
+              >{siteContent.text.clear_filters}</button>
             </div>
           )}
         </div>
@@ -184,48 +168,4 @@ export default function ShopPage() {
   )
 }
 
-function LeafBackdrop() {
-  return (
-    <>
-      <div className="absolute -left-16 top-0 h-64 w-64 rounded-full border border-[#d2aa52]/10" />
-      <div className="absolute -right-20 -top-20 h-80 w-80 rounded-full border border-[#d2aa52]/10" />
-
-      <svg
-        className="absolute left-[6%] top-16 h-16 w-16 animate-floatSlow opacity-20"
-        viewBox="0 0 40 40"
-        fill="none"
-        aria-hidden="true"
-      >
-        <path
-          d="M2 20C2 8 14 2 30 2c2 18-8 30-20 30C6 32 2 26 2 20Z"
-          stroke="#d9b45f"
-          strokeWidth="1.2"
-        />
-      </svg>
-      <svg
-        className="absolute right-[8%] top-28 h-10 w-10 animate-floatSlower opacity-20"
-        viewBox="0 0 40 40"
-        fill="none"
-        aria-hidden="true"
-      >
-        <path
-          d="M2 20C2 8 14 2 30 2c2 18-8 30-20 30C6 32 2 26 2 20Z"
-          stroke="#d9b45f"
-          strokeWidth="1.2"
-        />
-      </svg>
-      <svg
-        className="absolute bottom-10 left-[18%] h-8 w-8 animate-floatSlow opacity-10"
-        viewBox="0 0 40 40"
-        fill="none"
-        aria-hidden="true"
-      >
-        <path
-          d="M2 20C2 8 14 2 30 2c2 18-8 30-20 30C6 32 2 26 2 20Z"
-          stroke="#d9b45f"
-          strokeWidth="1.2"
-        />
-      </svg>
-    </>
-  )
-}
+const siteIcons = {}

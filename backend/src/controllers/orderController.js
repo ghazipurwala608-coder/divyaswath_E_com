@@ -4,6 +4,9 @@ import Order from '../models/Order.js'
 import Product from '../models/Product.js'
 import asyncHandler from '../utils/asyncHandler.js'
 import { sendSuccess } from '../utils/apiResponse.js'
+import SiteContent from '../models/SiteContent.js'
+import { websiteContent } from '../../../shared/websiteContent.js'
+import { calculateShipping } from '../../../shared/shipping.js'
 
 export const createOrder = asyncHandler(async (req, res) => {
   const { items, shippingAddress, paymentMethod = 'COD' } = req.body
@@ -21,14 +24,26 @@ export const createOrder = asyncHandler(async (req, res) => {
 
   const safeItems = items.map((item) => {
     const product = products.find((entry) => entry._id.toString() === item.product || entry.slug === item.slug || entry.slug === item.product)
-    const quantity = Math.min(Math.max(1, Number(item.quantity) || 1), 10)
+    const quantity = Number(item.quantity)
+    if (!Number.isInteger(quantity) || quantity < 1 || quantity > 10) { res.status(400); throw new Error('Quantity must be a whole number between 1 and 10') }
+    if (!product || product.availableForPurchase === false || product.price <= 0) { res.status(400); throw new Error('One or more products cannot be purchased yet') }
     if (product.countInStock < quantity) { res.status(400); throw new Error(`${product.name} has only ${product.countInStock} units available`) }
     return { product: product._id.toString(), name: product.name, slug: product.slug, price: product.price, quantity, theme: product.theme, image: product.images?.[0] || '' }
   })
   const itemsPrice = safeItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
-  const shippingPrice = itemsPrice >= 999 ? 0 : 99
-  const estimatedDelivery = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-  const order = await Order.create({
+  if (new Set(safeItems.map(item => item.product)).size !== safeItems.length) { res.status(400); throw new Error('Combine duplicate product quantities before ordering') }
+  const settings = (await SiteContent.findOne({ key: 'settings' }).lean())?.content || websiteContent.settings
+  const shippingPrice = calculateShipping(itemsPrice, safeItems.length, settings.shipping)
+  const estimatedDelivery = new Date(Date.now() + settings.shipping.estimatedDays * 24 * 60 * 60 * 1000)
+  const reserved = []
+  let order
+  try {
+    for (const item of safeItems) {
+      const result = await Product.updateOne({ _id: item.product, isActive: true, availableForPurchase: true, countInStock: { $gte: item.quantity } }, { $inc: { countInStock: -item.quantity, __v: 1 } })
+      if (!result.modifiedCount) { res.status(409); throw new Error(`${item.name} stock changed. Please review your cart.`) }
+      reserved.push(item)
+    }
+    order = await Order.create({
     user: req.user._id,
     items: safeItems,
     shippingAddress,
@@ -38,8 +53,11 @@ export const createOrder = asyncHandler(async (req, res) => {
     totalPrice: itemsPrice + shippingPrice,
     estimatedDelivery,
     trackingEvents: [trackingEventFor('Processing')],
-  })
-  await Product.bulkWrite(safeItems.map((item) => ({ updateOne: { filter: { _id: item.product }, update: { $inc: { countInStock: -item.quantity } } } })))
+    })
+  } catch (error) {
+    if (reserved.length) await Product.bulkWrite(reserved.map(item => ({ updateOne: { filter: { _id: item.product }, update: { $inc: { countInStock: item.quantity, __v: 1 } } } })))
+    throw error
+  }
   sendSuccess(res, { statusCode: 201, message: 'Order placed successfully', data: { order } })
 })
 
@@ -49,9 +67,32 @@ export const getMyOrders = asyncHandler(async (req, res) => {
 })
 
 export const getOrder = asyncHandler(async (req, res) => {
-  const filter = req.user.isAdmin ? { _id: req.params.id } : { _id: req.params.id, user: req.user._id }
-  const order = await Order.findOne(filter).populate('user', 'name email phone')
-  if (!order) { res.status(404); throw new Error('Order not found') }
+  const query = String(req.params.id || '').trim()
+  let order = null
+
+  if (mongoose.isValidObjectId(query)) {
+    order = await Order.findById(query).populate('user', 'name email phone')
+  }
+
+  if (!order) {
+    order = await Order.findOne({
+      $or: [
+        { trackingNumber: query.toUpperCase() },
+        { 'shippingAddress.phone': query }
+      ]
+    }).populate('user', 'name email phone')
+  }
+
+  if (!order) {
+    res.status(404)
+    throw new Error('Order not found with provided ID or tracking number')
+  }
+
+  if (!req.user || (!req.user.isAdmin && String(order.user?._id) !== String(req.user._id))) {
+    res.status(req.user ? 403 : 401)
+    throw new Error('Sign in with the customer account that placed this order to view tracking')
+  }
+  await order.populate('deliveryPerson', 'name phone')
   sendSuccess(res, { message: 'Order fetched successfully', data: { order } })
 })
 
@@ -70,7 +111,7 @@ export const cancelMyOrder = asyncHandler(async (req, res) => {
   const cancelledAt = new Date()
   const previous = await Order.findOneAndUpdate(
     { _id: req.params.id, user: req.user._id, orderStatus: { $in: cancellableStatuses } },
-    { $set: { orderStatus: 'Cancelled', cancelledAt, cancellationReason: reason }, $push: { trackingEvents: event } },
+    { $set: { orderStatus: 'Cancelled', cancelledAt, cancellationReason: reason }, $push: { trackingEvents: event }, $inc: { __v: 1 } },
     { new: false, runValidators: true },
   )
 
@@ -94,6 +135,9 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
   if (!order) { res.status(404); throw new Error('Order not found') }
 
   const requestedStatus = req.body.orderStatus || order.orderStatus
+  if (order.deliveryPerson && requestedStatus === 'Delivered' && order.orderStatus !== 'Delivered') {
+    res.status(400); throw new Error('Assigned deliveries must be completed by the delivery person with customer OTP verification')
+  }
   if (!ORDER_STATUSES.includes(requestedStatus)) { res.status(400); throw new Error('Invalid order status') }
   if (req.body.paymentStatus && !PAYMENT_STATUSES.includes(req.body.paymentStatus)) { res.status(400); throw new Error('Invalid payment status') }
 
@@ -171,13 +215,13 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
     }
     order.trackingEvents.push(trackingEventFor(requestedStatus, { courierName, note, location: currentLocation }))
 
-    if (requestedStatus === 'Cancelled') {
-      await Product.bulkWrite(order.items.map((item) => ({ updateOne: { filter: { _id: item.product }, update: { $inc: { countInStock: item.quantity } } } })))
-    }
   } else if (note) {
     order.trackingEvents.push({ status: order.orderStatus, title: 'Tracking update', message: note, location: currentLocation, timestamp: new Date() })
   }
 
   await order.save()
+  if (statusChanged && requestedStatus === 'Cancelled') {
+    await Product.bulkWrite(order.items.map(item => ({ updateOne: { filter: { _id: item.product }, update: { $inc: { countInStock: item.quantity, __v: 1 } } } })))
+  }
   sendSuccess(res, { message: statusChanged ? `Order marked ${requestedStatus}` : 'Delivery details updated', data: { order } })
 })

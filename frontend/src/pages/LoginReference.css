@@ -1,0 +1,59 @@
+﻿.login-reference{overflow:hidden;background:#faf7ef;color:#173b29;padding:32px 24px 24px;font-size:13px;line-height:1.6}
+.login-reference *{box-sizing:border-box}
+.login-reference .account-reference-inner{max-width:1120px;width:100%;margin:auto}
+.login-reference .account-reference-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:38px;position:relative;isolation:isolate;padding:18px 18px 30px}
+.login-reference .account-reference-hero:before{content:'';position:absolute;inset:-32px -24px 0;z-index:-1;background:url('/images/conac/con image.png') right bottom/auto 100% no-repeat}
+.login-reference .login-card{min-width:0;align-self:start;padding:32px 34px;border:1px solid #e8e1d4;border-radius:10px;background:#fffdfaf5;box-shadow:0 8px 24px #51432608}
+.login-reference .account-kicker{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.6px;color:#61704e}
+.login-reference h1{font:400 36px/1.15 Georgia,serif;margin:8px 0 12px}
+.login-reference .account-intro{font-size:12px;line-height:1.7;color:#6a745f;margin-bottom:22px}
+.login-reference fieldset{border:0;min-width:0;padding:0;margin:0}
+.login-reference .login-card label{display:block;font-size:11px;font-weight:600;line-height:1.5;color:#374c35;margin-bottom:14px}
+.login-reference .login-card input:not([type=checkbox]){display:block;width:100%;min-width:0;min-height:42px;border:1px solid #dce0d3;border-radius:4px;background:#fffefa;color:#243f2d;padding:10px 12px;margin-top:6px;font-size:12px;line-height:1.5}
+.login-reference input::placeholder{color:#8a9482}
+.login-reference input:focus-visible{outline:2px solid #a88b42;outline-offset:2px}
+.login-reference .login-card label[for=login-password]{margin-bottom:6px}
+.login-reference .login-password{display:flex;align-items:center;gap:8px;padding-left:12px;border:1px solid #dce0d3;border-radius:4px;background:#fffefa;color:#728266}
+.login-reference .login-password>svg{flex-shrink:0}
+.login-reference .login-password input{flex:1;border:0!important;margin:0!important;background:transparent!important;padding-left:0!important}
+.login-reference .login-password button{display:grid;place-items:center;align-self:stretch;min-width:40px;cursor:pointer}
+.login-reference .signup-confirm{margin-top:14px}
+.login-reference .login-options{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin:15px 0}
+.login-reference .login-options label{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:400;margin:0}
+.login-reference .login-options input{width:12px;height:12px;margin:0;accent-color:#16492c}
+.login-reference .login-options>a{font-size:10px;color:#4e714d}
+.login-reference .account-submit{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;border:0;border-radius:4px;min-height:42px;padding:11px 16px;background:#073d28;color:#fff9e8;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;cursor:pointer}
+.login-reference .account-submit:hover{background:#175139}
+.login-reference fieldset:disabled{opacity:.65}
+.login-reference .account-or{display:flex;align-items:center;gap:10px;font-size:10px;color:#718067;margin:17px 0 12px}
+.login-reference .account-or:before,.login-reference .account-or:after{content:'';flex:1;height:1px;background:#e6e4d9}
+.login-reference .login-social{display:grid;gap:9px}
+.login-reference .login-social button{display:flex;align-items:center;justify-content:center;gap:9px;min-height:37px;padding:8px;border:1px solid #e0dfd4;border-radius:4px;background:#fffefa;color:#596450;font-size:11px;cursor:not-allowed}
+.login-reference .login-google{font:bold 15px Arial,sans-serif;color:#4285f4}
+.login-reference .login-facebook{display:grid;place-items:center;width:15px;height:15px;border-radius:50%;background:#1877f2;color:white;font:bold 15px Arial,sans-serif}
+.login-reference .login-social-note{font-size:9px;color:#7c8572;margin:9px 0 0}
+.login-reference .account-help{font-size:10px;line-height:1.7;margin-top:16px;padding-top:13px;border-top:1px solid #e8e5d9}
+.login-reference .login-mode-toggle{display:inline-flex;align-items:center;gap:5px;margin-left:4px;font-weight:700;color:#315a3d;cursor:pointer}
+.login-reference button:focus-visible,.login-reference a:focus-visible{outline:2px solid #a4863b;outline-offset:4px}
+.login-reference .account-reference-art{min-width:0;min-height:490px}
+.login-reference .account-promise{padding:54px 0 0 8px;max-width:260px}
+.login-reference .account-promise h2{font:400 36px/1.1 Georgia,serif;letter-spacing:-.5px;text-transform:none;margin:0}
+.login-reference .account-flourish{display:flex;align-items:center;gap:8px;width:125px;margin:20px 0;color:#a38b40}
+.login-reference .account-flourish span{height:1px;background:#cabb86;flex:1}
+.login-reference .account-promise p{font-size:12px;line-height:1.85;color:#526344}
+.login-reference .account-promises{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #e6e1d2;border-radius:8px;padding:24px 12px;background:#fffdf7}
+.login-reference .account-promises article{text-align:center;padding:0 20px;border-right:1px solid #e7e3d6}
+.login-reference .account-promises article:last-child{border:0}
+.login-reference .account-promises article>span{display:grid;place-items:center;width:44px;height:44px;margin:0 auto 12px;border:1px dashed #b0b782;border-radius:50%;background:#f7f8ea;color:#6b804d}
+.login-reference .account-promises svg{width:24px;height:24px;stroke-width:1.3}
+.login-reference .account-promises h2{font:600 12px/1.4 Georgia,serif;margin:0 0 7px;text-transform:uppercase;letter-spacing:.5px}
+.login-reference .account-promises p{max-width:190px;margin:auto;font-size:10px;line-height:1.7;color:#748065}
+.login-reference .account-join{display:flex;align-items:center;gap:17px;background:#073c28;color:#f5ebc6;border-radius:5px;margin-top:17px;padding:19px 24px}
+.login-reference .account-join-icon{display:grid;place-items:center;width:42px;height:42px;flex-shrink:0;border:1px solid #ad954d;border-radius:50%;color:#d8b95d}
+.login-reference .account-join h2{font:400 20px/1.3 Georgia,serif;margin:0}
+.login-reference .account-join p{font-size:10px;line-height:1.6;color:#bfceb5;margin-top:4px}
+.login-reference .login-join-toggle{display:flex;align-items:center;justify-content:center;gap:10px;flex-shrink:0;margin-left:auto;min-height:39px;border-radius:4px;padding:10px 17px;background:#d7ad47;color:#173b27;text-transform:uppercase;font-size:10px;letter-spacing:.7px;font-weight:700;cursor:pointer}
+.login-reference .login-mode-toggle:disabled,.login-reference .login-join-toggle:disabled{opacity:.6;cursor:wait}
+.login-reference .account-error{font-size:12px;color:#a03127;background:#fff0e9;border-radius:4px;padding:10px;margin-bottom:12px}
+@media(max-width:900px){.login-reference{padding:24px 18px}.login-reference .account-reference-hero{gap:24px;padding-inline:0}.login-reference .login-card{padding:26px 23px}.login-reference .account-promise{padding-top:45px}.login-reference .account-promise h2{font-size:31px}.login-reference .account-promise p{font-size:11px}.login-reference .account-promises article{padding:0 12px}.login-reference .account-promises h2{font-size:11px}}
+@media(max-width:600px){.login-reference{padding:20px 16px}.login-reference .account-reference-hero{grid-template-columns:1fr;gap:18px;padding-top:0;padding-bottom:20px}.login-reference .account-reference-hero:before{display:none}.login-reference .login-card{padding:27px 23px}.login-reference .login-card input:not([type=checkbox]){font-size:16px}.login-reference .account-reference-art{min-height:300px;border-radius:8px;overflow:hidden;background:url('/images/conac/con image.png') 80% bottom/auto 100% no-repeat}.login-reference .account-promise{padding:24px 16px;max-width:205px}.login-reference .account-promise h2{font-size:28px}.login-reference .account-promise p{font-size:10px}.login-reference .account-flourish{margin:15px 0;width:100px}.login-reference .account-promises{grid-template-columns:1fr 1fr;gap:24px 0;padding:22px 8px}.login-reference .account-promises article:nth-child(2){border:0}.login-reference .account-join{flex-wrap:wrap;padding:18px;gap:12px}.login-reference .account-join>div{flex:1;min-width:170px}.login-reference .account-join h2{font-size:18px}.login-reference .login-join-toggle{margin-left:54px}}

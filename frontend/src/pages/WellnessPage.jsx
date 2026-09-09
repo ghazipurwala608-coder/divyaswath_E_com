@@ -1,3 +1,6 @@
+import { apiRequest } from '../api/client.js'
+import { useSiteContent } from '../context/SiteContentContext.jsx'
+import { useNewsletter } from '../hooks/useNewsletter.js'
 import { useEffect, useState } from 'react'
 import {
   ArrowRight,
@@ -22,90 +25,31 @@ import {
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-const HERO_BENEFITS = [
-  { label: 'Better\nHealth', Icon: HeartPulse, position: 'left-[48%] top-8' },
-  { label: 'Stronger\nImmunity', Icon: ShieldCheck, position: 'right-[8%] top-9' },
-  { label: 'More\nEnergy', Icon: Zap, position: 'left-[45%] top-[48%]' },
-  { label: 'Balanced\nWellness', Icon: Flower2, position: 'right-[6%] top-[49%]' },
-]
 
-const HERO_NOTES = [
-  { label: 'Personalized\nRecommendations', Icon: Leaf },
-  { label: '100% Safe &\nConfidential', Icon: ShieldCheck },
-  { label: 'Takes Just\n2 Minutes', Icon: Clock },
-]
-const STEPS = [
-  {
-    title: 'Answer Simple Questions',
-    text: 'Tell us about your lifestyle, health goals & concerns.',
-    Icon: ClipboardList,
-  },
-  {
-    title: 'We Analyze Your Needs',
-    text: 'Our wellness intelligence finds what your body truly needs.',
-    Icon: Leaf,
-  },
-  {
-    title: 'Get Personalized Results',
-    text: 'Receive product recommendations made just for you.',
-    Icon: BadgeCheck,
-  },
-]
 
-const WELLNESS_GOALS = [
-  {
-    title: 'Immunity & Wellness',
-    text: 'Boost immunity & stay healthy',
-    Icon: ShieldCheck,
-    image: '/images/blog/natural-stress-relief.png',
-    imageAlt: 'Woman enjoying a peaceful cup of herbal tea',
-  },
-  {
-    title: 'Energy & Vitality',
-    text: 'Improve energy levels & reduce fatigue',
-    Icon: Zap,
-    image: '/images/wellness/daily-movement.webp',
-    imageAlt: 'Women enjoying an energising morning walk',
-  },
-  {
-    title: 'Digestion & Gut Health',
-    text: 'Better digestion, gut balance & detox',
-    Icon: Utensils,
-    image: '/images/wellness/balanced-portions.webp',
-    imageAlt: 'A nourishing balanced meal',
-  },
-  {
-    title: 'Weight Management',
-    text: 'Healthy weight management',
-    Icon: Dumbbell,
-    image: '/images/wellness/sustainable-weight-habits.webp',
-    imageAlt: 'Woman preparing a healthy balanced meal',
-  },
-  {
-    title: 'Mental Wellness & Stress Support',
-    text: 'Find calm, improve focus & mood',
-    Icon: Brain,
-    image: '/images/blog/mindfulness-practices.png',
-    imageAlt: 'Woman meditating in a peaceful green landscape',
-  },
-  {
-    title: 'Skin, Hair & Beauty',
-    text: 'Healthy skin, strong hair & natural glow',
-    Icon: Sparkles,
-    image: '/images/blog/yoga-mind-soul.png',
-    imageAlt: 'Woman relaxing in warm natural light',
-  },
-]
 
-const TRUST_ITEMS = [
-  { title: 'Trusted by', text: '10,000+ People', Icon: UsersRound },
-  { title: 'Expert Formulated', text: 'Ayurvedic Solutions', Icon: Sprout },
-  { title: 'Natural Ingredients', text: 'You Can Trust', Icon: Leaf },
-  { title: 'Safe, Effective &', text: 'Backed by Science', Icon: FlaskConical },
-]
+
+
+
+
+
 
 export default function WellnessPage() {
+  const siteContent = useSiteContent('wellness', siteIcons)
+
+  const { subscribe, submitting, subscribed } = useNewsletter('WellnessPage')
   const [selectedGoal, setSelectedGoal] = useState('')
+  const [recommendations, setRecommendations] = useState([])
+  const [finding, setFinding] = useState(false)
+  const [recommendationError, setRecommendationError] = useState('')
+  useEffect(() => {
+    if (!selectedGoal) return
+    let active = true
+    const index = siteContent.sections.WELLNESS_GOALS.findIndex(goal => goal.title === selectedGoal)
+    setFinding(true); setRecommendationError(''); setRecommendations([])
+    apiRequest('/wellness/recommendations?goal=' + index).then(data => { if (active) setRecommendations(data.products) }).catch(error => { if (active) setRecommendationError(error.message) }).finally(() => { if (active) setFinding(false) })
+    return () => { active = false }
+  }, [selectedGoal, siteContent.sections.WELLNESS_GOALS])
 
   useEffect(() => {
     const previousTitle = document.title
@@ -121,31 +65,28 @@ export default function WellnessPage() {
     <div className="bg-[#fbfaf4] text-[#183522]">
       <section className="relative min-h-[460px] overflow-hidden border-b border-[#dfe5da] bg-[#f8f4e9] sm:min-h-[480px] lg:min-h-[500px]">
         <img
-          src="/images/wellness/wellness-quiz-hero.png"
-          alt="A healthy woman enjoying a calm morning in nature"
+          src={siteContent.media.src_1}
+          alt={siteContent.media.alt_2}
           className="absolute inset-0 h-full w-full object-cover object-[68%_15%]"
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(251,248,238,.98)_0%,rgba(251,248,238,.94)_28%,rgba(251,248,238,.55)_42%,rgba(251,248,238,.02)_58%)]" />
 
         <div className="relative mx-auto min-h-[460px] max-w-[1440px] px-5 py-8 sm:min-h-[480px] sm:px-8 lg:min-h-[500px] lg:px-16 lg:py-10">
           <div className="max-w-[480px]">
-            <p className="text-[11px] font-black uppercase tracking-[.17em] text-[#284d33]">Wellness quiz</p>
+            <p className="text-[11px] font-black uppercase tracking-[.17em] text-[#284d33]">{siteContent.text.wellness_quiz}</p>
             <span className="mt-2 block h-px w-16 bg-[#c99535]" />
 
             <h1 className="mt-6 font-display text-[46px] font-bold leading-[1.05] text-[#123820] sm:text-[52px]">
-              <span className="block">Discover Your</span>
+              <span className="block">{siteContent.text.discover_your}</span>
               <span className="block">
-                <span className="text-[#b47a20]">Perfect</span> Wellness
-              </span>
-              <span className="block">Match</span>
+                <span className="text-[#b47a20]">{siteContent.text.perfect}</span>{siteContent.text.wellness}</span>
+              <span className="block">{siteContent.text.match}</span>
             </h1>
 
-            <p className="mt-5 max-w-[420px] text-[17px] leading-[1.6] text-[#435449] sm:text-[19px]">
-              Take our quick quiz and get personalized product recommendations just for you.
-            </p>
+            <p className="mt-5 max-w-[420px] text-[17px] leading-[1.6] text-[#435449] sm:text-[19px]">{siteContent.text.take_our_quick_quiz_and_get_personalized_prod}</p>
 
             <div className="mt-7 flex flex-wrap gap-x-6 gap-y-4">
-              {HERO_NOTES.map(({ label, Icon }) => (
+              {siteContent.sections.HERO_NOTES.map(({ label, Icon }) => (
                 <div key={label} className="flex items-center gap-2">
                   <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-[#cfb46f] bg-[#fffdf6] text-[#426349]">
                     <Icon className="h-5 w-5" strokeWidth={1.4} />
@@ -157,29 +98,36 @@ export default function WellnessPage() {
           </div>
 
           <div className="hidden lg:block">
-            {HERO_BENEFITS.map(({ label, Icon, position }) => (
-              <div
-                key={label}
-                className={`absolute ${position} flex h-[86px] w-[86px] flex-col items-center justify-center rounded-full border border-[#e2dfd4] bg-white/95 text-center shadow-[0_5px_18px_rgba(28,55,36,.12)]`}
-              >
-                <Icon className="h-7 w-7 text-[#22472d]" strokeWidth={1.35} />
-                <span className="mt-1 whitespace-pre-line text-[9px] font-bold leading-[1.15] text-[#203828]">{label}</span>
-              </div>
-            ))}
+            {siteContent.sections.HERO_BENEFITS.map(({ label, Icon }, index) => {
+              const positions = [
+                { top: '24px', left: '52%' },
+                { top: '28px', right: '4%' },
+                { top: '175px', left: '46%' },
+                { bottom: '24px', right: '4%' },
+              ]
+              return (
+                <div
+                  key={label}
+                  style={positions[index] || {}}
+                  className="absolute z-10 flex h-[86px] w-[86px] flex-col items-center justify-center rounded-full border border-[#e2dfd4] bg-white/95 text-center shadow-[0_5px_18px_rgba(28,55,36,.12)] backdrop-blur-sm transition-transform hover:scale-105"
+                >
+                  <Icon className="h-7 w-7 text-[#22472d]" strokeWidth={1.35} />
+                  <span className="mt-1 whitespace-pre-line text-[9px] font-bold leading-[1.15] text-[#203828]">{label}</span>
+                </div>
+              )
+            })}
 
             <Link
-              to="/shop"
+              to={siteContent.media.to_3}
               className="absolute bottom-6 left-[47%] flex min-h-[110px] w-[440px] items-center gap-4 rounded-2xl border border-[#c99b3e]/70 bg-[#08331f] px-6 py-5 text-white shadow-[0_10px_30px_rgba(4,35,21,.35)] transition hover:-translate-y-0.5"
             >
               <span className="grid h-16 w-16 shrink-0 place-items-center rounded-xl bg-[#0c3d25] text-[#e9c25f]">
                 <Gift className="h-9 w-9" strokeWidth={1.5} />
               </span>
               <span>
-                <span className="block text-[13px] text-white/85">Complete the quiz &amp; get</span>
-                <span className="block font-display text-[24px] font-bold uppercase leading-tight tracking-[.01em] text-[#e9c25f]">
-                  Exclusive Offers
-                </span>
-                <span className="block text-[13px] text-white/80">on products that suit you best!</span>
+                <span className="block text-[13px] text-white/85">{siteContent.text.complete_the_quiz_get}</span>
+                <span className="block font-display text-[24px] font-bold uppercase leading-tight tracking-[.01em] text-[#e9c25f]">{siteContent.text.exclusive_offers}</span>
+                <span className="block text-[13px] text-white/80">{siteContent.text.on_products_that_suit_you_best}</span>
               </span>
             </Link>
           </div>
@@ -191,9 +139,7 @@ export default function WellnessPage() {
 
           {/* Heading */}
           <div className="text-center">
-            <h2 className="font-display text-[22px] font-bold uppercase tracking-[0.04em] text-[#15261b] sm:text-[24px]">
-              HOW IT WORKS
-            </h2>
+            <h2 className="font-display text-[22px] font-bold uppercase tracking-[0.04em] text-[#15261b] sm:text-[24px]">{siteContent.text.how_it_works}</h2>
 
             {/* Decorative line */}
             <div className="mt-2 flex items-center justify-center gap-1">
@@ -210,7 +156,7 @@ export default function WellnessPage() {
 
           {/* Steps */}
           <div className="mt-8 flex flex-col items-stretch gap-5 lg:flex-row lg:items-center lg:gap-4">
-            {STEPS.map(({ title, text, Icon }, index) => (
+            {siteContent.sections.STEPS.map(({ title, text, Icon }, index) => (
               <div
                 key={title}
                 className="flex flex-1 flex-col items-center gap-4 lg:flex-row"
@@ -276,7 +222,7 @@ export default function WellnessPage() {
                 </article>
 
                 {/* Arrow */}
-                {index < STEPS.length - 1 && (
+                {index < siteContent.sections.STEPS.length - 1 && (
                   <>
                     {/* Desktop Arrow */}
                     <ArrowRight
@@ -301,17 +247,13 @@ export default function WellnessPage() {
 
           {/* Heading */}
           <div className="mb-7 text-center">
-            <h2 className="font-display text-[20px] font-black uppercase tracking-[.06em] text-[#173623] sm:text-[22px]">
-              LET'S FIND WHAT YOUR BODY NEEDS
-            </h2>
-            <p className="mt-1.5 text-[12px] font-medium text-[#647168]">
-              Choose the area you'd like to focus on
-            </p>
+            <h2 className="font-display text-[20px] font-black uppercase tracking-[.06em] text-[#173623] sm:text-[22px]">{siteContent.text.let_s_find_what_your_body_needs}</h2>
+            <p className="mt-1.5 text-[12px] font-medium text-[#647168]">{siteContent.text.choose_the_area_you_d_like_to_focus_on}</p>
           </div>
 
           {/* Cards Grid */}
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-            {WELLNESS_GOALS.map(({ title, text, Icon, image, imageAlt }) => {
+            {siteContent.sections.WELLNESS_GOALS.map(({ title, text, Icon, image, imageAlt }) => {
               const selected = selectedGoal === title
               return (
                 <button
@@ -355,6 +297,8 @@ export default function WellnessPage() {
       </section>
 
 
+{selectedGoal && <section className="mx-auto max-w-5xl px-5 py-8" aria-live="polite"><h2 className="font-display text-2xl">Your wellness selection</h2><p className="mt-2 text-xs text-[#68785c]">Explore products selected for your chosen goal. Check each product’s information before purchasing.</p>{finding ? <p className="py-5 text-sm">Finding your products…</p> : recommendationError ? <p role="alert" className="py-5 text-sm">{recommendationError}</p> : recommendations.length ? <div className="mt-5 grid gap-4 sm:grid-cols-2">{recommendations.map(product => <Link key={product._id} to={'/products/' + product.slug} className="flex items-center gap-4 rounded-lg border border-[#dce4d5] bg-white p-4">{product.images[0] && <img className="h-20 w-20 object-contain" src={product.images[0]} alt="" />}<span><strong className="block">{product.name}</strong><span className="mt-1 block text-xs">{product.subtitle}</span><b className="mt-2 block text-sm">₹{product.price.toLocaleString('en-IN')}</b></span><ArrowRight size={16} className="ml-auto" /></Link>)}</div> : <p className="py-5 text-sm">No products are listed for this goal yet. Explore our full collection.</p>}</section>}
+
       <section className="px-4 pb-5 pt-3 sm:px-6 lg:px-8">
         <div className="relative mx-auto min-h-[138px] max-w-[1200px] overflow-hidden rounded-lg border border-[#1e4a2e] bg-[#063b25] bg-[url('/images/wellness/wellness-quiz-cta-bg.svg')] bg-cover bg-center text-white shadow-2xl">
 
@@ -362,18 +306,13 @@ export default function WellnessPage() {
 
             {/* Center Text */}
             <div className="max-w-[480px] z-10 pt-2">
-              <h2 className="font-serif text-[19px] leading-tight text-[#e8eee4] sm:text-[24px] tracking-wide">
-                Ready to start your wellness journey?
-              </h2>
-              <p className="mt-1 text-[10px] leading-relaxed text-[#a8bba9] sm:text-[12px] font-medium tracking-wide">
-                Take the quiz and take the first step towards a healthier you.
-              </p>
+              <h2 className="font-serif text-[19px] leading-tight text-[#e8eee4] sm:text-[24px] tracking-wide">{siteContent.text.ready_to_start_your_wellness_journey}</h2>
+              <p className="mt-1 text-[10px] leading-relaxed text-[#a8bba9] sm:text-[12px] font-medium tracking-wide">{siteContent.text.take_the_quiz_and_take_the_first_step_towards}</p>
               <button
                 type="button"
                 onClick={scrollToGoals}
                 className="mt-3 inline-flex min-w-[200px] items-center justify-center gap-3 rounded-[4px] bg-[linear-gradient(180deg,#eab960,#c28930)] px-5 py-2.5 text-[11px] font-bold uppercase tracking-[.06em] text-white shadow-[0_4px_15px_rgba(194,137,48,0.3)] transition-all hover:brightness-110 hover:shadow-[0_6px_20px_rgba(194,137,48,0.4)]"
-              >
-                Start quiz now <ArrowRight className="h-[18px] w-[18px]" strokeWidth={2.5} />
+              >{siteContent.text.start_quiz_now}<ArrowRight className="h-[18px] w-[18px]" strokeWidth={2.5} />
               </button>
             </div>
 
@@ -382,8 +321,8 @@ export default function WellnessPage() {
               <div className="grid h-full w-full place-items-center rounded-full border-[1.5px] border-[#d2a853] bg-transparent text-center shadow-[inset_0_0_15px_rgba(210,168,83,0.15)] relative">
                 <div className="absolute inset-[2px] rounded-full border border-dashed border-[#d2a853]/40"></div>
                 <div className="flex flex-col items-center justify-center pt-1 relative z-10">
-                  <p className="font-sans text-[21px] font-bold text-[#e6f1ea] leading-none mb-1 tracking-tight">100%</p>
-                  <p className="text-[7px] font-bold uppercase leading-none text-[#e6f1ea] tracking-[0.05em] mb-1.5">Confidential</p>
+                  <p className="font-sans text-[21px] font-bold text-[#e6f1ea] leading-none mb-1 tracking-tight">{siteContent.text["100"]}</p>
+                  <p className="text-[7px] font-bold uppercase leading-none text-[#e6f1ea] tracking-[0.05em] mb-1.5">{siteContent.text.confidential}</p>
                   <LockKeyhole className="h-4 w-4 text-[#d2a853]" strokeWidth={2} />
                 </div>
               </div>
@@ -395,7 +334,7 @@ export default function WellnessPage() {
 
       <section className="border-y border-[#e0e3dc] bg-[#fffefa] px-4 py-3 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-[1200px] grid-cols-2 gap-y-4 sm:grid-cols-4 sm:gap-y-0">
-          {TRUST_ITEMS.map(({ title, text, Icon }, index) => (
+          {siteContent.sections.TRUST_ITEMS.map(({ title, text, Icon }, index) => (
             <div key={title} className={`flex min-h-[42px] items-center justify-center gap-3 px-3 ${index ? 'sm:border-l sm:border-[#dfe3dc]' : ''}`}>
               <Icon className="h-9 w-9 shrink-0 text-[#4c694b]" strokeWidth={1.2} />
               <p className="text-[10px] leading-[1.4] text-[#56645a]"><strong className="block text-[#213b29]">{title}</strong>{text}</p>
@@ -406,27 +345,29 @@ export default function WellnessPage() {
 
       <section className="relative min-h-[76px] overflow-hidden border-t border-[#1b5a3b] bg-[#003a25] px-4 py-3 text-white sm:px-6 lg:px-8">
         <img
-          src="/images/blog/newsletter-botanicals.png"
+          src={siteContent.media.src_4}
           alt=""
           aria-hidden="true"
           className="pointer-events-none absolute right-0 top-0 z-0 h-full w-[42%] object-cover object-right opacity-30 mix-blend-multiply"
         />
         <div className="pointer-events-none absolute inset-0 z-0 bg-transparent" />
-        <form className="relative z-10 mx-auto flex max-w-[1200px] flex-col items-center gap-3 sm:flex-row sm:gap-4" onSubmit={(event) => event.preventDefault()}>
+        <form className="relative z-10 mx-auto flex max-w-[1200px] flex-col items-center gap-3 sm:flex-row sm:gap-4" onSubmit={subscribe}>
           <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[#c99a32] bg-[#003a25] text-[#e7bd54]">
             <Mail className="h-5 w-5" strokeWidth={1.4} />
           </span>
           <div className="text-center sm:text-left sm:min-w-[245px]">
-            <h2 className="text-[13px] font-black uppercase tracking-[.08em]">Stay updated on wellness</h2>
-            <p className="mt-0.5 text-[10px] text-white/75">Get health tips, exclusive offers &amp; updates.</p>
+            <h2 className="text-[13px] font-black uppercase tracking-[.08em]">{siteContent.text.stay_updated_on_wellness}</h2>
+            <p className="mt-0.5 text-[10px] text-white/75">{siteContent.text.get_health_tips_exclusive_offers_updates}</p>
           </div>
           <div className="flex w-full max-w-[380px] sm:ml-auto sm:mr-[150px]">
-            <label className="sr-only" htmlFor="wellness-newsletter-email">Email address</label>
-            <input id="wellness-newsletter-email" name="wellness-email" type="email" autoComplete="off" spellCheck="false" placeholder="Enter your email address" className="min-w-0 flex-1 rounded-l-md bg-white px-4 py-2.5 text-[10px] text-[#203127] outline-none placeholder:text-[#8b938d]" />
-            <button type="submit" className="rounded-r-md bg-[#d39b35] px-5 py-2.5 text-[10px] font-black uppercase text-white">Subscribe</button>
+            <label className="sr-only" htmlFor="wellness-newsletter-email">{siteContent.text.email_address}</label>
+            <input id="wellness-newsletter-email" required name="wellness-email" type="email" autoComplete="off" spellCheck="false" placeholder={siteContent.media.placeholder_5} className="min-w-0 flex-1 rounded-l-md bg-white px-4 py-2.5 text-[10px] text-[#203127] outline-none placeholder:text-[#8b938d]" />
+            <button disabled={submitting || subscribed} type="submit" className="rounded-r-md bg-[#d39b35] px-5 py-2.5 text-[10px] font-black uppercase text-white">{submitting ? 'Subscribing…' : subscribed ? 'Subscribed' : 'Subscribe'}</button>
           </div>
         </form>
       </section>
     </div>
   )
 }
+
+const siteIcons = { BadgeCheck, Brain, ClipboardList, Clock, Dumbbell, FlaskConical, Flower2, HeartPulse, Leaf, ShieldCheck, Sparkles, Sprout, UsersRound, Utensils, Zap }

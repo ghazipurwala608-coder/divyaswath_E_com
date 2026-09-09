@@ -1,39 +1,24 @@
-import 'dotenv/config'
-import connectDB from '../config/db.js'
-import Product from '../models/Product.js'
+﻿import 'dotenv/config'
+import mongoose from 'mongoose'
+import crypto from 'node:crypto'
+import fs from 'node:fs/promises'
 import User from '../models/User.js'
-import products from './products.js'
-
-async function seed() {
-  try {
-    if (!process.env.MONGO_URI) throw new Error('MONGO_URI is missing. Configure backend/.env first.')
-    await connectDB()
-
-    const users = [
-      { name: 'Divya Swasth Admin', email: 'admin@divyaswasth.in', phone: '9876543210', password: 'Admin@123', isAdmin: true },
-      { name: 'Demo Customer', email: 'customer@example.com', phone: '9876501234', password: 'Customer@123', isAdmin: false },
-    ]
-    for (const candidate of users) {
-      const exists = await User.exists({ email: candidate.email })
-      if (!exists) await User.create(candidate)
-    }
-
-    await Product.bulkWrite(products.map((product) => ({
-      updateOne: {
-        filter: { slug: product.slug },
-        update: { $set: { ...product, isActive: true } },
-        upsert: true,
-      },
-    })))
-    const activeSlugs = products.map((product) => product.slug)
-    const archived = await Product.updateMany({ slug: { $nin: activeSlugs }, isActive: true }, { $set: { isActive: false } })
-
-    console.log(`Catalog synced with ${products.length} products. ${archived.modifiedCount} legacy products archived. Existing users and orders were preserved.`)
-    process.exit(0)
-  } catch (error) {
-    console.error(`Catalog sync failed: ${error.message}`)
-    process.exit(1)
+import { bootstrapStore } from './bootstrap.js'
+try {
+  if (!process.env.MONGO_URI) throw new Error('MONGO_URI is missing. Configure backend/.env first.')
+  await mongoose.connect(process.env.MONGO_URI, { serverSelectionTimeoutMS: 10000 })
+  console.log(await bootstrapStore())
+  if (!await User.exists({ isAdmin: true })) {
+    const email = process.env.ADMIN_EMAIL || 'admin@divyaswasth.in'
+    if (await User.exists({ email })) throw new Error('Admin email belongs to an existing customer. Set a different ADMIN_EMAIL; no account was promoted.')
+    const password = process.env.ADMIN_PASSWORD || crypto.randomBytes(18).toString('base64url')
+    if (password.length < 12) throw new Error('ADMIN_PASSWORD must contain at least 12 characters')
+    await fs.writeFile('.admin-credentials.local.json', JSON.stringify({ email, password, login: '/login', dashboard: '/admin' }, null, 2), { mode: 0o600, flag: 'wx' })
+    await User.create({ name: 'Divya Swasth Admin', email, phone: process.env.ADMIN_PHONE || '9876543210', password, isAdmin: true })
+    console.log('Admin created. Credentials saved to backend/.admin-credentials.local.json (gitignored).')
   }
-}
-
-seed()
+  console.log('Seed complete. Existing products, content, users and orders preserved.')
+} catch (error) {
+  console.error(`Seed failed: ${error.message}`)
+  process.exitCode = 1
+} finally { await mongoose.disconnect() }

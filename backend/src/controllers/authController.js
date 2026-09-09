@@ -3,7 +3,7 @@ import asyncHandler from '../utils/asyncHandler.js'
 import generateToken from '../utils/generateToken.js'
 import { sendSuccess } from '../utils/apiResponse.js'
 
-const userPayload = (user) => ({ _id: user._id, name: user.name, email: user.email, phone: user.phone, isAdmin: user.isAdmin })
+const userPayload = (user) => ({ _id: user._id, name: user.name, email: user.email, phone: user.phone, isAdmin: user.isAdmin, isDriver: user.isDriver, deliveryActive: user.deliveryActive })
 
 export const register = asyncHandler(async (req, res) => {
   const { name, email, phone, password } = req.body

@@ -1,10 +1,63 @@
-import { ArrowLeft, Camera, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react'
+﻿import { useSiteContent } from '../context/SiteContentContext.jsx'
+import { calculateShipping } from '../../../shared/shipping.js'
+import { ArrowLeft, ArrowRight, Camera, Check, Leaf, LockKeyhole, Minus, Plus, ShoppingBag, Trash2, Truck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext.jsx'
+import './CartPage.css'
+
+const money = value => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(value)
 
 export default function CartPage() {
-  const { items, subtotal, updateQuantity, removeFromCart } = useCart()
-  const shipping = subtotal >= 999 ? 0 : 99
-  if (!items.length) return <section className="px-4 py-28 text-center"><div className="mx-auto grid h-24 w-24 place-items-center rounded-full bg-[#ecf0e7]"><ShoppingBag className="h-10 w-10 text-[#45644c]" /></div><h1 className="mt-7 font-display text-4xl">Your cart is waiting.</h1><p className="mt-3 text-[#717d75]">Add a wellness product and begin your mindful routine.</p><Link to="/shop" className="mt-7 inline-flex rounded-full bg-[#123b2a] px-8 py-4 text-[10px] font-black uppercase tracking-wider text-white">Explore products</Link></section>
-  return <section className="px-4 py-14 sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl"><h1 className="font-display text-5xl text-[#193322]">Your wellness bag</h1><p className="mt-2 text-sm text-[#738078]">{items.length} selected {items.length === 1 ? 'product' : 'products'}</p><div className="mt-10 grid gap-10 lg:grid-cols-[1fr_380px]"><div className="space-y-4">{items.map((item) => <article key={item._id} className="grid grid-cols-[100px_1fr] gap-4 rounded-[1.5rem] border border-[#e0e5dc] bg-white p-3 sm:grid-cols-[120px_1fr_auto] sm:items-center"><div className="relative grid h-28 place-items-center overflow-hidden rounded-2xl bg-[#edf0e8]">{item.images?.[0] ? <img src={item.images[0]} alt="" className="h-full w-full object-contain mix-blend-multiply" /> : <Camera className="h-7 w-7 text-[#6b816f]" />}<span className="absolute bottom-1 text-[6px] font-black uppercase tracking-wider text-[#7b887f]">Concept / pending</span></div><div><p className="text-[9px] font-bold uppercase tracking-widest text-[#a3731d]">{item.category}</p><Link to={`/products/${item.slug}`} className="mt-1 block font-display text-2xl font-bold">{item.name}</Link><p className="mt-1 text-xs text-[#758078]">{item.subtitle}</p><p className="mt-3 text-lg font-black text-[#23402c]">₹{item.price.toLocaleString('en-IN')}</p></div><div className="col-span-2 flex items-center justify-between border-t border-[#edf0ea] pt-3 sm:col-span-1 sm:block sm:border-0 sm:pt-0"><div className="flex items-center gap-1 rounded-full border border-[#d9dfd6] p-1"><button type="button" onClick={() => updateQuantity(item._id, item.quantity - 1)} className="grid h-8 w-8 place-items-center rounded-full hover:bg-[#eef1ec]"><Minus className="h-3.5 w-3.5" /></button><span className="w-7 text-center text-sm font-bold">{item.quantity}</span><button type="button" onClick={() => updateQuantity(item._id, item.quantity + 1)} className="grid h-8 w-8 place-items-center rounded-full hover:bg-[#eef1ec]"><Plus className="h-3.5 w-3.5" /></button></div><button type="button" onClick={() => removeFromCart(item._id)} className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-[#9c4c40] sm:mt-4"><Trash2 className="h-3.5 w-3.5" /> Remove</button></div></article>)}</div><aside className="h-fit rounded-[2rem] bg-[#10291d] p-7 text-white lg:sticky lg:top-28"><h2 className="font-display text-2xl text-[#f4e6bc]">Order summary</h2><div className="mt-7 space-y-4 text-sm text-white/65"><div className="flex justify-between"><span>Subtotal</span><span className="font-bold text-white">₹{subtotal.toLocaleString('en-IN')}</span></div><div className="flex justify-between"><span>Shipping</span><span className="font-bold text-white">{shipping ? `₹${shipping}` : 'Free'}</span></div><div className="flex justify-between border-t border-white/15 pt-5 text-base"><span>Total</span><span className="text-2xl font-black text-[#e1ba61]">₹{(subtotal + shipping).toLocaleString('en-IN')}</span></div></div>{subtotal < 999 && <p className="mt-5 rounded-xl bg-white/5 p-3 text-xs leading-5 text-white/55">Add ₹{(999 - subtotal).toLocaleString('en-IN')} more for free shipping.</p>}<Link to="/checkout" className="mt-7 flex items-center justify-center rounded-full bg-gradient-to-r from-[#b67d1e] to-[#e0b652] px-5 py-4 text-[10px] font-black uppercase tracking-[.15em] text-[#172319]">Proceed to checkout</Link><Link to="/shop" className="mt-4 flex items-center justify-center gap-2 text-xs font-bold text-white/55 hover:text-white"><ArrowLeft className="h-3.5 w-3.5" /> Continue shopping</Link></aside></div></div></section>
+  const siteContent = useSiteContent('cart')
+  const { shipping: shippingSettings } = useSiteContent('settings')
+  const { items, itemCount, subtotal, updateQuantity, removeFromCart } = useCart()
+  const shipping = calculateShipping(subtotal, items.length, shippingSettings)
+  const remaining = Math.max(0, shippingSettings.freeAbove - subtotal)
+  const progress = shippingSettings.freeAbove > 0 ? Math.min(100, subtotal / shippingSettings.freeAbove * 100) : 100
+
+  return (
+    <section className="wellness-cart">
+      <div className="cart-container">
+        <nav className="cart-breadcrumb" aria-label="Breadcrumb"><Link to="/shop">Our products</Link><span>/</span><span aria-current="page">Your bag</span></nav>
+        <header className="cart-heading">
+          <div><p className="cart-eyebrow"><Leaf size={15} />A little care, selected by you</p><h1>{siteContent.text.your_wellness_bag}</h1><p>{items.length ? `${itemCount} ${itemCount === 1 ? 'item' : 'items'} in your bag. A step closer to your daily wellness ritual.` : 'Make room for a little everyday wellness.'}</p></div>
+          <ol className="cart-steps" aria-label="Checkout steps"><li aria-current="step"><span>1</span>Bag</li><li><span>2</span>Checkout</li><li><span>3</span>Confirmation</li></ol>
+        </header>
+
+        {!items.length ? (
+          <div className="cart-empty"><span><ShoppingBag size={38} strokeWidth={1.3} /></span><h2>{siteContent.text.your_cart_is_waiting}</h2><p>{siteContent.text.add_a_wellness_product_and_begin_your_mindful}</p><Link className="cart-checkout" to={siteContent.media.to_1}>{siteContent.text.explore_products}<ArrowRight size={17} /></Link></div>
+        ) : (
+          <div className="cart-layout">
+            <div className="cart-items-panel">
+              <div className="cart-shipping-note"><Truck size={21} /><div><p>{remaining > 0 ? <>Add <strong>{money(remaining)}</strong> more for free shipping</> : <><strong>Free shipping unlocked</strong> for your wellness bag</>}</p><div className="cart-shipping-progress" role="progressbar" aria-label="Progress toward free shipping" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100}><span style={{ width: `${progress}%` }} /></div></div>{remaining === 0 && <Check size={18} />}</div>
+              <div className="cart-list-heading"><h2>Your selection <span>({items.length})</span></h2><span>Item total</span></div>
+              <div className="cart-product-list">
+                {items.map(item => (
+                  <article className="cart-product" key={item._id || item.slug}>
+                    <Link className="cart-product-image" to={`/products/${item.slug}`} aria-label={`View ${item.name}`}>
+                      {item.images?.[0] ? <img src={item.images[0]} alt={item.name} /> : <Camera size={28} />}
+                    </Link>
+                    <div className="cart-product-info"><p className="cart-category">{item.category}</p><Link className="cart-product-name" to={`/products/${item.slug}`}>{item.name}</Link><p className="cart-product-subtitle">{item.subtitle}</p><p className="cart-unit-price">{money(item.price)} <span>/ unit</span></p>
+                      <div className="cart-product-controls"><div className="cart-quantity"><button type="button" aria-label={`Decrease ${item.name} quantity`} disabled={item.quantity <= 1} onClick={() => updateQuantity(item._id, item.quantity - 1)}><Minus size={14} /></button><output aria-live="polite" aria-label={`${item.name} quantity`}>{item.quantity}</output><button type="button" aria-label={`Increase ${item.name} quantity`} disabled={item.quantity >= Math.min(item.countInStock ?? 10, 10)} onClick={() => updateQuantity(item._id, item.quantity + 1)}><Plus size={14} /></button></div><button className="cart-remove" type="button" aria-label={`Remove ${item.name}`} onClick={() => removeFromCart(item._id)}><Trash2 size={14} /><span>{siteContent.text.remove}</span></button></div>
+                    </div>
+                    <p className="cart-line-total">{money(item.price * item.quantity)}</p>
+                  </article>
+                ))}
+              </div>
+              <Link className="cart-back" to={siteContent.media.to_3}><ArrowLeft size={16} />{siteContent.text.continue_shopping}</Link>
+              <div className="cart-care-note"><Leaf size={18} /><p>Thoughtful choices. Everyday wellness.<span>Check each product label for ingredients and directions.</span></p></div>
+            </div>
+            <aside className="cart-summary">
+              <div className="cart-summary-title"><ShoppingBag size={21} /><h2>{siteContent.text.order_summary}</h2></div>
+              <p className="cart-summary-caption">Your next step towards a mindful routine.</p>
+              <dl><div><dt>{siteContent.text.subtotal} <span>({itemCount} items)</span></dt><dd>{money(subtotal)}</dd></div><div><dt>{siteContent.text.shipping}</dt><dd className={!shipping ? 'cart-free' : undefined}>{shipping ? money(shipping) : 'FREE'}</dd></div><div className="cart-grand-total"><dt>{siteContent.text.total}</dt><dd aria-live="polite">{money(subtotal + shipping)}</dd></div></dl>
+              <Link className="cart-checkout" to={siteContent.media.to_2}>{siteContent.text.proceed_to_checkout}<ArrowRight size={18} /></Link>
+              <p className="cart-secure"><LockKeyhole size={13} />Secure checkout</p>
+              <div className="cart-summary-footer"><Truck size={19} /><p>Delivery details<span>Review your address and delivery options at checkout.</span></p></div>
+            </aside>
+          </div>
+        )}
+      </div>
+    </section>
+  )
 }

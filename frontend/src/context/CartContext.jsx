@@ -1,47 +1,55 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import { useProducts } from '../hooks/useProducts.js'
 
 const CartContext = createContext(null)
 
 export function CartProvider({ children }) {
-  const [items, setItems] = useState(() => {
+  const { products } = useProducts()
+  const [storedItems, setItems] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem('divyaSwasthCart')) || []
+      const saved = JSON.parse(localStorage.getItem('divyaSwasthCart'))
+      return Array.isArray(saved) ? saved.filter(item => item && typeof item.slug === 'string' && Number.isInteger(item.quantity) && item.quantity > 0) : []
     } catch {
       return []
     }
   })
+  const items = storedItems.map(item => ({ ...item, ...products.find(product => product.slug === item.slug), quantity: item.quantity }))
 
   useEffect(() => {
-    localStorage.setItem('divyaSwasthCart', JSON.stringify(items))
-  }, [items])
+    localStorage.setItem('divyaSwasthCart', JSON.stringify(storedItems))
+  }, [storedItems])
 
   const addToCart = (product, quantity = 1) => {
+    if (product.availableForPurchase === false || product.countInStock < 1 || product.price <= 0) return toast.error('This product is not available for purchase yet')
+    if (!Number.isInteger(quantity) || quantity < 1) return
     setItems((current) => {
-      const existing = current.find((item) => item._id === product._id)
+      const existing = current.find((item) => item.slug === product.slug)
       if (existing) {
         return current.map((item) =>
-          item._id === product._id
-            ? { ...item, quantity: Math.min(item.quantity + quantity, product.countInStock) }
+          item.slug === product.slug
+            ? { ...product, quantity: Math.min(item.quantity + quantity, product.countInStock, 10) }
             : item,
         )
       }
-      return [...current, { ...product, quantity: Math.min(quantity, product.countInStock) }]
+      return [...current, { ...product, quantity: Math.min(quantity, product.countInStock, 10) }]
     })
     toast.success(`${product.name} added to your cart`)
   }
 
   const updateQuantity = (id, quantity) => {
-    if (quantity < 1) return
+    const selected = items.find(item => item._id === id)
+    if (!selected || quantity < 1 || !Number.isInteger(quantity) || selected.countInStock < 1) return
     setItems((current) =>
       current.map((item) =>
-        item._id === id ? { ...item, quantity: Math.min(quantity, item.countInStock) } : item,
+        item.slug === selected.slug ? { ...item, quantity: Math.min(quantity, selected.countInStock, 10) } : item,
       ),
     )
   }
 
   const removeFromCart = (id) => {
-    setItems((current) => current.filter((item) => item._id !== id))
+    const selected = items.find(item => item._id === id)
+    setItems((current) => current.filter((item) => item.slug !== selected?.slug))
     toast.success('Item removed')
   }
 

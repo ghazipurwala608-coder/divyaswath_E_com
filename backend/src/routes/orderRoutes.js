@@ -1,6 +1,6 @@
 import express from 'express'
 import { cancelMyOrder, createOrder, getMyOrders, getOrder, getOrders, updateOrderStatus } from '../controllers/orderController.js'
-import { adminOnly, protect } from '../middleware/authMiddleware.js'
+import { adminOnly, optionalProtect, protect } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
@@ -9,6 +9,7 @@ router.get('/my', protect, getMyOrders)
 router.get('/admin/all', protect, adminOnly, getOrders)
 router.put('/:id/cancel', protect, cancelMyOrder)
 router.put('/:id/status', protect, adminOnly, updateOrderStatus)
-router.get('/:id', protect, getOrder)
+router.get('/:id', optionalProtect, getOrder)
 
 export default router
+

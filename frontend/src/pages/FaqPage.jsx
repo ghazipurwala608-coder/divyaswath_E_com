@@ -1,3 +1,4 @@
+import { useSiteContent } from '../context/SiteContentContext.jsx'
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import {
@@ -15,71 +16,16 @@ import {
   Users,
 } from 'lucide-react'
 
-const CATEGORIES = ['All', 'Product', 'Orders & Delivery', 'Returns & Care']
 
-const faqs = [
-  {
-    code: 'REC.01',
-    category: 'Product',
-    q: 'Are your products vegetarian?',
-    a: 'Vegetarian status will be shown product by product only after it is confirmed on the final approved label.',
-    icon: Leaf,
-  },
-  {
-    code: 'REC.02',
-    category: 'Product',
-    q: 'How should I use the products?',
-    a: 'Follow the exact suggested use on the final product label. Do not exceed it. Consult a qualified healthcare professional where appropriate.',
-    icon: BookOpenCheck,
-  },
-  {
-    code: 'REC.03',
-    category: 'Product',
-    q: 'Where are the products manufactured?',
-    a: 'Verified manufacturer and marketer information will be published exactly as it appears on final packaging.',
-    icon: Factory,
-  },
-  {
-    code: 'REC.04',
-    category: 'Orders & Delivery',
-    q: 'How can I track my order?',
-    a: 'After dispatch, the tracking reference and carrier information will be shared through the verified email or mobile number used for your order.',
-    icon: Truck,
-  },
-  {
-    code: 'REC.05',
-    category: 'Orders & Delivery',
-    q: 'How long does delivery take?',
-    a: 'Delivery estimates depend on serviceable PIN code, carrier and order processing. Final timelines will be stated in the shipping policy and at checkout.',
-    icon: Clock3,
-  },
-  {
-    code: 'REC.06',
-    category: 'Returns & Care',
-    q: 'Can I return an opened product?',
-    a: 'Opened wellness products are generally subject to safety restrictions. The final return policy will state all eligibility, damage and refund conditions before launch.',
-    icon: RotateCcw,
-  },
-  {
-    code: 'REC.07',
-    category: 'Product',
-    q: 'Are these medicines or supplements?',
-    a: 'The exact regulatory classification must be confirmed for every product and shown on its final label and product page. No product should be used as a substitute for prescribed treatment.',
-    icon: ShieldCheck,
-  },
-  {
-    code: 'REC.08',
-    category: 'Returns & Care',
-    q: 'How should products be stored?',
-    a: 'Follow each label. Unless stated otherwise after approval, products are generally kept in a cool, dry and dark place, away from children.',
-    icon: Snowflake,
-  },
-]
+
+
 
 // A circular "provisional record" stamp — the design's signature element.
 // It literally spells out the brief's own refrain (pending final approval),
 // so the graphic and the copy are saying the same thing.
 function ProvisionalStamp({ Icon, id, tone = 'light' }) {
+  const siteContent = useSiteContent('faq', siteIcons)
+
   const ringColor = tone === 'dark' ? '#d9b45f' : '#a37622'
   const textColor = tone === 'dark' ? '#e9c983' : '#a37622'
   return (
@@ -90,9 +36,7 @@ function ProvisionalStamp({ Icon, id, tone = 'light' }) {
       <circle cx="50" cy="50" r="46" fill="none" stroke={ringColor} strokeWidth="0.75" strokeDasharray="1.5 3" opacity="0.7" />
       <circle cx="50" cy="50" r="38" fill="none" stroke={ringColor} strokeWidth="1" opacity="0.9" />
       <text fontSize="7.4" letterSpacing="2.5" fill={textColor} fontFamily="ui-monospace, monospace">
-        <textPath href={`#${id}`} startOffset="2%">
-          PROVISIONAL · PENDING LABEL ·
-        </textPath>
+        <textPath href={`#${id}`} startOffset="2%">{siteContent.text.provisional_pending_label}</textPath>
       </text>
       <foreignObject x="30" y="30" width="40" height="40">
         <div className="flex h-full w-full items-center justify-center">
@@ -130,25 +74,23 @@ function FloatingLeaves() {
   )
 }
 
-const TRUST_PILLS = [
-  { icon: Sparkles, text: '8 topics answered' },
-  { icon: Users, text: 'Care team reviewed' },
-  { icon: ShieldCheck, text: 'Provisional until launch' },
-]
+
 
 export default function FaqPage() {
+  const siteContent = useSiteContent('faq', siteIcons)
+
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('All')
   const [openCode, setOpenCode] = useState(null)
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
-    return faqs.filter((f) => {
+    return siteContent.sections.faqs.filter((f) => {
       const matchesCategory = category === 'All' || f.category === category
       const matchesQuery = !q || f.q.toLowerCase().includes(q) || f.a.toLowerCase().includes(q)
       return matchesCategory && matchesQuery
     })
-  }, [query, category])
+  }, [query, category, siteContent.sections])
 
   return (
     <div className="relative min-h-screen bg-[#f4eedc] text-[#1c2e20]">
@@ -170,21 +112,13 @@ export default function FaqPage() {
         <div className="relative mx-auto flex max-w-2xl flex-col items-center animate-fadeUp">
           <ProvisionalStamp Icon={ShieldCheck} id="hero-stamp" tone="dark" />
 
-          <p className="mt-7 font-mono text-[10px] uppercase tracking-[.35em] text-[#dfb75e]">
-            Ledger of frequently asked questions
-          </p>
-          <h1 className="mt-4 font-display text-5xl text-[#fff6df] sm:text-6xl">
-            Clear answers, thoughtful care.
-          </h1>
-          <p className="mx-auto mt-5 max-w-md text-sm leading-6 text-[#c9d3c6]">
-            Nothing here is a promise ahead of the label. Every record below
-            will be re-checked against the final approved packaging before
-            launch.
-          </p>
+          <p className="mt-7 font-mono text-[10px] uppercase tracking-[.35em] text-[#dfb75e]">{siteContent.text.ledger_of_frequently_asked_questions}</p>
+          <h1 className="mt-4 font-display text-5xl text-[#fff6df] sm:text-6xl">{siteContent.text.clear_answers_thoughtful_care}</h1>
+          <p className="mx-auto mt-5 max-w-md text-sm leading-6 text-[#c9d3c6]">{siteContent.text.nothing_here_is_a_promise_ahead_of_the_label}</p>
 
           {/* trust pills — gives the hero more body without adding noise */}
           <div className="mt-7 flex flex-wrap items-center justify-center gap-2.5">
-            {TRUST_PILLS.map(({ icon: Icon, text }) => (
+            {siteContent.sections.TRUST_PILLS.map(({ icon: Icon, text }) => (
               <span
                 key={text}
                 className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-[11px] font-semibold text-[#e8e1cc] backdrop-blur-sm"
@@ -201,7 +135,7 @@ export default function FaqPage() {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search the ledger…"
+              placeholder={siteContent.media.placeholder_1}
               className="w-full bg-transparent font-mono text-sm text-[#fff6df] placeholder:text-[#8ea28f] focus:outline-none"
             />
           </div>
@@ -211,7 +145,7 @@ export default function FaqPage() {
       {/* Category filter tabs */}
       <section className="relative z-10 px-4 pt-10 sm:px-6">
         <div className="mx-auto flex max-w-3xl flex-wrap justify-center gap-2">
-          {CATEGORIES.map((c) => (
+          {siteContent.sections.CATEGORIES.map((c) => (
             <button
               key={c}
               onClick={() => setCategory(c)}
@@ -231,9 +165,7 @@ export default function FaqPage() {
       <section className="relative z-10 px-4 py-16 sm:px-6">
         <div className="mx-auto max-w-3xl">
           {filtered.length === 0 && (
-            <p className="py-12 text-center text-sm text-[#6d6350]">
-              No record matches “{query}”. Try a different word.
-            </p>
+            <p className="py-12 text-center text-sm text-[#6d6350]">{siteContent.text.no_record_matches}{query}{siteContent.text._try_a_different_word}</p>
           )}
 
           <div className="relative space-y-5 pl-6 sm:pl-10">
@@ -294,28 +226,19 @@ export default function FaqPage() {
               <span className="flex h-12 w-12 items-center justify-center rounded-full border border-[#d9b45f]/40 bg-white/5">
                 <Mail className="h-5 w-5 text-[#d9b45f]" strokeWidth={1.6} />
               </span>
-              <h3 className="mt-4 font-display text-2xl text-[#fff6df]">
-                Still have a question?
-              </h3>
-              <p className="mt-2 text-sm leading-6 text-[#c9d3c6]">
-                Our care team is happy to help with anything not covered
-                above.
-              </p>
+              <h3 className="mt-4 font-display text-2xl text-[#fff6df]">{siteContent.text.still_have_a_question}</h3>
+              <p className="mt-2 text-sm leading-6 text-[#c9d3c6]">{siteContent.text.our_care_team_is_happy_to_help_with_anything}</p>
               <Link
-                to="/contact"
+                to={siteContent.media.to_2}
                 className="mt-6 rounded-full bg-[#d9b45f] px-6 py-2.5 text-sm font-bold text-[#0c2a1d] transition-all duration-300 hover:bg-[#e9c983] hover:shadow-[0_10px_24px_rgba(217,180,95,.3)]"
-              >
-                Contact us
-              </Link>
+              >{siteContent.text.contact_us}</Link>
             </div>
           </div>
         </div>
 
-        <p className="mx-auto mt-10 max-w-md text-center font-mono text-xs leading-6 text-[#8c8064]">
-          END OF LEDGER — remaining questions will be filed here as answers
-          are confirmed against the approved label.
-        </p>
+        <p className="mx-auto mt-10 max-w-md text-center font-mono text-xs leading-6 text-[#8c8064]">{siteContent.text.end_of_ledger_remaining_questions_will_be_fil}</p>
       </section>
     </div>
   )
 }
+const siteIcons = { BookOpenCheck, Clock3, Factory, Leaf, RotateCcw, ShieldCheck, Snowflake, Sparkles, Truck, Users }

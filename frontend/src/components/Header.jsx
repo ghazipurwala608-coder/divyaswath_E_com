@@ -1,26 +1,16 @@
+import { useSiteContent } from '../context/SiteContentContext.jsx'
 import { ChevronDown, Clock, Menu, ShoppingCart, UserRound, X } from 'lucide-react'
 import { useState } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { fallbackProducts } from '../data/products.js'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useCart } from '../context/CartContext.jsx'
+import { useProducts } from '../hooks/useProducts.js'
 import BrandLogo from './BrandLogo.jsx'
 
-const TRUST_BADGES = [
-  { icon: '✓', label: '100% Natural' },
-  { icon: '✓', label: 'GMP Certified' },
-  { icon: '✓', label: '100% Vegetarian' },
-  { icon: '✓', label: 'No Added Preservatives' },
-]
 
-const NAV_LINKS = [
-  ['HOME', '/'],
-  ['OUR INGREDIENTS', '/ingredients'],
-  ['OUR STORY', '/about'],
-  ['WELLNESS QUIZ', '/wellness'],
-  ['BLOG', '/blog'],
-  ['CONTACT', '/contact'],
-]
+
+
 
 const navLinkClass = ({ isActive }) =>
   `relative text-[11px] font-bold tracking-[0.08em] uppercase transition-colors duration-200 py-1 ${
@@ -30,11 +20,14 @@ const navLinkClass = ({ isActive }) =>
   }`
 
 export default function Header() {
+  const siteContent = useSiteContent('header', siteIcons)
+
   const [open, setOpen] = useState(false)
   const [productsOpen, setProductsOpen] = useState(false)
   const { itemCount } = useCart()
   const { user } = useAuth()
-  const navigate = useNavigate()
+  const { products } = useProducts()
+  const displayProducts = products?.length ? products : fallbackProducts
 
   return (
     <header className="sticky top-0 z-50 shadow-md">
@@ -43,7 +36,7 @@ export default function Header() {
         <div className="mx-auto flex h-9 max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-10">
           {/* Trust badges */}
           <div className="flex items-center gap-4 sm:gap-6">
-            {TRUST_BADGES.map(({ icon, label }) => (
+            {siteContent.sections.TRUST_BADGES.map(({ icon, label }) => (
               <span key={label} className="hidden items-center gap-1.5 text-[10px] font-semibold text-white/85 sm:flex">
                 <span className="flex h-4 w-4 items-center justify-center rounded-full border border-[#c8973a] text-[#c8973a] text-[8px] font-black leading-none">
                   {icon}
@@ -53,26 +46,21 @@ export default function Header() {
             ))}
             {/* Mobile - show short version */}
             <span className="flex items-center gap-1 text-[9px] font-semibold text-white/75 sm:hidden">
-              <span className="text-[#c8973a]">✓</span> 100% Natural &amp; Vegetarian
-            </span>
+              <span className="text-[#c8973a]">✓</span>{siteContent.text["100_natural_vegetarian"]}</span>
           </div>
           {/* Right side - Track Order, Support, Cart */}
           <div className="flex items-center gap-3 sm:gap-5">
             <Link
-              to="/orders"
+              to={siteContent.media.to_1}
               className="hidden items-center gap-1.5 text-[10px] font-semibold text-white/80 transition hover:text-[#c8973a] sm:flex"
             >
-              <Clock className="h-3 w-3" />
-              Track Order
-            </Link>
+              <Clock className="h-3 w-3" />{siteContent.text.track_order}</Link>
             <Link
-              to="/contact"
+              to={siteContent.media.to_2}
               className="hidden text-[10px] font-semibold text-white/80 transition hover:text-[#c8973a] sm:block"
-            >
-              Support
-            </Link>
+            >{siteContent.text.support}</Link>
             <Link
-              to="/cart"
+              to={siteContent.media.to_3}
               className="relative flex items-center text-white/80 transition hover:text-[#c8973a]"
               aria-label={`Cart with ${itemCount} items`}
             >
@@ -96,32 +84,30 @@ export default function Header() {
           {/* Desktop Nav */}
           <nav className="hidden items-center gap-5 xl:flex" aria-label="Main navigation">
             {/* HOME */}
-            <NavLink to="/" className={navLinkClass}>
-              HOME
-            </NavLink>
+            <NavLink to={siteContent.media.to_4} className={navLinkClass}>{siteContent.text.home}</NavLink>
 
             {/* OUR PRODUCTS dropdown */}
             <div
               className="group relative"
               onMouseEnter={() => setProductsOpen(true)}
               onMouseLeave={() => setProductsOpen(false)}
+              onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setProductsOpen(false) }}
+              onKeyDown={(event) => { if (event.key === 'Escape') { setProductsOpen(false); event.currentTarget.querySelector('button').focus() } }}
             >
-              <NavLink to="/shop" className={navLinkClass}>
-                OUR PRODUCTS
-                <ChevronDown className="ml-1 inline h-3 w-3 transition-transform duration-200 group-hover:rotate-180" />
-              </NavLink>
+              <button type="button" className={`${navLinkClass({ isActive: productsOpen })} cursor-pointer`} aria-expanded={productsOpen} aria-controls="products-dropdown" onClick={() => setProductsOpen(value => !value)}>{siteContent.text.our_products}<ChevronDown className="ml-1 inline h-3 w-3 transition-transform duration-200 group-hover:rotate-180" />
+              </button>
               {/* Dropdown */}
-              <div className="invisible absolute left-1/2 top-full w-72 -translate-x-1/2 translate-y-2 rounded-xl border border-gray-100 bg-white p-2 opacity-0 shadow-xl transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+              <div id="products-dropdown" className={`${productsOpen ? 'visible translate-y-0 opacity-100' : 'invisible translate-y-2 opacity-0'} absolute left-1/2 top-full w-72 -translate-x-1/2 rounded-xl border border-gray-100 bg-white p-2 shadow-xl transition-all duration-200`}>
                 <Link
-                  to="/shop"
+                  to={siteContent.media.to_5}
+                  onClick={() => setProductsOpen(false)}
                   className="block rounded-lg px-4 py-2.5 text-[10px] font-black uppercase tracking-wider text-[#c8973a] hover:bg-[#fdf6ea]"
-                >
-                  Explore all products
-                </Link>
-                {fallbackProducts.map((product) => (
+                >{siteContent.text.explore_all_products}</Link>
+                {displayProducts.map((product) => (
                   <Link
                     key={product.slug}
                     to={`/products/${product.slug}`}
+                    onClick={() => setProductsOpen(false)}
                     className="block rounded-lg px-4 py-2.5 transition hover:bg-[#fdf6ea]"
                   >
                     <span className="block text-[11px] font-bold text-[#1a3a1a]">{product.name}</span>
@@ -131,7 +117,7 @@ export default function Header() {
               </div>
             </div>
 
-            {NAV_LINKS.slice(1).map(([label, href]) => (
+            {siteContent.sections.NAV_LINKS.slice(1).map(([label, href]) => (
               <NavLink key={label} to={href} className={navLinkClass}>
                 {label}
               </NavLink>
@@ -166,20 +152,17 @@ export default function Header() {
         <div className="border-t border-gray-100 bg-white px-5 py-4 shadow-lg xl:hidden">
           <nav className="flex flex-col gap-1">
             <NavLink
-              to="/"
+              to={siteContent.media.to_6}
               onClick={() => setOpen(false)}
               className="rounded-lg px-4 py-3 text-[12px] font-bold uppercase tracking-wide text-[#2d4a2d] hover:bg-[#f0f5ec] hover:text-[#c8973a]"
-            >
-              Home
-            </NavLink>
+            >{siteContent.text.home_2}</NavLink>
             <NavLink
-              to="/shop"
+              to={siteContent.media.to_7}
               onClick={() => setOpen(false)}
               className="rounded-lg px-4 py-3 text-[12px] font-bold uppercase tracking-wide text-[#2d4a2d] hover:bg-[#f0f5ec] hover:text-[#c8973a]"
-            >
-              Our Products
-            </NavLink>
-            {NAV_LINKS.slice(1).map(([label, href]) => (
+            >{siteContent.text.our_products_2}</NavLink>
+            {displayProducts.map(product => <NavLink key={product.slug} to={`/products/${product.slug}`} onClick={() => setOpen(false)} className={({ isActive }) => `ml-4 rounded-lg px-4 py-2 text-[11px] ${isActive ? 'bg-[#fdf6ea] text-[#9b7027]' : 'text-[#2d4a2d] hover:bg-[#fdf6ea]'}`}><span className="block font-bold">{product.name}</span><span className="mt-1 block text-[10px] text-gray-400">{product.subtitle}</span></NavLink>)}
+            {siteContent.sections.NAV_LINKS.slice(1).map(([label, href]) => (
               <NavLink
                 key={label}
                 to={href}
@@ -202,3 +185,5 @@ export default function Header() {
     </header>
   )
 }
+
+const siteIcons = {  }

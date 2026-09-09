@@ -1,0 +1,4 @@
+Generated with the built-in image_gen tool.
+Asset: frontend/public/images/wellness/returns-hero.png
+
+Use case: ads-marketing. Asset type: photorealistic hero background for an Ayurvedic wellness store Returns and Refunds webpage. Landscape 1536x1024. Premium editorial still life: a neat open kraft cardboard shipping box with folded cream tissue paper and an unbranded sealed amber wellness bottle beside it, on a warm natural stone table, surrounded by fresh tulsi sprigs. Objects grouped in the center-right third to remain visible in a wide banner crop. Left half uncluttered dark forest green negative space for a cream website heading. Soft golden morning light, refined reassuring mood, realistic sustainable packaging textures, deep green and warm beige palette. No text, no labels, no logos, no watermark, no interface, no arrows. Tasteful botanical background with subtle depth of field.
