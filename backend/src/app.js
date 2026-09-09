@@ -19,11 +19,32 @@ const app = express()
 const allowedOrigins = [
   'http://localhost:5173',
   'https://divyaswath-e-com-six.vercel.app',
+  'https://www.divyaswasth.com',
+  'https://divyaswasth.com',
+  'https://divyaswath-e-com-ss9n.vercel.app',
+
   ...(process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',').map((o) => o.trim()) : []),
 ]
 
+const corsOptions = {
+  origin(origin, callback) {
+    if (
+      !origin ||
+      allowedOrigins.includes(origin) ||
+      /\.vercel\.app$/.test(origin)
+    ) {
+      return callback(null, true)
+    }
+    return callback(new Error(`Origin ${origin} not allowed by CORS`))
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+}
+
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }))
-app.use(cors({ origin(origin, callback) { if (!origin || allowedOrigins.includes(origin)) return callback(null, true); callback(new Error('Origin not allowed by CORS')) }, credentials: true }))
+app.use(cors(corsOptions))
+app.options('*', cors(corsOptions))
 app.use(express.json({ limit: '2mb' }))
 app.use(express.urlencoded({ extended: false, limit: '100kb' }))
 if (process.env.NODE_ENV !== 'test') app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'))
