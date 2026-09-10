@@ -332,8 +332,8 @@
   .admin-app .delivery-stats { grid-template-columns: 1fr; }
 }
 
-.admin-brand > .admin-brand-logo { position: relative; width: 46px; height: 46px; overflow: hidden; border-radius: 10px; background: #fff; box-shadow: none; }
-.admin-brand-logo img { position: absolute; width: 250%; max-width: none; height: auto; left: -75%; top: -20%; }
+.admin-brand > .admin-brand-logo { position: relative; width: 46px; height: 46px; overflow: hidden; border-radius: 50%; background: #fff; box-shadow: none; border: 1.5px solid rgba(200, 151, 58, 0.4); }
+.admin-brand-logo img { position: absolute; width: 165%; max-width: none; height: auto; left: 50%; top: 3%; transform: translateX(-50%); }
 
 .admin-user > .admin-profile-menu { display: block; position: relative; }
 .admin-profile-trigger { display: flex; align-items: center; gap: 11px; padding: 5px 8px; border-radius: 10px; text-align: left; color: #33483a; }

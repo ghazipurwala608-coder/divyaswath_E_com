@@ -6,16 +6,16 @@ export default function BrandLogo() {
 
   return (
     <Link
-      to={siteContent.media.to_1}
-      className="group flex w-[190px] shrink-0 items-center gap-2.5 sm:w-[230px] sm:gap-3"
+      to={siteContent.media.to_1 || '/'}
+      className="group flex w-auto shrink-0 items-center gap-2.5 sm:gap-3"
       aria-label="Divya Swasth home"
     >
       {/* Logo circle */}
-      <span className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border border-[#c8973a]/40 bg-[#f5f0e8] shadow-sm sm:h-13 sm:w-13">
+      <span className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border border-[#c8973a]/50 bg-white shadow-sm sm:h-12 sm:w-12">
         <img
-          src={siteContent.media.src_2}
-          alt=""
-          className="absolute -left-[70%] -top-[20%] w-[240%] max-w-none transition duration-300 group-hover:scale-105"
+          src={siteContent.media?.src_2 || '/images/logo.png'}
+          alt="Divya Swasth"
+          className="absolute left-1/2 top-[3%] -translate-x-1/2 w-[165%] max-w-none transition duration-300 group-hover:scale-105"
         />
       </span>
       {/* Brand text */}
@@ -24,7 +24,7 @@ export default function BrandLogo() {
           <span className="text-[#4a7c3f]">{siteContent.text.divya}</span>{' '}
           <span className="text-[#c8973a]">{siteContent.text.swasth}</span>
         </span>
-        <span className="mt-1 block whitespace-nowrap text-[5.5px] font-semibold uppercase tracking-[.08em] text-[#5a7a5a]/60 sm:text-[6px]">{siteContent.text.natural_healing_holistic_wellness_healthy_fut}</span>
+        <span className="mt-1 block whitespace-nowrap text-[5.5px] font-semibold uppercase tracking-[.08em] text-[#5a7a5a]/70 sm:text-[6.5px]">{siteContent.text.natural_healing_holistic_wellness_healthy_fut}</span>
         {/* Golden underline */}
         <span className="mt-1 block h-[1.5px] w-12 rounded-full bg-gradient-to-r from-[#c8973a] to-transparent" />
       </span>
