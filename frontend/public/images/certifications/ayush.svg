@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="100%" height="100%">
+  <defs>
+    <linearGradient id="ayushGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2B755"/>
+      <stop offset="30%" stop-color="#FFF3C4"/>
+      <stop offset="60%" stop-color="#C28D28"/>
+      <stop offset="100%" stop-color="#8F6212"/>
+    </linearGradient>
+    <linearGradient id="ayushInner" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FCF9EE"/>
+      <stop offset="100%" stop-color="#EFE6CB"/>
+    </linearGradient>
+    <filter id="ayushShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Outer Gold Ring -->
+  <circle cx="80" cy="80" r="76" fill="url(#ayushInner)" stroke="url(#ayushGold)" stroke-width="5" filter="url(#ayushShadow)"/>
+  <circle cx="80" cy="80" r="70" fill="none" stroke="#A67B26" stroke-width="1.2"/>
+  
+  <!-- Curved Text Top -->
+  <path id="ayushTopPath" d="M 28 80 A 52 52 0 0 1 132 80" fill="none"/>
+  <text font-family="Georgia, serif" font-size="12" font-weight="900" fill="#244B2D" letter-spacing="3.5">
+    <textPath href="#ayushTopPath" startOffset="50%" text-anchor="middle">AYUSH GMP</textPath>
+  </text>
+  
+  <!-- Mortar and Pestle with Herbs in Center -->
+  <g transform="translate(80, 78) scale(1)">
+    <!-- Leaves behind mortar -->
+    <path d="M-6,-8 C-18,-26 -14,-36 4,-38 C14,-28 10,-14 -6,-8 Z" fill="#4B882D"/>
+    <path d="M-4,-9 C-14,-24 -11,-32 3,-34 C11,-26 8,-14 -4,-9 Z" fill="#6EA945"/>
+    <path d="M6,-8 C18,-26 14,-36 -4,-38 C-14,-28 -10,-14 6,-8 Z" fill="#3D7524"/>
+    
+    <!-- Pestle -->
+    <rect x="4" y="-34" width="7" height="28" rx="3.5" transform="rotate(28 7 -20)" fill="#19462A" stroke="#C28D28" stroke-width="1"/>
+    
+    <!-- Mortar Bowl -->
+    <path d="M-24,-4 C-24,18 24,18 24,-4 C24,-7 -24,-7 -24,-4 Z" fill="#134728" stroke="#A67B26" stroke-width="1.5"/>
+    <path d="M-19,-2 C-19,13 19,13 19,-2 C19,-4 -19,-4 -19,-2 Z" fill="#0D361D"/>
+    <rect x="-12" y="14" width="24" height="4" rx="2" fill="#134728"/>
+  </g>
+  
+  <!-- Curved Text Bottom -->
+  <path id="ayushBotPath" d="M 28 80 A 52 52 0 0 0 132 80" fill="none"/>
+  <text font-family="system-ui, sans-serif" font-size="6.5" font-weight="800" fill="#244B2D" letter-spacing="1">
+    <textPath href="#ayushBotPath" startOffset="50%" text-anchor="middle">DEPARTMENT OF AYUSH · GOVT. OF INDIA</textPath>
+  </text>
+  
+  <!-- Bottom Ribbon Label -->
+  <g transform="translate(80, 138)">
+    <rect x="-44" y="-9" width="88" height="18" rx="3" fill="#134728" stroke="url(#ayushGold)" stroke-width="1.2"/>
+    <text x="0" y="3.5" font-family="system-ui, sans-serif" font-size="7.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">AYUSH CERTIFIED</text>
+  </g>
+</svg>

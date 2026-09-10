@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="100%" height="100%">
+  <defs>
+    <linearGradient id="natGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2B755"/>
+      <stop offset="30%" stop-color="#FFF3C4"/>
+      <stop offset="60%" stop-color="#C28D28"/>
+      <stop offset="100%" stop-color="#8F6212"/>
+    </linearGradient>
+    <linearGradient id="natGreen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1B5E20"/>
+      <stop offset="100%" stop-color="#0A3311"/>
+    </linearGradient>
+    <filter id="natShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Outer Gold Ring -->
+  <circle cx="80" cy="80" r="76" fill="url(#natGreen)" stroke="url(#natGold)" stroke-width="5" filter="url(#natShadow)"/>
+  <circle cx="80" cy="80" r="70" fill="none" stroke="url(#natGold)" stroke-width="1.2" stroke-dasharray="3,2"/>
+  
+  <!-- Curved Text Top -->
+  <path id="natTopPath" d="M 28 80 A 52 52 0 0 1 132 80" fill="none"/>
+  <text font-family="system-ui, sans-serif" font-size="8.5" font-weight="900" fill="#EBD287" letter-spacing="1.5">
+    <textPath href="#natTopPath" startOffset="50%" text-anchor="middle">100% PURE &amp; NATURAL</textPath>
+  </text>
+  
+  <!-- Center Sprout Icon -->
+  <g transform="translate(80, 80) scale(1.1)">
+    <circle cx="0" cy="0" r="28" fill="#082A13" stroke="url(#natGold)" stroke-width="1.5"/>
+    <path d="M0,8 C-14,-6 -14,-18 0,-22 C14,-18 14,-6 0,8 Z" fill="#7CB342"/>
+    <path d="M0,8 C-8,-2 -8,-14 0,-17 C8,-14 8,-2 0,8 Z" fill="#9CCC65"/>
+    <path d="M0,8 L0,-16" stroke="#082A13" stroke-width="1.2"/>
+  </g>
+  
+  <text x="80" y="118" font-family="system-ui, sans-serif" font-size="6.5" font-weight="800" fill="#EBD287" text-anchor="middle" letter-spacing="1.5">AYURVEDIC TRUST</text>
+  
+  <!-- Bottom Ribbon Label -->
+  <g transform="translate(80, 138)">
+    <rect x="-44" y="-9" width="88" height="18" rx="3" fill="#0E4525" stroke="url(#natGold)" stroke-width="1.2"/>
+    <text x="0" y="3.5" font-family="system-ui, sans-serif" font-size="7.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">100% NATURAL</text>
+  </g>
+</svg>

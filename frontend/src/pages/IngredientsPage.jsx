@@ -70,19 +70,19 @@ export default function IngredientsPage() {
           {!ingredients.length && <p className="col-span-full py-8 text-center text-sm">No matching ingredients. Try another search or category.</p>}
           {ingredients.map(([name, , text, image]) => (
             <article key={name} className="group overflow-hidden rounded-[7px] border border-[#dfd9cc] bg-[#fffefa] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_18px_rgba(17,33,25,0.1)]">
-              <div className="h-[112px] overflow-hidden bg-[#efe9dc] sm:h-[118px]">
+              <div className="h-[190px] overflow-hidden bg-[#efe9dc] sm:h-[205px] lg:h-[220px]">
                 <img
                   src={`/images/ingredients/${image}`}
                   alt={`${name} botanical ingredient`}
                   loading="lazy"
-                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  className="h-full w-full object-cover object-center transition duration-500 group-hover:scale-105"
                 />
               </div>
 
-              <div className="p-3.5">
-                <h3 className="flex items-center gap-1 font-sans text-[13px] font-black uppercase tracking-[.02em] text-[#1c3922]">{name} <Leaf className="h-3.5 w-3.5 text-[#5e8436]" fill="currentColor" strokeWidth={1.5} /></h3>
-                <p className="mt-2 min-h-[48px] text-[11px] leading-[1.45] text-[#303b33]">{text}</p>
-                <Link to={`/shop?search=${encodeURIComponent(name)}`} className="mt-2 inline-flex items-center gap-2 rounded-[3px] border border-[#c8ad73] px-2.5 py-1.5 text-[9px] font-black uppercase tracking-[.03em] text-[#283b2c] transition hover:bg-[#f4ead1]">{siteContent.text.learn_more}<ArrowRight className="h-3 w-3 text-[#977126]" />
+              <div className="p-4 sm:p-5">
+                <h3 className="flex items-center gap-1.5 font-sans text-[15px] font-black uppercase tracking-[.03em] text-[#1c3922] sm:text-[16px]">{name} <Leaf className="h-4 w-4 text-[#5e8436]" fill="currentColor" strokeWidth={1.5} /></h3>
+                <p className="mt-2.5 min-h-[52px] text-[12.5px] leading-[1.55] text-[#324036] sm:text-[13px]">{text}</p>
+                <Link to={`/shop?search=${encodeURIComponent(name)}`} className="mt-3.5 inline-flex items-center gap-2 rounded-[4px] border border-[#c8ad73] px-3.5 py-2 text-[10.5px] font-black uppercase tracking-[.04em] text-[#283b2c] transition hover:bg-[#f4ead1]">{siteContent.text.learn_more}<ArrowRight className="h-3.5 w-3.5 text-[#977126]" />
                 </Link>
               </div>
             </article>

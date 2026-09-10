@@ -134,7 +134,12 @@ export const initialProducts = [
     "usage": "Take 1 capsule twice daily, 30–45 minutes before meals with a glass of water, or as directed by a healthcare professional.",
     "disclaimer": "This product is not intended to diagnose, treat, cure or prevent any disease. Do not exceed the recommended dosage. Keep out of reach of children. Consult a qualified healthcare professional if you are pregnant, breastfeeding, have a medical condition, or take medication.",
     "images": [
-      "/images/home/Lean.png"
+      "/images/home/Lean.png",
+      "/images/product/WhatsApp Image 2026-09-10 at 1.36.05 PM (1).jpeg",
+      "/images/product/WhatsApp Image 2026-09-10 at 1.36.05 PM.jpeg",
+      "/images/product/WhatsApp Image 2026-09-10 at 1.36.04 PM (3).jpeg",
+      "/images/product/WhatsApp Image 2026-09-10 at 1.36.04 PM (1).jpeg",
+      "/images/product/WhatsApp Image 2026-09-10 at 1.36.04 PM.jpeg"
     ],
     "imageStatus": "Concept",
     "availableForPurchase": true,

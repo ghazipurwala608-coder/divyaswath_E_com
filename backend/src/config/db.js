@@ -1,4 +1,12 @@
 import mongoose from 'mongoose'
+import dns from 'dns'
+
+// Fix for Node.js querySrv / queryTxt ESERVFAIL & ETIMEOUT issues with Atlas
+try {
+  dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1'])
+} catch (e) {
+  // Ignore if custom DNS cannot be set
+}
 
 const MAX_RETRIES = 5
 const RETRY_DELAY_MS = 3000

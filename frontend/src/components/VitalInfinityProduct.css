@@ -10,3 +10,71 @@
 .vital-page{background:#fcfaf3;padding-inline:max(24px,calc((100% - 1240px)/2));padding-bottom:35px}.vital-breadcrumb{font-size:11px;padding-block:18px;flex-wrap:wrap}.vital-hero{gap:38px;align-items:stretch;padding-bottom:32px}.vital-gallery{position:relative;display:block;border:1px solid #e5dec9;border-radius:8px;overflow:hidden;background:#f2eddf;align-self:start}.vital-main-image{border-radius:0}.vital-main-image img{display:block;aspect-ratio:1/1.05;object-fit:cover;max-height:none}.vital-thumbnails{position:absolute;left:15px;top:20px;z-index:2;width:54px;gap:12px}.vital-thumbnails button{background:#fffdf5e8;border:1px solid #dedcc9;padding:3px;box-shadow:0 3px 10px #142e2115;border-radius:5px}.vital-thumbnails button[aria-pressed=true]{border-color:#be9439;box-shadow:0 0 0 2px #d4b765}.vital-thumbnails>span{color:#24462a;background:#fffdf5dd;border-radius:4px;padding:5px 2px;font-size:7px}.vital-thumbnails>span svg{width:18px;margin:3px auto}.vital-summary{padding:18px 8px 10px 0;display:flex;flex-direction:column;justify-content:center}.vital-stock{display:flex;align-items:center;gap:6px;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#63814e;margin-bottom:13px}.vital-stock>span{width:6px;height:6px;background:currentColor;border-radius:50%}.vital-eyebrow{align-self:flex-start;border:0;border-radius:3px;background:#edf2e5;color:#527541;padding:5px 9px;font-size:9px}.vital-summary h1{font:600 clamp(29px,3.2vw,43px)/1.08 Georgia,serif;letter-spacing:.5px;margin:13px 0 7px}.vital-summary h2{font-size:11px;font-weight:500;letter-spacing:1px;line-height:1.6}.vital-intro{font-size:13px;line-height:1.7;margin:14px 0 5px}.vital-facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:19px 0 15px;padding:16px 0;border-block:1px solid #e7e1d2}.vital-facts svg,.vital-size-value{display:grid;place-items:center;width:42px;height:42px;border:1px dashed #b3b882;border-radius:50%;padding:9px;margin:0 auto 8px;color:#637c43;background:#f9faef}.vital-facts .vital-size-value{font:22px Georgia,serif;letter-spacing:0;padding:0}.vital-facts span{font-size:8px;line-height:1.5}.vital-price{font:600 30px Georgia,serif;margin-top:0}.vital-tax{font-size:10px;margin:5px 0 16px}.vital-quantity{gap:15px;font-size:12px}.vital-quantity>div{border-radius:4px;background:#fffdf6}.vital-quantity button{display:grid;place-items:center;width:36px;height:35px;padding:0}.vital-actions{gap:12px}.vital-actions button{min-height:46px;border-radius:4px;font-size:11px}.vital-actions button:last-child{background:linear-gradient(110deg,#c58e21,#ddb34c);color:#183923}.vital-delivery{gap:10px;flex-wrap:wrap;margin-top:15px}.vital-delivery span{font-size:9px}.vital-page button:focus-visible,.vital-page a:focus-visible{outline:2px solid #a78232;outline-offset:4px}.vital-benefits{padding:29px 14px 22px;margin:13px 0 25px;border-color:#e4ddcb;border-radius:5px;background:#fffdf8}.vital-benefits>h2{background:#fcfaf3;font-size:17px}.vital-benefits article{padding-inline:16px}.vital-benefits h3{font:600 11px/1.5 Georgia,serif;margin-block:9px}.vital-benefits p{font-size:11px;line-height:1.7;max-width:190px}.vital-details{grid-template-columns:1fr .9fr 1.15fr;gap:17px}.vital-details>section{background:#f8f5eb;border:1px solid #e8e1ce;border-radius:5px;padding:24px 17px}.vital-details>section>h2{font-size:16px}.vital-details>section>p{font-size:11px}.vital-ingredients{margin-block:22px}.vital-ingredients strong{font-size:9px}.vital-details .vital-small,.vital-details .vital-use-note{font-size:10px;line-height:1.7}.vital-small-link{font-size:9px;padding:9px 12px;margin-top:12px}.vital-formula ul{gap:10px;font-size:11px;line-height:1.5;margin-block:20px}.vital-formula .vital-small-link{margin-top:0}.vital-steps{margin-block:25px}.vital-steps h3{font-size:9px}.vital-steps p{font-size:10px}.vital-bottom{margin-top:25px;gap:25px;padding:20px 0;border-block:1px solid #e7dfca}.vital-bottom>div>h2{font-size:16px}.vital-values>div>span:last-child{font-size:9px}.vital-story{border:1px solid #b79b52;padding:13px;border-radius:5px}.vital-story h3{font-size:20px}.vital-story p{font-size:11px}.vital-story span{font-size:9px}.vital-story img{height:145px}.vital-discover{display:grid;grid-template-columns:.85fr 1.5fr .9fr;gap:23px;padding:25px 0}.vital-discover h2{font:500 19px/1.3 Georgia,serif}.vital-support-card{padding:18px;border-right:1px solid #e4ddca}.vital-support-card>.vital-icon{margin:0 0 15px}.vital-support-card>p{font-size:11px;color:#718065;line-height:1.8;margin-top:12px}.vital-support-card>a{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:600;color:#856a2b;margin-top:15px}.vital-related>h2{text-align:center;font-size:16px;margin-bottom:16px}.vital-related>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.vital-related-product{min-width:0;display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:transform .2s ease,box-shadow .2s ease;cursor:pointer}.vital-related-product:hover{transform:translateY(-4px)}.vital-related-product:hover img{border-color:#be9439;box-shadow:0 6px 18px rgba(20,46,33,.12)}.vital-related-product:hover h3{color:#94722c}.vital-related-product img{width:100%;aspect-ratio:1;object-fit:cover;border:1px solid #e6dfcb;border-radius:4px}.vital-related-product h3{font:600 11px/1.4 Georgia,serif;margin:10px 0 4px}.vital-related-product p{font-size:9px;line-height:1.6;color:#78816e}.vital-related-product>span{display:flex;justify-content:space-between;gap:5px;font-size:11px;margin-top:7px;color:#94722c}.vital-explore-card{display:flex;flex-direction:column;justify-content:center;padding:20px;background:#f1f2e4;border:1px solid #e4e4ce;border-radius:5px}.vital-explore-card>p{font-size:8px;letter-spacing:1.4px;color:#8f7737;margin-bottom:12px}.vital-explore-card>span{font-size:11px;line-height:1.8;color:#6e7c5e;margin-top:12px}.vital-explore-card>a{display:flex;align-items:center;gap:10px;justify-content:center;font-size:9px;background:#d9b34e;color:#244027;padding:11px;margin-top:20px;border-radius:3px}.vital-product-details{margin-top:0;font-size:12px}.vital-product-details p{font-size:12px}
 @media(max-width:900px){.vital-hero{gap:23px}.vital-summary{padding-top:4px}.vital-summary h1{font-size:30px}.vital-thumbnails{width:43px;left:10px;top:12px}.vital-intro{font-size:11px}.vital-facts{gap:6px}.vital-details{grid-template-columns:1fr 1fr}.vital-details .vital-how{grid-column:1/-1}.vital-discover{grid-template-columns:1fr 1.6fr}.vital-explore-card{grid-column:1/-1;max-width:none}.vital-story{max-width:none}.vital-story img{width:30%}.vital-benefits article{padding-inline:10px}}
 @media(max-width:600px){.vital-page{padding-inline:16px}.vital-hero{grid-template-columns:1fr;gap:20px}.vital-gallery{max-width:480px;width:100%}.vital-main-image img{max-height:none;aspect-ratio:1}.vital-thumbnails{width:48px;left:12px;top:16px}.vital-summary{padding:0 2px}.vital-summary h1{font-size:34px}.vital-intro{font-size:13px}.vital-facts{gap:12px}.vital-facts span{font-size:9px}.vital-details{grid-template-columns:1fr}.vital-details .vital-how{grid-column:auto}.vital-benefits>div{grid-template-columns:1fr 1fr;gap:24px 0}.vital-benefits p{font-size:11px}.vital-details>section{padding:25px 20px}.vital-ingredients{max-width:350px;margin-inline:auto}.vital-values{grid-template-columns:repeat(3,1fr)}.vital-bottom{grid-template-columns:1fr}.vital-discover{grid-template-columns:1fr}.vital-support-card{border:0;padding:17px 0}.vital-related{padding-block:8px}.vital-related-product h3{font-size:10px}.vital-explore-card{grid-column:auto}.vital-discover h2{font-size:19px}}
+
+/* Keep the supplied packaging and poster fully visible, with thumbnails below. */
+.vital-gallery-complete{display:flex;flex-direction:column;background:#fff;padding:16px;gap:14px}
+.vital-gallery-complete .vital-main-image{order:0;width:100%;flex:none}
+.vital-gallery-complete .vital-main-image img{height:clamp(340px,42vw,580px);width:100%;aspect-ratio:auto;object-fit:contain}
+.vital-gallery-complete .vital-thumbnails{order:2;position:static;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%;gap:12px}
+.vital-gallery-complete .vital-thumbnails button{background:#fff;padding:5px;border-radius:8px;box-shadow:none}
+.vital-gallery-complete .vital-thumbnails img{height:76px;aspect-ratio:auto;object-fit:contain}
+.vital-gallery-complete .vital-thumbnails>span{display:none}
+.vital-gallery-caption{order:1;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:11px;color:#62705a;border-top:1px solid #eee8d9;padding-top:12px}
+.vital-gallery-caption a{color:#876921;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+@media(max-width:600px){.vital-gallery-complete{padding:12px}.vital-gallery-complete .vital-main-image img{height:400px;max-height:65vh}.vital-gallery-complete .vital-thumbnails{gap:8px}.vital-gallery-complete .vital-thumbnails img{height:64px}}
+
+/* Carry the botanical palette through the space around every gallery image. */
+.vital-gallery-complete .vital-main-image,
+.vital-gallery-complete .vital-thumbnails button{
+  background:radial-gradient(ellipse at top right,#b5c07880,transparent 48%),radial-gradient(ellipse at bottom left,#d9d89c80,transparent 42%),linear-gradient(135deg,#fff9e8,#f0dfb9 55%,#faf3dd);
+}
+.vital-gallery-complete .vital-main-image{border-radius:6px}
+
+/* Align product information with the gallery and use the available page width. */
+.vital-page{padding-inline:clamp(16px,3vw,48px)}
+.vital-hero{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start}
+.vital-hero>*{min-width:0}
+.vital-summary{justify-content:flex-start;padding:28px;background:linear-gradient(145deg,#fffdf7,#f7f3e7);border:1px solid #e7dfcc;border-radius:14px;box-shadow:0 8px 28px #243b2110}
+.vital-summary h1{margin-top:14px;font-size:clamp(28px,3.1vw,46px);overflow-wrap:break-word}
+.vital-summary .vital-intro{margin-bottom:8px}
+.vital-summary .vital-facts{margin-block:18px;padding-block:18px}
+.vital-summary .vital-actions button{min-height:48px;border-radius:7px}
+.vital-gallery-complete{padding:10px;border-radius:14px;box-shadow:0 8px 28px #243b2110}
+.vital-gallery-complete .vital-main-image img{height:auto;max-height:none;aspect-ratio:auto;width:100%;object-fit:contain}
+.vital-gallery-complete .vital-gallery-caption{padding:12px 6px 0}
+.vital-gallery-complete .vital-thumbnails{padding:0 4px 4px}
+@media(min-width:1100px){.vital-hero{grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr)}}
+@media(max-width:760px){.vital-hero{grid-template-columns:minmax(0,1fr)}.vital-gallery-complete{max-width:560px}.vital-summary{padding:22px}.vital-summary h1{font-size:32px}}
+@media(max-width:380px){.vital-summary{padding:16px}.vital-summary .vital-facts{gap:6px}.vital-summary .vital-facts span{font-size:8px}}
+
+/* Vertical thumbnail rail beside the main product photograph. */
+.vital-gallery-complete{display:grid;grid-template-columns:64px minmax(0,1fr);align-items:start;gap:12px}
+.vital-gallery-complete .vital-thumbnails{grid-column:1;grid-row:1 / 3;display:flex;flex-direction:column;position:static;width:100%;padding:4px 2px;gap:12px;order:initial}
+.vital-gallery-complete .vital-thumbnails button{width:100%;padding:3px;flex-shrink:0}
+.vital-gallery-complete .vital-thumbnails img{height:64px;width:100%;object-fit:contain}
+.vital-gallery-complete .vital-thumbnails>span{display:block;padding:9px 3px;background:#faf6e9;border-radius:6px;font-size:7px;line-height:1.6}
+.vital-gallery-complete .vital-main-image{grid-column:2;grid-row:1;order:initial;min-width:0}
+.vital-gallery-complete .vital-gallery-caption{grid-column:2;grid-row:2;order:initial;flex-wrap:wrap;padding:10px 0 2px;font-size:10px;gap:6px}
+@media(max-width:900px){.vital-gallery-complete{grid-template-columns:52px minmax(0,1fr);gap:9px}.vital-gallery-complete .vital-thumbnails{gap:9px}.vital-gallery-complete .vital-thumbnails img{height:54px}}
+@media(max-width:380px){.vital-gallery-complete{grid-template-columns:44px minmax(0,1fr);padding:8px;gap:8px}.vital-gallery-complete .vital-thumbnails img{height:46px}.vital-gallery-complete .vital-thumbnails>span{font-size:6px}}
+
+/* Keep longer product galleries compact while all thumbnail views remain accessible. */
+.vital-gallery-complete .vital-thumbnails{max-height:560px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#c4ad73 transparent}
+.vital-gallery-complete .vital-main-image{min-height:min(420px,60vw);display:flex;align-items:center}
+
+/* Enlarge the Sugar Shield front photograph itself, without backdrop bands. */
+.vital-gallery-complete.sugar-gallery-front .vital-main-image{aspect-ratio:4/5;min-height:0;background:none;display:block}
+.vital-gallery-complete.sugar-gallery-front .vital-main-image img{width:100%;height:100%;aspect-ratio:auto;object-fit:cover;object-position:center}
+
+/* Allow thumbnail scrolling without a visible scrollbar. */
+.vital-gallery-complete .vital-thumbnails{scrollbar-width:none;-ms-overflow-style:none;overflow-x:hidden}
+.vital-gallery-complete .vital-thumbnails::-webkit-scrollbar{display:none;width:0;height:0}
+
+/* Add Endless views to its existing overlay rail without changing the front photo. */
+.endless-gallery .vital-thumbnails{max-height:calc(100% - 40px);overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none;padding:3px}
+.endless-gallery .vital-thumbnails::-webkit-scrollbar{display:none}
+.endless-gallery .vital-thumbnails button{flex-shrink:0}
+.endless-gallery .vital-thumbnails img{object-fit:contain}
+.endless-gallery-detail .vital-main-image{padding-left:82px;background:#faf5e7}
+.endless-gallery-detail .vital-main-image img{object-fit:contain}
+@media(max-width:900px){.endless-gallery-detail .vital-main-image{padding-left:66px}}

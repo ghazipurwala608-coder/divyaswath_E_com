@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="100%" height="100%">
+  <defs>
+    <linearGradient id="miiGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2B755"/>
+      <stop offset="30%" stop-color="#FFF3C4"/>
+      <stop offset="60%" stop-color="#C28D28"/>
+      <stop offset="100%" stop-color="#8F6212"/>
+    </linearGradient>
+    <linearGradient id="miiGreen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#144A29"/>
+      <stop offset="100%" stop-color="#082A15"/>
+    </linearGradient>
+    <filter id="miiShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Outer Gold Ring -->
+  <circle cx="80" cy="80" r="76" fill="#FCFAF2" stroke="url(#miiGold)" stroke-width="5" filter="url(#miiShadow)"/>
+  <circle cx="80" cy="80" r="70" fill="none" stroke="url(#miiGreen)" stroke-width="2"/>
+  
+  <!-- Green Leaves on Top -->
+  <g transform="translate(80, 48) scale(0.9)">
+    <path d="M-1,0 C-14,-14 -16,-24 -4,-28 C8,-24 8,-12 -1,0 Z" fill="#2E7D32"/>
+    <path d="M1,0 C14,-14 16,-24 4,-28 C-8,-24 -8,-12 1,0 Z" fill="#66BB6A"/>
+    <path d="M0,0 L0,-24" stroke="#1B5E20" stroke-width="1.2"/>
+  </g>
+  
+  <!-- Proudly Text -->
+  <line x1="34" y1="62" x2="52" y2="62" stroke="#A87922" stroke-width="1.2"/>
+  <text x="80" y="65" font-family="system-ui, sans-serif" font-size="7.5" font-weight="900" fill="#2E5339" text-anchor="middle" letter-spacing="2">PROUDLY</text>
+  <line x1="108" y1="62" x2="126" y2="62" stroke="#A87922" stroke-width="1.2"/>
+  
+  <!-- Center MADE IN INDIA in Dark Green Plate -->
+  <rect x="24" y="72" width="112" height="26" rx="4" fill="url(#miiGreen)" stroke="url(#miiGold)" stroke-width="1.2"/>
+  <text x="80" y="90" font-family="Georgia, serif" font-size="12.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="1.5">MADE IN INDIA</text>
+  
+  <!-- 3 Stars -->
+  <g fill="url(#miiGold)" transform="translate(80, 114)">
+    <!-- Star 1 (Left) -->
+    <path d="M-22,0 L-20,-4 L-16,-4 L-19,-1 L-18,3 L-22,1 L-26,3 L-25,-1 L-28,-4 L-24,-4 Z" transform="scale(0.8)"/>
+    <!-- Star 2 (Center) -->
+    <path d="M0,0 L2,-5 L7,-5 L3,-2 L5,3 L0,0 L-5,3 L-3,-2 L-7,-5 L-2,-5 Z" transform="scale(1.1)"/>
+    <!-- Star 3 (Right) -->
+    <path d="M22,0 L24,-4 L28,-4 L25,-1 L26,3 L22,1 L18,3 L19,-1 L16,-4 L20,-4 Z" transform="scale(0.8)"/>
+  </g>
+  
+  <!-- Bottom Ribbon Label -->
+  <g transform="translate(80, 138)">
+    <rect x="-44" y="-9" width="88" height="18" rx="3" fill="#144A29" stroke="url(#miiGold)" stroke-width="1.2"/>
+    <text x="0" y="3.5" font-family="system-ui, sans-serif" font-size="7.5" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">100% AYURVEDIC</text>
+  </g>
+</svg>

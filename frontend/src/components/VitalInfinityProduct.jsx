@@ -288,9 +288,47 @@ export default function VitalInfinityProduct({ product }) {
   }
 
   const { EyebrowIcon } = config
-  const galleryViews = product.images?.length > 1
-    ? product.images.map((src, index) => ({ src, label: `Product image ${index + 1}`, scale: 1, position: 'center' }))
-    : defaultViews.map(item => ({ ...item, src: artwork }))
+  const curatedGallery = {
+    'sugar-shield-blood-sugar-support': [
+      { src: '/images/home/Suger sheid.png', label: 'Front view' },
+      { src: '/images/product/sugar-shield-benefits-botanical.png', label: 'Benefits & suggested use' },
+      { src: '/images/product/sugar-shield-back-botanical.png', label: 'Product information' },
+      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.01 PM (1).jpeg', label: 'Wellness poster' },
+      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.01 PM (2).jpeg', label: 'Botanical ingredients poster' },
+      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.35.59 PM (1).jpeg', label: 'All bottle views' },
+      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.35.59 PM.jpeg', label: 'Complete label' }
+    ],
+    'lean-shape-garcinia-cambogia': [
+      { src: '/images/home/Lean.png', label: 'Front view' },
+      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.05 PM (1).jpeg', label: 'Transformation & wellness poster' },
+      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.05 PM.jpeg', label: 'Key benefits & ingredients' },
+      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.04 PM (3).jpeg', label: 'Product information' },
+      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.04 PM (1).jpeg', label: 'All bottle views' },
+      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.04 PM.jpeg', label: 'Complete label' }
+    ],
+    'endless-daily-wellness': [
+      { src: '/images/home/Endless.png', label: 'Front view' },
+      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.03 PM (1).jpeg', label: 'Product poster' },
+      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.03 PM (2).jpeg', label: 'Lifestyle poster' },
+      { src: '/images/product/endless-back-botanical.png', label: 'Product information' },
+      { src: '/images/product/endless-all-views-botanical.png', label: 'All bottle views' },
+      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.01 PM (3).jpeg', label: 'Complete label' }
+    ],
+    'vital-infinity-multivitamin': [
+      { src: '/images/home/Vital.png', label: 'Front view' },
+      { src: '/images/product/vital-infinity-front-botanical.png', label: 'Front bottle view' },
+      { src: '/images/product/vital-infinity-benefits-botanical.png', label: 'Benefits & ingredients' },
+      { src: '/images/product/vital-infinity-back-botanical.png', label: 'Product information' },
+      { src: '/images/product/WhatsApp Image 2026-09-01 at 7.06.31 PM (1).jpeg', label: 'Product poster' }
+    ]
+  }[product.slug]
+
+  const galleryViews = curatedGallery
+    ? curatedGallery.map(item => ({ ...item, scale: 1, position: 'center' }))
+    : product.images?.length > 1
+      ? product.images.map((src, index) => ({ src, label: `Product image ${index + 1}`, scale: 1, position: 'center' }))
+      : defaultViews.map(item => ({ ...item, src: artwork }))
+
   const currentView = galleryViews[view] || galleryViews[0]
 
   return (
@@ -306,13 +344,14 @@ export default function VitalInfinityProduct({ product }) {
 
       {/* ── HERO ── */}
       <section className="vital-hero" aria-labelledby="vital-title">
-        <div className="vital-gallery">
+        <div className={`vital-gallery${curatedGallery ? ' vital-gallery-complete' : ''}${view === 0 ? ' sugar-gallery-front' : ''}`}>
           <div className="vital-thumbnails">
             {galleryViews.map((item, index) => (
               <button
                 key={item.label}
                 type="button"
                 aria-label={item.label}
+                title={item.label}
                 aria-pressed={view === index}
                 onClick={() => setView(index)}
               >
@@ -342,6 +381,10 @@ export default function VitalInfinityProduct({ product }) {
               }}
             />
           </div>
+          {curatedGallery && <div className="vital-gallery-caption">
+            <span aria-live="polite">{currentView.label} · {view + 1} / {galleryViews.length}</span>
+            <a href={currentView.src} target="_blank" rel="noreferrer">View full size ↗</a>
+          </div>}
         </div>
 
         <div className="vital-summary">

@@ -6,6 +6,7 @@ const DEFAULT_QUICK_LINKS = [
   ['Home', '/'],
   ['Our Products', '/shop'],
   ['Our Ingredients', '/ingredients'],
+  ['Our Certifications', '/certifications'],
   ['Wellness Quiz', '/wellness'],
   ['Blog', '/blog']
 ]
@@ -17,15 +18,12 @@ const DEFAULT_CUSTOMER_CARE = [
   ['Privacy Policy', '/privacy']
 ]
 
-const DEFAULT_PAYMENT_METHODS = [
-  { name: 'Visa', image: '/images/payments/visa.svg' },
-  { name: 'Mastercard', image: '/images/payments/mastercard.svg' },
-  { name: 'RuPay', image: '/images/payments/rupay.svg' },
-  { name: 'UPI', image: '/images/payments/upi.svg' },
-  { name: 'Paytm', image: '/images/payments/paytm.svg' },
-  { name: 'Google Pay', image: '/images/payments/google-pay.svg' },
-  { name: 'PhonePe', image: '/images/payments/phonepe.svg' },
-  { name: 'Net Banking', image: '/images/payments/net-banking.svg' }
+const DEFAULT_CERTIFICATIONS = [
+  { name: 'Made in India', image: '/images/certifications/made-in-india.jpg', label: '100% Authentic Ayurvedic' },
+  { name: 'GMP Certified', image: '/images/certifications/gmp.jpg', label: 'Good Manufacturing Practice' },
+  { name: 'AYUSH Premium', image: '/images/certifications/ayush.jpg', label: 'Ministry of AYUSH Certified' },
+  { name: 'FSSAI Certified', image: '/images/certifications/fssai.jpg', label: 'Food Safety Authority of India' },
+  { name: 'ISO 9001:2015', image: '/images/certifications/iso.jpg', label: 'Quality Management System' }
 ]
 
 export default function Footer() {
@@ -33,7 +31,7 @@ export default function Footer() {
 
   const quickLinks = (siteContent?.sections?.QUICK_LINKS || DEFAULT_QUICK_LINKS).filter(([, href]) => href !== '/contact')
   const customerCareLinks = (siteContent?.sections?.CUSTOMER_CARE || DEFAULT_CUSTOMER_CARE).filter(([, href]) => href !== '/faq')
-  const paymentMethods = siteContent?.sections?.PAYMENT_METHODS || DEFAULT_PAYMENT_METHODS
+  const certifications = siteContent?.sections?.CERTIFICATIONS || DEFAULT_CERTIFICATIONS
 
   return (
     <footer className="bg-[#0a1c0e] text-white border-t border-[#1a3822]">
@@ -185,8 +183,10 @@ export default function Footer() {
             <li className="flex items-start gap-3">
               <Phone className="mt-0.5 h-4 w-4 shrink-0 text-[#c8973a]" />
               <a href="tel:+919747007253" className="text-[13px] leading-snug text-[#9eb59d] hover:text-[#c8973a] transition">
-                +91 97470 07253
-              </a>
+                +91 97470 07253,<br/>
+                +91 92711741619 
+              </a><br/>
+               
             </li>
             <li className="flex items-start gap-3">
               <Mail className="mt-0.5 h-4 w-4 shrink-0 text-[#c8973a]" />
@@ -207,25 +207,35 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* ── COL 5: We Accept ── */}
+        {/* ── COL 5: Certifications ── */}
         <div>
-          <h3 className="text-[14px] font-black uppercase tracking-[.14em] text-[#c8973a]">
-            {siteContent.text?.we_accept || 'WE ACCEPT'}
-          </h3>
-          <div className="mt-4 grid grid-cols-4 gap-2 max-w-[260px]">
-            {paymentMethods.map((method) => (
-              <div
-                key={method.name}
-                className="flex h-[38px] items-center justify-center rounded-[6px] bg-white p-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.18)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-                title={method.name}
+          <Link to="/certifications" className="group block">
+            <h3 className="flex items-center gap-1.5 text-[14px] font-black uppercase tracking-[.14em] text-[#c8973a] transition group-hover:text-[#e8cf8c]">
+              {siteContent.text?.certifications || 'CERTIFICATIONS'}
+              <span className="text-xs transition-transform group-hover:translate-x-1">→</span>
+            </h3>
+          </Link>
+          <p className="mt-1 text-[11px] text-[#9eb59d] leading-relaxed">
+            Certified for highest Ayurvedic purity &amp; safety standards
+          </p>
+          <div className="mt-3.5 grid grid-cols-3 gap-2 max-w-[270px]">
+            {certifications.map((item) => (
+              <Link
+                to="/certifications"
+                key={item.name}
+                className="group relative flex flex-col items-center justify-center rounded-[8px] border border-[#d4af37]/35 bg-[#0e2714] p-1.5 shadow-[0_3px_10px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-1 hover:border-[#d4af37] hover:shadow-[0_6px_18px_rgba(212,175,55,0.25)]"
+                title={`${item.name} · ${item.label} — Click to view details`}
               >
                 <img
-                  src={method.image}
-                  alt={method.name}
-                  className="h-full w-full object-contain"
+                  src={item.image}
+                  alt={item.name}
+                  className="h-[46px] w-[46px] rounded-full object-contain transition duration-300 group-hover:scale-105 drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]"
                   loading="lazy"
                 />
-              </div>
+                <span className="mt-1 block text-center text-[7px] font-bold uppercase tracking-[.03em] text-[#e5ce8e] leading-tight line-clamp-1">
+                  {item.name}
+                </span>
+              </Link>
             ))}
           </div>
         </div>

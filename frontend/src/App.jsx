@@ -21,6 +21,7 @@ import ProductPage from './pages/ProductPage.jsx'
 import RegisterPage from './pages/RegisterPage.jsx'
 import ShopPage from './pages/ShopPage.jsx'
 import IngredientsPage from './pages/IngredientsPage.jsx'
+import CertificationsPage from './pages/CertificationsPage.jsx'
 import WellnessPage from './pages/WellnessPage.jsx'
 import WellnessArticlePage from './pages/WellnessArticlePage.jsx'
 import FaqPage from './pages/FaqPage.jsx'
@@ -41,6 +42,7 @@ function App() {
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/products/:slug" element={<ProductPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/certifications" element={<CertificationsPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/support" element={<SupportPage />} />
           <Route path="/ingredients" element={<IngredientsPage />} />

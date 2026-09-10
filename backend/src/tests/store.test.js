@@ -1,7 +1,10 @@
 import 'dotenv/config'
 import assert from 'node:assert/strict'
+import dns from 'node:dns'
 import { after, before, test } from 'node:test'
 import mongoose from 'mongoose'
+
+try { dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']) } catch {}
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import User from '../models/User.js'
