@@ -131,7 +131,7 @@ export default function Header() {
               className="rounded-full p-2 text-[#2d4a2d] transition hover:bg-[#f0f5ec] hover:text-[#c8973a]"
               aria-label={user ? 'My account' : 'Sign in'}
             >
-              <UserRound className="h-5 w-5" />
+              <UserRound className="h-6 w-6" />
             </Link>
             {/* Mobile menu toggle */}
             <button
