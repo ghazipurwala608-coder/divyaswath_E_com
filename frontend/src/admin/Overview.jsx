@@ -8,7 +8,6 @@ export default function Overview({ navigate }) {
   const monthlySales = Array.isArray(data?.monthlySales) ? data.monthlySales : []
   const lowStock = Array.isArray(data?.lowStock) ? data.lowStock : []
   const recentOrders = Array.isArray(data?.recentOrders) ? data.recentOrders : []
-  const maxSales = Math.max(1, ...monthlySales.map(item => item?.total || 0))
 
   return (
     <DataState loading={loading} error={error} retry={reload}>
@@ -17,7 +16,7 @@ export default function Overview({ navigate }) {
           <div className="admin-welcome">
             <div>
               <span className="admin-eyebrow">YOUR STORE, AT A GLANCE</span>
-              <h2>A little care. A growing business.</h2>
+              <h2>Good things are growing.</h2>
               <p>Keep your products, customers and everyday operations in sync.</p>
               <button onClick={() => navigate('products')}>
                 Manage your catalog <ArrowUpRight size={16} />
@@ -43,6 +42,7 @@ export default function Overview({ navigate }) {
                 </div>
                 <strong>{value}</strong>
                 <small>{text}</small>
+                <span className="admin-stat-link">View details <ArrowUpRight size={14} /></span>
               </button>
             ))}
           </div>
@@ -56,24 +56,13 @@ export default function Overview({ navigate }) {
                 </div>
                 <Badge>Live data</Badge>
               </div>
-              {monthlySales.length ? (
-                <div className="admin-chart">
-                  {monthlySales.map(month => (
-                    <div key={month._id}>
-                      <strong>{currency(month.total)}</strong>
-                      <span style={{ height: `${Math.max(8, ((month.total || 0) / maxSales) * 150)}px` }} />
-                      <small>{month._id}</small>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <EmptyState
-                  title="Your first sale starts the story"
-                  text="Collected payments will appear here once orders are marked paid."
-                />
-              )}
+              <RevenueChart sales={monthlySales} />
             </section>
 
+            <OrderBreakdown statuses={data.orderStatuses || []} navigate={navigate} />
+          </div>
+
+          <div className="admin-overview-bottom">
             <section className="admin-panel">
               <div className="admin-panel-heading">
                 <div>
@@ -112,7 +101,6 @@ export default function Overview({ navigate }) {
                 <ArrowUpRight size={16} />
               </button>
             </section>
-          </div>
 
           <section className="admin-panel">
             <div className="admin-panel-heading">
@@ -164,10 +152,50 @@ export default function Overview({ navigate }) {
               />
             )}
           </section>
+          </div>
         </>
       )}
     </DataState>
   )
+}
+
+function RevenueChart({ sales }) {
+  const months = Array.from({ length: 6 }, (_, index) => {
+    const day = new Date()
+    day.setDate(1)
+    day.setMonth(day.getMonth() - 5 + index)
+    const key = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}`
+    return { key, label: day.toLocaleDateString('en', { month: 'short' }), total: Number(sales.find(item => item._id === key)?.total || 0) }
+  })
+  const max = Math.max(100, ...months.map(month => month.total))
+  const points = months.map((month, index) => [60 + index * 100, 185 - month.total / max * 145])
+  const line = points.map(([x, y], index) => `${index ? 'L' : 'M'}${x},${y}`).join(' ')
+  return <div className="admin-revenue-chart">
+    <div className="admin-chart-summary"><div><small>Collected in displayed months</small><strong>{currency(months.reduce((sum, month) => sum + month.total, 0))}</strong></div><span><i /> Collected revenue</span></div>
+    <svg viewBox="0 0 600 225" role="img" aria-label={`Monthly collected revenue: ${months.map(month => `${month.label} ${currency(month.total)}`).join(', ')}`}>
+      <defs><linearGradient id="admin-revenue-fill" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#4b7250" stopOpacity=".3" /><stop offset="1" stopColor="#4b7250" stopOpacity=".015" /></linearGradient></defs>
+      {[0, .5, 1].map(ratio => <g key={ratio}><line x1="60" x2="560" y1={185 - ratio * 145} y2={185 - ratio * 145} stroke="#e5e9e2" strokeDasharray="4 5" /><text x="0" y={189 - ratio * 145}>{currency(Math.round(max * ratio))}</text></g>)}
+      <path d={`${line} L560,185 L60,185 Z`} fill="url(#admin-revenue-fill)" /><path d={line} fill="none" stroke="#4b7250" strokeWidth="3" strokeLinejoin="round" />
+      {months.map((month, index) => <g key={month.key}><circle cx={points[index][0]} cy={points[index][1]} r="5" fill="white" stroke="#4b7250" strokeWidth="2"><title>{month.label}: {currency(month.total)}</title></circle><text x={points[index][0]} y="215" textAnchor="middle">{month.label}</text></g>)}
+    </svg>
+    {!months.some(month => month.total) && <p className="admin-chart-note">Your paid orders will bring this chart to life.</p>}
+  </div>
+}
+
+function OrderBreakdown({ statuses, navigate }) {
+  const colors = ['#4b7250', '#d4a53b', '#94a780', '#b88a56', '#b96f60', '#75867a']
+  const total = statuses.reduce((sum, item) => sum + item.count, 0)
+  let offset = 0
+  return <section className="admin-panel admin-order-breakdown"><div className="admin-panel-heading"><div><h2>Order overview</h2><p>Every order, at a glance</p></div><Badge>All time</Badge></div>
+    <div className="admin-donut"><svg viewBox="0 0 160 160" role="img" aria-label={`${total} orders. ${statuses.map(item => `${item._id}: ${item.count}`).join(', ')}`}><circle cx="80" cy="80" r="62" fill="none" stroke="#edf2e9" strokeWidth="15" />{statuses.map((item, index) => {
+      const length = total ? item.count / total * 389.56 : 0
+      const start = offset
+      offset += length
+      return <circle key={item._id} cx="80" cy="80" r="62" fill="none" stroke={colors[index % colors.length]} strokeWidth="15" strokeDasharray={`${length} ${389.56 - length}`} strokeDashoffset={-start} transform="rotate(-90 80 80)" />
+    })}</svg><div><strong>{total}</strong><small>Total orders</small></div></div>
+    <div className="admin-chart-legend">{statuses.length ? statuses.map((item, index) => <div key={item._id}><i style={{ background: colors[index % colors.length] }} /><span>{item._id}</span><strong>{item.count}</strong></div>) : <p>No orders yet</p>}</div>
+    <button className="admin-text-button" onClick={() => navigate('orders')}>Manage orders <ArrowUpRight size={14} /></button>
+  </section>
 }
 
 function LeafMark() {
@@ -182,4 +210,3 @@ function LeafMark() {
     </svg>
   )
 }
-

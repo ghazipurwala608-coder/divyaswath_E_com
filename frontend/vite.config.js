@@ -1,4 +1,4 @@
-import { defineConfig, searchForWorkspaceRoot } from 'vite'
+import { defineConfig, loadEnv, searchForWorkspaceRoot } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import process from 'node:process'
@@ -7,7 +7,9 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, __dirname, '')
+  return {
   plugins: [react(), tailwindcss()],
   resolve: {
     dedupe: ['react', 'react-dom'],
@@ -22,7 +24,8 @@ export default defineConfig({
       ],
     },
     proxy: {
-      '/api': process.env.API_PROXY_TARGET || 'http://localhost:5000',
+      '/api': process.env.API_PROXY_TARGET || env.API_PROXY_TARGET || 'http://127.0.0.1:5000',
     },
   },
+  }
 })

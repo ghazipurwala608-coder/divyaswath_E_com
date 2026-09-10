@@ -40,7 +40,23 @@ npm run dev
 - Storefront: `http://localhost:5173`
 - API health: `http://localhost:5000/api/health`
 
+Keep both terminals running. Wait for the backend's `API running` message before using the frontend; the API starts after MongoDB connects. Vite's `ECONNREFUSED` proxy error means the backend is not listening at the configured target.
+
+For local API development, set `VITE_API_URL=/api` in `frontend/.env.development.local`. The Vite proxy defaults to `http://127.0.0.1:5000`; if the backend uses another port, set `API_PROXY_TARGET=http://127.0.0.1:YOUR_PORT` in that same file and restart Vite. Keep production API settings in the production environment.
+
 ## API response contract
+
+### Production page refresh / direct links
+
+The frontend uses React Router. Hosting must serve `index.html` for client routes such as `/admin`, `/account`, and `/shop`.
+
+- Vercel: committed `vercel.json` files support either the repository root or `frontend` as the project's Root Directory. Redeploy to apply the rewrite.
+- Netlify: `frontend/public/_redirects` is copied into `frontend/dist` by Vite. Publish `frontend/dist` (or `dist` when the base directory is `frontend`).
+- Render Static Site: in **Redirects/Rewrites**, add Source `/*`, Destination `/index.html`, Action **Rewrite**. Render requires this hosting setting; it does not use the Netlify `_redirects` file.
+
+These are frontend-only fallbacks. Set the production `VITE_API_URL` to the separately hosted backend's full `/api` URL. After deploying, open and refresh `/shop`, `/login`, and `/admin` directly. The admin route still requires authentication.
+
+## API response examples
 
 Successful response:
 
