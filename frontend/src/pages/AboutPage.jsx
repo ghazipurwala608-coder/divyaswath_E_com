@@ -137,22 +137,22 @@ export default function AboutPage() {
       </section>
 
       {/* ─── NEWSLETTER ──────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-[#063b25] px-5 py-5 text-white sm:px-10">
+      <section className="relative min-h-[76px] overflow-hidden border-t border-[#1b5a3b] bg-[#003a25] px-4 py-3 text-white sm:px-6 lg:px-8">
         <img
           src={siteContent.media.src_6}
           alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-30 mix-blend-screen"
+          className="pointer-events-none absolute right-0 top-0 z-0 h-full w-[42%] object-cover object-right opacity-30 mix-blend-multiply"
         />
-        <div className="relative mx-auto flex max-w-[1200px] flex-col items-center gap-4 sm:flex-row sm:gap-6">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-[#d5af4f] text-[#e5c66e]">
+        <div className="relative z-10 mx-auto flex max-w-[1200px] flex-col items-center gap-3 sm:flex-row sm:gap-4">
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[#c99a32] bg-[#003a25] text-[#e7bd54]">
             <Mail className="h-5 w-5" strokeWidth={1.4} />
           </span>
-          <div className="text-center sm:text-left sm:min-w-[240px]">
-            <h2 className="text-[13px] font-black uppercase tracking-[.1em]">{siteContent.text.stay_connected_for_natural_wellness}</h2>
-            <p className="mt-0.5 text-[10px] text-white/65">{siteContent.text.health_tips_thoughtful_updates_and_more}</p>
+          <div className="text-center sm:text-left sm:min-w-[245px]">
+            <h2 className="text-[13px] font-black uppercase tracking-[.08em]">STAY UPDATED ON WELLNESS</h2>
+            <p className="mt-0.5 text-[10px] text-white/75">Get health tips, exclusive offers &amp; updates.</p>
           </div>
-          <form onSubmit={subscribe} className="flex w-full max-w-[380px] sm:ml-auto">
+          <form onSubmit={subscribe} className="flex w-full max-w-[380px] sm:ml-auto lg:mr-[150px]">
             <label className="sr-only" htmlFor="about-newsletter-email">{siteContent.text.email_address}</label>
             <input
               id="about-newsletter-email" required

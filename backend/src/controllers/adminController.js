@@ -1,3 +1,4 @@
+import { customerQuery } from '../utils/roles.js'
 import Order from '../models/Order.js'
 import Product from '../models/Product.js'
 import User from '../models/User.js'
@@ -10,7 +11,7 @@ export const dashboard = asyncHandler(async (req, res) => {
   const [products, orders, users, revenue, recentOrders, lowStock, enquiries, subscribers, orderStatuses, monthlySales] = await Promise.all([
     Product.countDocuments({ isActive: true }),
     Order.countDocuments(),
-    User.countDocuments({ isAdmin: false }),
+    User.countDocuments(customerQuery),
     Order.aggregate([{ $match: { orderStatus: { $ne: 'Cancelled' }, paymentStatus: 'Paid' } }, { $group: { _id: null, total: { $sum: '$totalPrice' } } }]),
     Order.find().populate('user', 'name email phone').sort({ createdAt: -1 }).limit(10),
     Product.find({ isActive: true, countInStock: { $lte: 5 } }).select('name slug countInStock images'),

@@ -1,9 +1,14 @@
-﻿import 'dotenv/config'
+import 'dotenv/config'
+import dns from 'dns'
 import mongoose from 'mongoose'
 import crypto from 'node:crypto'
 import fs from 'node:fs/promises'
 import User from '../models/User.js'
 import { bootstrapStore } from './bootstrap.js'
+
+try {
+  dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1'])
+} catch (e) {}
 try {
   if (!process.env.MONGO_URI) throw new Error('MONGO_URI is missing. Configure backend/.env first.')
   await mongoose.connect(process.env.MONGO_URI, { serverSelectionTimeoutMS: 10000 })

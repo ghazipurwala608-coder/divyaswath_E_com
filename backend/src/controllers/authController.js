@@ -2,8 +2,10 @@ import User from '../models/User.js'
 import asyncHandler from '../utils/asyncHandler.js'
 import generateToken from '../utils/generateToken.js'
 import { sendSuccess } from '../utils/apiResponse.js'
+import { roleOf } from '../utils/roles.js'
+import { staffAccessError } from '../middleware/authMiddleware.js'
 
-const userPayload = (user) => ({ _id: user._id, name: user.name, email: user.email, phone: user.phone, isAdmin: user.isAdmin, isDriver: user.isDriver, deliveryActive: user.deliveryActive })
+const userPayload = (user) => ({ _id: user._id, name: user.name, email: user.email, phone: user.phone, role: roleOf(user), isAdmin: roleOf(user) === 'admin', isDriver: roleOf(user) === 'delivery_boy', deliveryActive: user.deliveryActive, deliveryArea: user.deliveryArea, accountActive: user.accountActive, ...(roleOf(user) === 'admin' && { subscription: user.subscription }) })
 
 export const register = asyncHandler(async (req, res) => {
   const { name, email, phone, password } = req.body
@@ -42,6 +44,15 @@ export const login = asyncHandler(async (req, res) => {
   if (!user || !(await user.comparePassword(password || ''))) {
     res.status(401)
     throw new Error('Incorrect email or password')
+  }
+  if (req.body.portal === 'delivery' && roleOf(user) !== 'delivery_boy') {
+    res.status(403)
+    throw new Error('Use the delivery partner account provided by your admin')
+  }
+  const accessError = await staffAccessError(user)
+  if (accessError) {
+    res.status(403)
+    throw new Error(accessError)
   }
   sendSuccess(res, {
     message: 'Signed in successfully',

@@ -28,16 +28,24 @@ import FaqPage from './pages/FaqPage.jsx'
 import PolicyPage from './pages/PolicyPage.jsx'
 import BlogPage from './pages/BlogPage.jsx'
 import DeliveryPage from './delivery/DeliveryPage.jsx'
+import DeliveryRoute from './components/DeliveryRoute.jsx'
+import SuperAdminRoute from './components/SuperAdminRoute.jsx'
+import SuperAdminDashboard from './admin/SuperAdminDashboard.jsx'
 
 function App() {
-  const isAdmin = ['/admin', '/delivery'].includes(useLocation().pathname)
+  const isAdmin = ['/admin', '/delivery', '/super-admin'].includes(useLocation().pathname)
   return (
     <div className="compact-ui min-h-screen bg-[#fffdf7] font-sans text-[#17241b] selection:bg-[#c99a32] selection:text-black">
       <ScrollToTop />
       {!isAdmin && <Header />}
       <main>
         <Routes>
-          <Route path="/delivery" element={<DeliveryPage />} />
+          <Route element={<DeliveryRoute />}>
+            <Route path="/delivery" element={<DeliveryPage />} />
+          </Route>
+          <Route element={<SuperAdminRoute />}>
+            <Route path="/super-admin" element={<SuperAdminDashboard />} />
+          </Route>
           <Route path="/" element={<HomePage />} />
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/products/:slug" element={<ProductPage />} />

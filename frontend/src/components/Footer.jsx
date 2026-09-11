@@ -246,6 +246,7 @@ export default function Footer() {
       <div className="border-t border-white/[.08]">
         <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-2 px-6 py-2.5 text-[11px] text-white/50 sm:flex-row sm:px-8">
           <p>© {new Date().getFullYear()} Divya Swasth. All rights reserved.</p>
+          <Link to="/delivery" className="text-[11px] text-white/60 hover:text-[#e5ce8e]">Delivery partner login</Link>
           <p className="flex items-center gap-1.5 text-[11px] text-white/60">
             <span>{siteContent.text?.designed_with || 'Designed with'}</span>
             <span className="text-[#c8973a]">💛</span>

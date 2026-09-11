@@ -44,10 +44,10 @@ const productConfigs = {
       [Leaf, 'Herbal Nourishment', 'Crafted with Jamun, Neem, Methi, and natural plant antioxidants.']
     ],
     ingredients: [
+      ['Karela', '/images/product/WhatsApp Image 2026-09-10 at 1.36.01 PM (2).jpeg', { x: 42, y: 992, size: 94, width: 1054 }],
       ['Jamun', 'JAMUN.png'],
       ['Methi', 'METHI.png'],
-      ['Neem', 'NEEM.png'],
-      ['Amla', 'AWALA.png']
+      ['Neem', 'NEEM.png']
     ],
     formula: [
       'A convenient capsule format',
@@ -89,10 +89,8 @@ const productConfigs = {
       [ShieldCheck, 'Immune Health', 'Potent adaptogens like Ashwagandha and Shilajit for natural defense.']
     ],
     ingredients: [
-      ['Ashwagandha', 'ASWAGHANDHA.png'],
       ['Shilajit', 'Shilajit.png'],
-      ['Shatavari', 'satwari.png'],
-      ['Amla', 'AWALA.png']
+      ['Kali Musli', '/images/botanicals/black-musli.png']
     ],
     formula: [
       'High-potency botanical extracts',
@@ -135,8 +133,8 @@ const productConfigs = {
     ],
     ingredients: [
       ['Garcinia', 'carchinia.png'],
-      ['Green Coffee', 'green-coffee-bean.webp'],
-      ['Green Tea', 'green-tea-extract.webp'],
+      ['Amla', 'AWALA.png'],
+      ['Black Pepper', 'black-pepper-piperine.webp'],
       ['Ginger', 'ginger-extract.webp']
     ],
     formula: [
@@ -483,10 +481,25 @@ export default function VitalInfinityProduct({ product }) {
         <section className="vital-inside">
           <h2>What’s inside?</h2>
           <p>Discover our botanical ingredients</p>
-          <div className="vital-ingredients">
-            {config.ingredients.map(([name, file]) => (
+          <div className="vital-ingredients" style={{ '--ingredient-columns': Math.min(config.ingredients.length, 4) }}>
+            {config.ingredients.map(([name, file, crop]) => (
               <Link to="/ingredients" key={name}>
-                <img loading="lazy" src={`/images/ingredients/${file}`} alt={name} />
+                <span className="vital-ingredient-photo">
+                  <img
+                    loading="lazy"
+                    src={file.startsWith('/') ? file : `/images/ingredients/${file}`}
+                    alt={name}
+                    style={crop ? {
+                      position: 'absolute',
+                      width: `${crop.width / crop.size * 100}%`,
+                      maxWidth: 'none',
+                      left: `${-crop.x / crop.size * 100}%`,
+                      top: `${-crop.y / crop.size * 100}%`,
+                      aspectRatio: 'auto',
+                      borderRadius: 0
+                    } : undefined}
+                  />
+                </span>
                 <strong>{name}</strong>
               </Link>
             ))}

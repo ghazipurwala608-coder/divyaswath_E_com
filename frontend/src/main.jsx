@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import App from './App.jsx'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
 import { SiteContentProvider } from './context/SiteContentContext.jsx'
 import { ProductProvider } from './context/ProductContext.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
@@ -11,10 +12,11 @@ import { CartProvider } from './context/CartContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <SiteContentProvider><ProductProvider><CartProvider>
-          <App />
+    <ErrorBoundary>
+      <BrowserRouter>
+        <AuthProvider>
+          <SiteContentProvider><ProductProvider><CartProvider>
+            <App />
           <Toaster
             position="top-right"
             toastOptions={{
@@ -25,5 +27,6 @@ createRoot(document.getElementById('root')).render(
         </CartProvider></ProductProvider></SiteContentProvider>
       </AuthProvider>
     </BrowserRouter>
-  </StrictMode>,
+  </ErrorBoundary>
+</StrictMode>,
 )

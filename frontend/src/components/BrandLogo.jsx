@@ -20,10 +20,14 @@ export default function BrandLogo() {
       </span>
       {/* Brand text */}
       <span className="min-w-0">
-        <span className="block whitespace-nowrap font-display text-[19px] font-bold leading-none tracking-[-.01em] sm:text-[23px]">
-          <span className="text-[#4a7c3f]">{siteContent.text.divya}</span>{' '}
-          <span className="text-[#c8973a]">{siteContent.text.swasth}</span>
-        </span>
+        <svg
+          viewBox="94 230 414 60"
+          role="img"
+          aria-label="Divya Swasth"
+          className="block h-auto w-[190px] overflow-hidden sm:w-[230px]"
+        >
+          <image href="/images/logo.png" width="598" height="453" />
+        </svg>
         <span className="mt-1 block whitespace-nowrap text-[5.5px] font-semibold uppercase tracking-[.08em] text-[#5a7a5a]/70 sm:text-[6.5px]">{siteContent.text.natural_healing_holistic_wellness_healthy_fut}</span>
         {/* Golden underline */}
         <span className="mt-1 block h-[1.5px] w-12 rounded-full bg-gradient-to-r from-[#c8973a] to-transparent" />

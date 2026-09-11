@@ -4,6 +4,7 @@ import { ArrowRight, Eye, EyeOff, Leaf, LockKeyhole, PackageCheck, ShieldCheck, 
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext.jsx'
+import { dashboardFor, roleOf } from '../data/roles.js'
 import './LoginReference.css'
 
 
@@ -43,7 +44,11 @@ export default function LoginReference({ initialSignup = false }) {
         : await login({ email: form.email.trim(), password: form.password })
       try { if (remember) localStorage.setItem('divyaRememberedEmail', form.email); else localStorage.removeItem('divyaRememberedEmail') } catch { /* Remembering an email is optional. */ }
       toast.success(signup ? 'Your account is ready' : 'Welcome back')
-      navigate(signedIn.isDriver ? '/delivery' : location.state?.from || (signedIn.isAdmin ? '/admin' : '/account'), { replace: true })
+      const destination = dashboardFor(signedIn)
+      const requested = location.state?.from
+      const safeRequested = typeof requested === 'string' && requested.startsWith('/') && !requested.startsWith('//')
+      const staffDestination = requested?.split('?')[0] === destination ? requested : destination
+      navigate(roleOf(signedIn) === 'customer' ? (safeRequested && !/^\/(admin|super-admin|delivery)([/?]|$)/.test(requested) ? requested : destination) : staffDestination, { replace: true })
     } catch (err) { setError(err.message || 'Unable to sign in. Please try again.') }
     finally { setLoading(false) }
   }
@@ -51,6 +56,7 @@ export default function LoginReference({ initialSignup = false }) {
   return <div className="account-reference login-reference"><div className="account-reference-inner">
     <section className="account-reference-hero" aria-labelledby="login-heading">
       <div className="account-reference-card login-card"><span className="account-kicker">{signup ? 'JOIN DIVYA SWASTH' : siteContent.text.welcome_back}</span><h1 id="login-heading">{signup ? 'Create your account' : siteContent.text.sign_in}</h1><p className="account-intro">{signup ? 'Begin your journey to natural wellness.' : siteContent.text.your_journey_to_natural_wellness_continues}<br />{signup ? 'Sign up below to manage your orders and deliveries.' : siteContent.text.sign_in_to_your_divya_swasth_account}</p>
+        {location.state?.message && <p role="status" className="rounded-lg bg-[#fff3dc] px-4 py-3 text-sm text-[#715421]">{location.state.message}</p>}
         <form onSubmit={submit}><fieldset disabled={loading}>
           {signup && <label htmlFor="signup-name">Full name<input id="signup-name" autoComplete="name" required maxLength={80} placeholder="Enter your full name" value={form.name} onChange={event => setForm({ ...form, name: event.target.value })} /></label>}
           <label htmlFor="login-email">{siteContent.text.email_address}<input id="login-email" type="email" autoComplete="username" required placeholder={siteContent.media.placeholder_1} value={form.email} onChange={event => setForm({ ...form, email: event.target.value })} /></label>

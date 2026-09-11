@@ -1,8 +1,9 @@
 import { useSiteContent } from '../context/SiteContentContext.jsx'
-import { ChevronDown, Clock, Menu, ShoppingCart, UserRound, X } from 'lucide-react'
+import { ChevronDown, Clock, Menu, ShieldCheck, ShoppingCart, UserRound, X } from 'lucide-react'
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { fallbackProducts } from '../data/products.js'
+import { dashboardFor, roleOf } from '../data/roles.js'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useCart } from '../context/CartContext.jsx'
 import { useProducts } from '../hooks/useProducts.js'
@@ -126,8 +127,17 @@ export default function Header() {
 
           {/* Right icons */}
           <div className="flex items-center gap-2">
+            {user && roleOf(user) !== 'customer' && (
+              <Link
+                to={dashboardFor(user)}
+                className="hidden items-center gap-1.5 rounded-full bg-[#1a2e1a] px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-[#e8be5b] shadow-sm transition hover:bg-[#254225] sm:inline-flex"
+              >
+                <ShieldCheck className="h-3.5 w-3.5 text-[#e8be5b]" />
+                {roleOf(user) === 'super_admin' ? 'Super Admin' : roleOf(user) === 'delivery_boy' ? 'Delivery Hub' : 'Admin Panel'}
+              </Link>
+            )}
             <Link
-              to={user ? '/account' : '/login'}
+              to={user ? dashboardFor(user) : '/login'}
               className="rounded-full p-2 text-[#2d4a2d] transition hover:bg-[#f0f5ec] hover:text-[#c8973a]"
               aria-label={user ? 'My account' : 'Sign in'}
             >
@@ -173,7 +183,7 @@ export default function Header() {
               </NavLink>
             ))}
             <NavLink
-              to={user ? '/account' : '/login'}
+              to={user ? dashboardFor(user) : '/login'}
               onClick={() => setOpen(false)}
               className="mt-2 rounded-lg border border-[#c8973a] px-4 py-2.5 text-center text-[12px] font-bold text-[#c8973a] transition hover:bg-[#c8973a] hover:text-white"
             >

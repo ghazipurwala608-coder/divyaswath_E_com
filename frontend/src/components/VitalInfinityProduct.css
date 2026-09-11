@@ -78,3 +78,6 @@
 .endless-gallery-detail .vital-main-image{padding-left:82px;background:#faf5e7}
 .endless-gallery-detail .vital-main-image img{object-fit:contain}
 @media(max-width:900px){.endless-gallery-detail .vital-main-image{padding-left:66px}}
+
+/* Ingredient photos follow each product label; crop Karela from its original poster. */
+.vital-ingredients{grid-template-columns:repeat(var(--ingredient-columns,4),minmax(0,1fr))}.vital-ingredient-photo{display:block;position:relative;overflow:hidden;aspect-ratio:1;border-radius:50%;border:1px solid #ded0a3;max-width:110px;margin-inline:auto}.vital-ingredient-photo img{display:block;border:0}

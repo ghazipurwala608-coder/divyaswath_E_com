@@ -4,6 +4,7 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 import { errorHandler, notFound } from './middleware/errorMiddleware.js'
 import adminRoutes from './routes/adminRoutes.js'
+import superAdminRoutes from './routes/superAdminRoutes.js'
 import authRoutes from './routes/authRoutes.js'
 import deliveryRoutes from './routes/deliveryRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
@@ -56,6 +57,7 @@ app.use('/api/delivery', deliveryRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/orders', orderRoutes)
 app.use('/api/admin', adminRoutes)
+app.use('/api/super-admin', superAdminRoutes)
 app.use('/api/contact', contactRoutes)
 app.use('/api/content', contentRoutes)
 app.use('/api/newsletter', newsletterRoutes)

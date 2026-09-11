@@ -1,4 +1,5 @@
-import { apiRequest } from '../api/client.js'
+import WellnessQuiz from '../components/WellnessQuiz.jsx'
+import { wellnessGoals } from '../data/wellnessQuiz.js'
 import { useSiteContent } from '../context/SiteContentContext.jsx'
 import { useNewsletter } from '../hooks/useNewsletter.js'
 import { useEffect, useState } from 'react'
@@ -39,17 +40,6 @@ export default function WellnessPage() {
 
   const { subscribe, submitting, subscribed } = useNewsletter('WellnessPage')
   const [selectedGoal, setSelectedGoal] = useState('')
-  const [recommendations, setRecommendations] = useState([])
-  const [finding, setFinding] = useState(false)
-  const [recommendationError, setRecommendationError] = useState('')
-  useEffect(() => {
-    if (!selectedGoal) return
-    let active = true
-    const index = siteContent.sections.WELLNESS_GOALS.findIndex(goal => goal.title === selectedGoal)
-    setFinding(true); setRecommendationError(''); setRecommendations([])
-    apiRequest('/wellness/recommendations?goal=' + index).then(data => { if (active) setRecommendations(data.products) }).catch(error => { if (active) setRecommendationError(error.message) }).finally(() => { if (active) setFinding(false) })
-    return () => { active = false }
-  }, [selectedGoal, siteContent.sections.WELLNESS_GOALS])
 
   useEffect(() => {
     const previousTitle = document.title
@@ -247,19 +237,20 @@ export default function WellnessPage() {
 
           {/* Heading */}
           <div className="mb-7 text-center">
-            <h2 className="font-display text-[20px] font-black uppercase tracking-[.06em] text-[#173623] sm:text-[22px]">{siteContent.text.let_s_find_what_your_body_needs}</h2>
-            <p className="mt-1.5 text-[12px] font-medium text-[#647168]">{siteContent.text.choose_the_area_you_d_like_to_focus_on}</p>
+            <h2 className="font-display text-[20px] font-black uppercase tracking-[.06em] text-[#173623] sm:text-[22px]">Pick your wellness quiz</h2>
+            <p className="mt-1.5 text-[12px] font-medium text-[#647168]">Step 1 of 3: Choose your main goal to get started.</p>
           </div>
 
           {/* Cards Grid */}
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-            {siteContent.sections.WELLNESS_GOALS.map(({ title, text, Icon, image, imageAlt }) => {
-              const selected = selectedGoal === title
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {wellnessGoals.map(({ id, title, text, icon, image }) => {
+              const Icon = siteIcons[icon]
+              const selected = selectedGoal === id
               return (
                 <button
                   key={title}
                   type="button"
-                  onClick={() => setSelectedGoal(title)}
+                  onClick={() => setSelectedGoal(id)}
                   aria-pressed={selected}
                   className={`group relative flex min-h-[320px] flex-col overflow-hidden rounded-[9px] border bg-white text-center shadow-[0_2px_10px_rgba(30,55,38,.07)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_10px_28px_rgba(30,55,38,.13)] ${selected ? 'border-[#b8882f] ring-2 ring-[#d8b563]/30' : 'border-[#e2e8e0]'}`}
                 >
@@ -279,7 +270,7 @@ export default function WellnessPage() {
                   <div className="h-[154px] w-full overflow-hidden bg-[#e3ead9]">
                     <img
                       src={image}
-                      alt={imageAlt}
+                      alt={title}
                       loading="eager"
                       className="h-full w-full object-cover object-top transition duration-500 group-hover:scale-105"
                     />
@@ -289,6 +280,7 @@ export default function WellnessPage() {
                   <p className="flex flex-1 items-center justify-center px-2 py-3 text-[10px] leading-[1.35] text-[#56675b]">
                     {text}
                   </p>
+                  <span className="mx-4 mb-4 rounded bg-[#163e29] px-4 py-2 text-xs font-bold text-white">Take the quiz →</span>
                 </button>
               )
             })}
@@ -297,7 +289,7 @@ export default function WellnessPage() {
       </section>
 
 
-{selectedGoal && <section className="mx-auto max-w-5xl px-5 py-8" aria-live="polite"><h2 className="font-display text-2xl">Your wellness selection</h2><p className="mt-2 text-xs text-[#68785c]">Explore products selected for your chosen goal. Check each product’s information before purchasing.</p>{finding ? <p className="py-5 text-sm">Finding your products…</p> : recommendationError ? <p role="alert" className="py-5 text-sm">{recommendationError}</p> : recommendations.length ? <div className="mt-5 grid gap-4 sm:grid-cols-2">{recommendations.map(product => <Link key={product._id} to={'/products/' + product.slug} className="flex items-center gap-4 rounded-lg border border-[#dce4d5] bg-white p-4">{product.images[0] && <img className="h-20 w-20 object-contain" src={product.images[0]} alt="" />}<span><strong className="block">{product.name}</strong><span className="mt-1 block text-xs">{product.subtitle}</span><b className="mt-2 block text-sm">₹{product.price.toLocaleString('en-IN')}</b></span><ArrowRight size={16} className="ml-auto" /></Link>)}</div> : <p className="py-5 text-sm">No products are listed for this goal yet. Explore our full collection.</p>}</section>}
+{selectedGoal && <WellnessQuiz key={selectedGoal} primary={selectedGoal} onReset={() => { setSelectedGoal(''); scrollToGoals() }} />}
 
       <section className="px-4 pb-5 pt-3 sm:px-6 lg:px-8">
         <div className="relative mx-auto min-h-[138px] max-w-[1200px] overflow-hidden rounded-lg border border-[#1e4a2e] bg-[#063b25] bg-[url('/images/wellness/wellness-quiz-cta-bg.svg')] bg-cover bg-center text-white shadow-2xl">
@@ -356,10 +348,10 @@ export default function WellnessPage() {
             <Mail className="h-5 w-5" strokeWidth={1.4} />
           </span>
           <div className="text-center sm:text-left sm:min-w-[245px]">
-            <h2 className="text-[13px] font-black uppercase tracking-[.08em]">{siteContent.text.stay_updated_on_wellness}</h2>
-            <p className="mt-0.5 text-[10px] text-white/75">{siteContent.text.get_health_tips_exclusive_offers_updates}</p>
+            <h2 className="text-[13px] font-black uppercase tracking-[.08em]">STAY UPDATED ON WELLNESS</h2>
+            <p className="mt-0.5 text-[10px] text-white/75">Get health tips, exclusive offers &amp; updates.</p>
           </div>
-          <div className="flex w-full max-w-[380px] sm:ml-auto sm:mr-[150px]">
+          <div className="flex w-full max-w-[380px] sm:ml-auto lg:mr-[150px]">
             <label className="sr-only" htmlFor="wellness-newsletter-email">{siteContent.text.email_address}</label>
             <input id="wellness-newsletter-email" required name="wellness-email" type="email" autoComplete="off" spellCheck="false" placeholder={siteContent.media.placeholder_5} className="min-w-0 flex-1 rounded-l-md bg-white px-4 py-2.5 text-[10px] text-[#203127] outline-none placeholder:text-[#8b938d]" />
             <button disabled={submitting || subscribed} type="submit" className="rounded-r-md bg-[#d39b35] px-5 py-2.5 text-[10px] font-black uppercase text-white">{submitting ? 'Subscribing…' : subscribed ? 'Subscribed' : 'Subscribe'}</button>

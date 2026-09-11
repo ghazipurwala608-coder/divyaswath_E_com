@@ -166,9 +166,12 @@ export default function HomePage() {
           </div>
 
           <img
-            src={siteContent.media.src_10}
-            alt={siteContent.media.alt_11}
-            className="mx-auto w-[92%] rounded-xl shadow-[0_8px_18px_rgba(31,55,35,.2)] sm:w-[88%] lg:w-full lg:translate-y-4"
+            src="/images/logo.png"
+            alt="Divya Swasth — Natural Healing, Holistic Wellness, Healthy Future. May all be healthy."
+            width={598}
+            height={453}
+            loading="lazy"
+            className="mx-auto h-auto w-[92%] rounded-xl bg-white object-contain shadow-[0_8px_18px_rgba(31,55,35,.2)] sm:w-[88%] lg:w-full"
           />
 
           <div className="flex items-center justify-center px-4 py-6 text-center lg:justify-start lg:pl-10 lg:text-left">

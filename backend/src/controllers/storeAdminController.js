@@ -1,3 +1,4 @@
+import { customerQuery } from '../utils/roles.js'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import crypto from 'node:crypto'
@@ -18,7 +19,7 @@ export const listProducts = asyncHandler(async (req, res) => {
 })
 export const listCustomers = asyncHandler(async (req, res) => {
   const customers = await User.aggregate([
-    { $match: { isAdmin: false } },
+    { $match: customerQuery },
     { $project: { name: 1, email: 1, phone: 1, createdAt: 1 } },
     { $lookup: { from: 'orders', let: { customer: '$_id' }, pipeline: [
       { $match: { $expr: { $eq: ['$user', '$$customer'] } } },
@@ -30,7 +31,7 @@ export const listCustomers = asyncHandler(async (req, res) => {
   sendSuccess(res, { data: { customers } })
 })
 export const customerDetail = asyncHandler(async (req, res) => {
-  const customer = await User.findOne({ _id: req.params.id, isAdmin: false }).select('name email phone createdAt')
+  const customer = await User.findOne({ _id: req.params.id, ...customerQuery }).select('name email phone createdAt')
   if (!customer) { res.status(404); throw new Error('Customer not found') }
   const orders = await Order.find({ user: customer._id }).sort({ createdAt: -1 })
   sendSuccess(res, { data: { customer, orders } })

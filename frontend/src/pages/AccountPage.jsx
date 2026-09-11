@@ -1,4 +1,5 @@
 import { useSiteContent } from '../context/SiteContentContext.jsx'
+import { dashboardFor, roleOf } from '../data/roles.js'
 import {
   ArrowRight,
   BadgeCheck,
@@ -14,15 +15,14 @@ import {
   ShieldCheck,
   ShoppingBag,
   Sparkles,
+  Truck,
 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { apiRequest } from '../api/client.js'
 import { useAuth } from '../context/AuthContext.jsx'
 import { statusTone } from '../data/orderTracking.js'
 import './AccountPage.css'
-
-
 
 export default function AccountPage() {
   const siteContent = useSiteContent('account', siteIcons)
@@ -33,16 +33,29 @@ export default function AccountPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (roleOf(user) !== 'customer') return
     apiRequest('/orders/my')
       .then(({ orders: fetched }) => setOrders(fetched))
       .catch(() => {})
       .finally(() => setLoading(false))
-  }, [])
+  }, [user])
 
-  const firstName = user.name.split(' ')[0]
-  const initials = user.name.split(' ').filter(Boolean).slice(0, 2).map((part) => part[0]).join('').toUpperCase()
+  const userRole = roleOf(user)
+  const dashboardPath = dashboardFor(user)
+
+  const isStaff = userRole !== 'customer'
+  const roleLabel = {
+    super_admin: 'Super Admin Dashboard',
+    admin: 'Admin Dashboard',
+    delivery_boy: 'Delivery Hub',
+  }[userRole] || 'Dashboard'
+
+  const firstName = user?.name ? user.name.split(' ')[0] : 'User'
+  const initials = user?.name ? user.name.split(' ').filter(Boolean).slice(0, 2).map((part) => part[0]).join('').toUpperCase() : 'SA'
   const totalSpent = useMemo(() => orders.reduce((sum, order) => sum + order.totalPrice, 0), [orders])
   const signOut = () => { logout(); navigate('/') }
+
+  if (isStaff) return <Navigate to={dashboardPath} replace />
 
   return (
     <section className="member-dashboard min-h-[calc(100svh-76px)] bg-[#f5f2e9]">
@@ -55,7 +68,19 @@ export default function AccountPage() {
             <p className="member-eyebrow">A little care. Every single day.</p>
             <h1>{siteContent.text.namaste}{firstName}.</h1>
             <p className="member-welcome-description">{siteContent.text.everything_for_your_wellness_journey_orders_a}</p>
-            <div className="member-hero-actions"><Link to="/shop">Explore wellness <ArrowRight size={16} /></Link><a href="#member-orders">View my orders <ChevronRight size={15} /></a></div>
+            <div className="member-hero-actions">
+              {isStaff && (
+                <Link
+                  to={dashboardPath}
+                  className="inline-flex items-center gap-2 rounded-full bg-[#e8be5b] px-6 py-3.5 text-xs font-black uppercase tracking-wider text-[#102a1d] shadow-lg transition hover:bg-[#dfb249] hover:scale-105"
+                >
+                  {userRole === 'super_admin' ? <ShieldCheck size={18} /> : userRole === 'delivery_boy' ? <Truck size={18} /> : <ShieldCheck size={18} />}
+                  Go to {roleLabel} <ArrowRight size={16} />
+                </Link>
+              )}
+              <Link to="/shop">Explore wellness <ArrowRight size={16} /></Link>
+              <a href="#member-orders">View my orders <ChevronRight size={15} /></a>
+            </div>
           </div>
         </div>
       </header>
@@ -64,7 +89,7 @@ export default function AccountPage() {
         <div className="member-stats mb-5 grid gap-3 sm:grid-cols-3">
           <SummaryCard icon={Box} label="Total orders" value={loading ? '—' : orders.length.toString()} />
           <SummaryCard icon={ShoppingBag} label="Total spent" value={loading ? '—' : `₹${totalSpent.toLocaleString('en-IN')}`} />
-          <SummaryCard icon={LockKeyhole} label="Account access" value="Protected" accent />
+          <SummaryCard icon={LockKeyhole} label="Account access" value={userRole === 'super_admin' ? 'Super Admin' : userRole === 'admin' ? 'Store Admin' : userRole === 'delivery_boy' ? 'Delivery Partner' : 'Protected'} accent />
         </div>
 
         <div className="grid items-start gap-5 lg:grid-cols-[310px_1fr]">
@@ -78,16 +103,28 @@ export default function AccountPage() {
                     <span className="absolute -bottom-1.5 -right-1.5 grid h-6 w-6 place-items-center rounded-full border-2 border-[#123b2a] bg-[#f6f2e7]"><BadgeCheck className="h-3.5 w-3.5 text-[#47704e]" /></span>
                   </div>
                   <div className="min-w-0">
-                    <p className="text-[8px] font-black uppercase tracking-[.18em] text-[#dfbd69]">{siteContent.text.member_profile}</p>
-                    <h2 className="mt-1 truncate font-display text-2xl text-[#fff5dc]">{user.name}</h2>
+                    <p className="text-[8px] font-black uppercase tracking-[.18em] text-[#dfbd69]">{userRole === 'super_admin' ? 'Super Admin Profile' : userRole === 'admin' ? 'Store Admin Profile' : userRole === 'delivery_boy' ? 'Delivery Profile' : 'Member Profile'}</p>
+                    <h2 className="mt-1 truncate font-display text-2xl text-[#fff5dc]">{user?.name}</h2>
                   </div>
                 </div>
               </div>
               <div className="space-y-3 p-5">
-                <ContactRow icon={Mail} label="Email address" value={user.email} />
-                <ContactRow icon={Phone} label="Mobile number" value={user.phone || 'Not provided'} />
-                <div className="flex items-center gap-2 rounded-xl border border-[#dce7da] bg-[#f1f6ef] px-3 py-2.5 text-[9px] font-bold text-[#47704e]"><ShieldCheck className="h-4 w-4" />{siteContent.text.secure_member_session_active}</div>
-                {user.isAdmin && <Link to={siteContent.media.to_2} className="mt-2 flex items-center justify-center gap-2 rounded-xl border border-[#c99a38] py-3 text-[8px] font-black uppercase tracking-[.13em] text-[#8a6017] transition hover:bg-[#fff7e2]">{siteContent.text.open_admin_dashboard}<ArrowRight className="h-3.5 w-3.5" /></Link>}
+                <ContactRow icon={Mail} label="Email address" value={user?.email} />
+                <ContactRow icon={Phone} label="Mobile number" value={user?.phone || 'Not provided'} />
+                <div className="flex items-center gap-2 rounded-xl border border-[#dce7da] bg-[#f1f6ef] px-3 py-2.5 text-[9px] font-bold text-[#47704e]">
+                  <ShieldCheck className="h-4 w-4" />
+                  {userRole === 'super_admin' ? 'Super Admin Session Active' : userRole === 'admin' ? 'Admin Session Active' : userRole === 'delivery_boy' ? 'Delivery Partner Session Active' : siteContent.text.secure_member_session_active}
+                </div>
+                {isStaff && (
+                  <Link
+                    to={dashboardPath}
+                    className="mt-3 flex items-center justify-center gap-2 rounded-xl bg-[#123b2a] py-3.5 px-4 text-xs font-black uppercase tracking-wider text-[#efc96d] shadow-md transition hover:bg-[#1a4a36] hover:text-white"
+                  >
+                    {userRole === 'super_admin' ? <ShieldCheck className="h-4 w-4 text-[#efc96d]" /> : userRole === 'delivery_boy' ? <Truck className="h-4 w-4 text-[#efc96d]" /> : <ShieldCheck className="h-4 w-4 text-[#efc96d]" />}
+                    Go to {roleLabel}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                )}
               </div>
             </div>
 

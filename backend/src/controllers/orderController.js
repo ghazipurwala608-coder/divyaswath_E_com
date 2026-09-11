@@ -1,3 +1,4 @@
+import { adminAccess } from '../utils/roles.js'
 import mongoose from 'mongoose'
 import { NEXT_ORDER_STATUS, ORDER_STATUSES, PAYMENT_STATUSES, trackingEventFor } from '../constants/orderTracking.js'
 import Order from '../models/Order.js'
@@ -88,7 +89,7 @@ export const getOrder = asyncHandler(async (req, res) => {
     throw new Error('Order not found with provided ID or tracking number')
   }
 
-  if (!req.user || (!req.user.isAdmin && String(order.user?._id) !== String(req.user._id))) {
+  if (!req.user || (!adminAccess(req.user) && String(order.user?._id) !== String(req.user._id))) {
     res.status(req.user ? 403 : 401)
     throw new Error('Sign in with the customer account that placed this order to view tracking')
   }
@@ -135,6 +136,10 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
   if (!order) { res.status(404); throw new Error('Order not found') }
 
   const requestedStatus = req.body.orderStatus || order.orderStatus
+  if (order.deliveryPerson && requestedStatus !== order.orderStatus && ['Shipped', 'Out for Delivery'].includes(requestedStatus)) {
+    res.status(400)
+    throw new Error('The assigned delivery partner must confirm pickup and out-for-delivery updates from their dashboard')
+  }
   if (order.deliveryPerson && requestedStatus === 'Delivered' && order.orderStatus !== 'Delivered') {
     res.status(400); throw new Error('Assigned deliveries must be completed by the delivery person with customer OTP verification')
   }

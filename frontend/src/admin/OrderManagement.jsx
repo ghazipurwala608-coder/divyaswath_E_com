@@ -16,6 +16,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import toast from 'react-hot-toast'
+import { Link } from 'react-router-dom'
 import { apiRequest } from '../api/client.js'
 import OrderTimeline from '../components/OrderTimeline.jsx'
 import { NEXT_ORDER_STATUS, ORDER_FILTERS, PAYMENT_STATUSES, formatOrderDate, statusTone } from '../data/orderTracking.js'
@@ -48,7 +49,7 @@ export default function OrderManagement() {
 
 function FulfilmentCard({ order, saving, onUpdate }) {
   const [form, setForm] = useState(() => formFromOrder(order))
-  const nextStatus = order.deliveryPerson && order.orderStatus === 'Out for Delivery' ? null : NEXT_ORDER_STATUS[order.orderStatus]
+  const nextStatus = order.deliveryPerson && ['Packed', 'Shipped', 'Out for Delivery'].includes(order.orderStatus) ? null : NEXT_ORDER_STATUS[order.orderStatus]
   const final = ['Delivered', 'Cancelled'].includes(order.orderStatus)
   const setField = (field) => (event) => setForm((current) => ({ ...current, [field]: event.target.value }))
 
@@ -72,7 +73,7 @@ function FulfilmentCard({ order, saving, onUpdate }) {
       <details className="group" open={!final}>
         <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-3 text-[12px] font-black uppercase tracking-[.06em] text-[#637267] hover:bg-[#fafaf7]"><span>Manage fulfilment</span><ChevronToggle /></summary>
         <div className="border-t border-[#eceee9] p-5">
-          <OrderTimeline status={order.orderStatus} />
+          <OrderTimeline status={order.orderStatus} /><div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-[#eff4e9] p-3 text-xs"><span>{order.deliveryPerson ? "Delivery partner assigned. Pickup, location updates and customer OTP completion happen in the partner dashboard." : "Using your delivery team? Confirm and pack this order, then assign a partner."}</span><Link to="/admin?tab=delivery" className="font-bold underline">Manage delivery team</Link></div>
 
           <div className="mt-6 grid gap-4 lg:grid-cols-[.8fr_1.2fr]">
             <div className="space-y-3">
