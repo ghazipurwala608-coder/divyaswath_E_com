@@ -44,10 +44,14 @@ const productConfigs = {
       [Leaf, 'Herbal Nourishment', 'Crafted with Jamun, Neem, Methi, and natural plant antioxidants.']
     ],
     ingredients: [
-      ['Karela', '/images/product/WhatsApp Image 2026-09-10 at 1.36.01 PM (2).jpeg', { x: 42, y: 992, size: 94, width: 1054 }],
-      ['Jamun', 'JAMUN.png'],
+      ['Jamun', 'sugurshield/jammun.png'],
+      ['Vijaysar', 'sugurshield/bijasar.png'],
+      ['Bimbi', 'sugurshield/bimbi.png'],
+      ['Mamraaj', 'sugurshield/mamraaj.png'],
       ['Methi', 'METHI.png'],
-      ['Neem', 'NEEM.png']
+      ['Neem', 'NEEM.png'],
+      ['Vang Bhasma', 'sugurshield/bang basma.png'],
+      ['Ashwagandha', 'sugurshield/awasghanga.png']
     ],
     formula: [
       'A convenient capsule format',
@@ -90,7 +94,13 @@ const productConfigs = {
     ],
     ingredients: [
       ['Shilajit', 'Shilajit.png'],
-      ['Kali Musli', '/images/botanicals/black-musli.png']
+      ['Ashwagandha', 'ASWAGHANDHA.png'],
+      ['Shatavari', 'satwari.png'],
+      ['Kaunch Beej', 'vital/beej.png'],
+      ['Safed Musli', '/images/botanicals/safed-musli.png'],
+      ['Gokshura', '/images/botanicals/gokshura.png'],
+      ['Kali Musli', '/images/botanicals/black-musli.png'],
+      ['Amla', 'AWALA.png']
     ],
     formula: [
       'High-potency botanical extracts',
@@ -133,9 +143,13 @@ const productConfigs = {
     ],
     ingredients: [
       ['Garcinia', 'carchinia.png'],
-      ['Amla', 'AWALA.png'],
-      ['Black Pepper', 'black-pepper-piperine.webp'],
-      ['Ginger', 'ginger-extract.webp']
+      ['Harad', 'leanshap/Harar.png'],
+      ['Kali Mirch', 'leanshap/Kalinmich.png'],
+      ['Baheda', 'leanshap/baheda.png'],
+      ['Green Tea', 'leanshap/chaa.png'],
+      ['Chitrak', 'leanshap/chitrak.png'],
+      ['Pippali', 'leanshap/pipal.png'],
+      ['Ginger', 'leanshap/saunth.png']
     ],
     formula: [
       'Standardized Garcinia Cambogia extract',
@@ -178,9 +192,11 @@ const productConfigs = {
     ],
     ingredients: [
       ['Ashwagandha', 'ASWAGHANDHA.png'],
-      ['Amla', 'AWALA.png'],
+      ['Amla', 'vital/awala.png'],
       ['Shatavari', 'satwari.png'],
-      ['Shilajit', 'Shilajit.png']
+      ['Shilajit', 'vital/Shilajit.png'],
+      ['Baheda', 'vital/baheda.png'],
+      ['Kaunch Beej', 'vital/beej.png']
     ],
     formula: [
       'A convenient capsule format',
@@ -483,7 +499,7 @@ export default function VitalInfinityProduct({ product }) {
           <p>Discover our botanical ingredients</p>
           <div className="vital-ingredients" style={{ '--ingredient-columns': Math.min(config.ingredients.length, 4) }}>
             {config.ingredients.map(([name, file, crop]) => (
-              <Link to="/ingredients" key={name}>
+              <Link to={`/ingredients?product=${product.slug}&search=${encodeURIComponent(name)}`} key={name}>
                 <span className="vital-ingredient-photo">
                   <img
                     loading="lazy"
@@ -507,7 +523,7 @@ export default function VitalInfinityProduct({ product }) {
           <p className="vital-small">
             Explore the botanical range. Refer to the product label for the complete formula.
           </p>
-          <Link className="vital-small-link" to="/ingredients">
+          <Link className="vital-small-link" to={`/ingredients?product=${product.slug}`}>
             Explore all ingredients
             <ArrowRight size={12} />
           </Link>
