@@ -2,7 +2,7 @@ import express from 'express'
 import { dashboard } from '../controllers/adminController.js'
 import { adminOnly, protect } from '../middleware/authMiddleware.js'
 import { getAdminContent, updateContent } from '../controllers/contentController.js'
-import { listProducts, listCustomers, customerDetail, listMessages, updateMessage, listSubscribers, updateSubscriber, listMedia, uploadMedia } from '../controllers/storeAdminController.js'
+import { listProducts, listCustomers, customerDetail, listMessages, updateMessage, listSubscribers, updateSubscriber, listMedia, uploadMedia, deleteMedia } from '../controllers/storeAdminController.js'
 
 const router = express.Router()
 router.use(protect, adminOnly)
@@ -17,5 +17,6 @@ router.patch('/subscribers/:id', updateSubscriber)
 router.get('/content', getAdminContent)
 router.put('/content/:key', updateContent)
 router.get('/media', listMedia)
-router.post('/media', express.raw({ type: 'application/octet-stream', limit: '5mb' }), uploadMedia)
+router.post('/media', express.raw({ type: ['application/octet-stream', 'image/*', '*/*'], limit: '10mb' }), uploadMedia)
+router.delete('/media', deleteMedia)
 export default router

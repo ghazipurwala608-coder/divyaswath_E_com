@@ -98,12 +98,172 @@
 .admin-footer { display: flex; justify-content: space-between; border-top: 1px solid #e8ecdf; color: #637267; padding: 18px 35px; font-size: 12px; }
 .admin-padded { padding: 23px; }
 .admin-hint { font-size: 12px; color: #637267; margin: 12px 0 20px; }
-.admin-media-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px; }
-.admin-media-grid > button { text-align: left; border: 1px solid #e1e8d8; border-radius: 7px; overflow: hidden; min-width: 0; background: white; }
-.admin-media-grid img { width: 100%; height: 135px; object-fit: contain; background: #f7f9f1; }
-.admin-media-grid span, .admin-media-grid small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 9px 12px 0; font-size: 12px; }
-.admin-media-grid small { font-size: 12px; color: #637267; padding-top: 4px; }
-.admin-media-grid b { display: flex; gap: 5px; align-items: center; font-size: 12px; color: #829561; font-weight: 500; padding: 9px 12px; }
+.admin-filter-btn {
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: 1px solid #dce4d2;
+  background: #f8faf4;
+  color: #4d6051;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.admin-filter-btn:hover {
+  background: #eef3e6;
+  border-color: #b8cca9;
+  color: #1a3320;
+}
+.admin-filter-btn.active {
+  background: #2d5a36;
+  border-color: #2d5a36;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(45, 90, 54, 0.2);
+}
+
+.admin-media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 16px;
+}
+
+.admin-media-item {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid #e1e8d8;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.admin-media-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  border-color: #c4d6b6;
+}
+
+.admin-media-preview {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  background: #f8faf4;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #edf2e6;
+  overflow: hidden;
+}
+
+.admin-media-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 8px;
+  transition: transform 0.3s;
+}
+
+.admin-media-preview:hover img {
+  transform: scale(1.05);
+}
+
+.admin-media-tag {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #2d5a36;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.03em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.admin-media-info {
+  padding: 10px 12px 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-media-name {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1e3323;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-media-url {
+  display: block;
+  font-size: 11px;
+  color: #728577;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 3px;
+  font-family: monospace;
+}
+
+.admin-media-actions {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px 10px;
+  border-top: 1px solid #f1f4ec;
+  background: #fafbf8;
+}
+
+.admin-media-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #d5dfcb;
+  background: #ffffff;
+  color: #3b5040;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.admin-media-btn:hover {
+  background: #eef3e8;
+  border-color: #acc49b;
+  color: #172d1c;
+}
+
+.admin-media-btn.primary {
+  background: #2d5a36;
+  border-color: #2d5a36;
+  color: #ffffff;
+}
+
+.admin-media-btn.primary:hover {
+  background: #23472b;
+}
+
+.admin-media-btn.danger {
+  flex: 0 0 auto;
+  color: #c93b2b;
+  border-color: #f1cfcb;
+  background: #fffafa;
+}
+
+.admin-media-btn.danger:hover {
+  background: #feeae8;
+  border-color: #ea7a6e;
+  color: #a82415;
+}
+
 .admin-modal-backdrop { position: fixed; inset: 0; z-index: 100; background: #102a20a6; backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; padding: 25px; }
 .admin-modal { width: min(650px, 100%); max-height: 92vh; overflow: auto; background: #fff; border-radius: 12px; box-shadow: 0 25px 100px #071e1a50; }
 .admin-modal.wide { width: min(950px, 100%); }

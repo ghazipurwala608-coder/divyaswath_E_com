@@ -37,7 +37,11 @@ export default function HomePage() {
   return (
     <div className="bg-[#f7f5ee]">
       <section className="home-reference-hero relative aspect-[1974/797] overflow-hidden bg-[#f9f5e8]">
-        <img src={siteContent.media.src_1} alt={siteContent.media.alt_2} className="absolute inset-0 h-full w-full object-cover" />
+        <img
+          src={siteContent?.media?.src_1 || '/images/home/hero home.png'}
+          alt={siteContent?.media?.alt_2 || 'Divya Swasth holistic wellness range with natural ingredients'}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
         <div className="absolute left-[6.3%] top-[10%] z-10 w-[42%] text-[#123d29]">
           <p className="font-display text-[clamp(9px,1.42vw,24px)] font-bold leading-none tracking-[.035em]">{siteContent.text.natural_healing}</p>
           <h1 className="mt-[1.6%] font-display text-[clamp(29px,5vw,82px)] font-bold leading-[.9] tracking-[-.025em] text-[#bd7f1d]">{siteContent.text.holistic}<br />{siteContent.text.wellness}</h1>

@@ -42,11 +42,11 @@ export default function Footer() {
         <div className="flex flex-col gap-3">
           {/* Logo + Brand Name */}
           <Link to={siteContent.media?.to_1 || '/'} className="group flex items-center gap-3" aria-label="Divya Swasth home">
-            <span className="relative h-[52px] w-[52px] shrink-0 overflow-hidden rounded-full border-2 border-[#c8973a]/70 bg-white shadow-md">
+            <span className="relative h-[52px] w-[52px] shrink-0 overflow-hidden rounded-full border-2 border-[#c8973a]/70 bg-white shadow-md flex items-center justify-center p-1">
               <img
                 src={siteContent.media?.src_2 || '/images/logo.png'}
                 alt={siteContent.media?.alt_3 || 'Divya Swasth'}
-                className="absolute left-1/2 top-[3%] -translate-x-1/2 w-[165%] max-w-none transition duration-300 group-hover:scale-105"
+                className="h-full w-full object-contain transition duration-300 group-hover:scale-105"
               />
             </span>
             <div>

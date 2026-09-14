@@ -55,7 +55,7 @@ async function walk(directory, prefix) {
   const nested = await Promise.all(entries.map(async entry => {
     const url = `${prefix}/${entry.name}`
     if (entry.isDirectory()) return walk(path.join(directory, entry.name), url)
-    return /\.(png|jpe?g|webp|svg|gif)$/i.test(entry.name) ? [{ name: entry.name, url }] : []
+    return /\.(png|jpe?g|webp|svg|gif|avif|jfif)$/i.test(entry.name) ? [{ name: entry.name, url }] : []
   }))
   return nested.flat()
 }
@@ -64,15 +64,87 @@ export const listMedia = asyncHandler(async (req, res) => {
   sendSuccess(res, { data: { media: [...uploaded, ...builtIn] } })
 })
 export const uploadMedia = asyncHandler(async (req, res) => {
-  const data = req.body
-  if (!Buffer.isBuffer(data) || data.length < 12 || data.length > 5 * 1024 * 1024) { res.status(400); throw new Error('Choose a PNG, JPEG or WebP image under 5 MB') }
+  let data = null
+  let originalName = ''
+
+  if (req.body && typeof req.body === 'object' && req.body.data) {
+    originalName = req.body.name || ''
+    const base64Str = String(req.body.data).replace(/^data:image\/[a-z0-9+.-]+;base64,/, '')
+    data = Buffer.from(base64Str, 'base64')
+  } else if (Buffer.isBuffer(req.body)) {
+    data = req.body
+    originalName = req.headers['x-file-name'] ? decodeURIComponent(req.headers['x-file-name']) : ''
+  }
+
+  if (!data || !Buffer.isBuffer(data) || data.length < 12 || data.length > 20 * 1024 * 1024) {
+    res.status(400)
+    throw new Error('Choose an image file under 20 MB')
+  }
+
+  const fileExt = path.extname(originalName).replace('.', '').toLowerCase()
+
   let extension
-  if (data.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10]))) extension = 'png'
-  else if (data[0] === 255 && data[1] === 216 && data[2] === 255) extension = 'jpg'
-  else if (data.toString('ascii', 0, 4) === 'RIFF' && data.toString('ascii', 8, 12) === 'WEBP') extension = 'webp'
-  else { res.status(400); throw new Error('Unsupported image. Use PNG, JPEG or WebP.') }
+  if (data.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) {
+    extension = 'png'
+  } else if (data[0] === 255 && data[1] === 216) {
+    extension = 'jpg'
+  } else if (data.toString('ascii', 0, 4) === 'RIFF' && data.toString('ascii', 8, 12) === 'WEBP') {
+    extension = 'webp'
+  } else if (data.subarray(0, 4).equals(Buffer.from('GIF8')) || data.subarray(0, 3).equals(Buffer.from('GIF'))) {
+    extension = 'gif'
+  } else if (['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'avif', 'jfif'].includes(fileExt)) {
+    extension = fileExt === 'jpeg' ? 'jpg' : fileExt
+  } else {
+    const text = data.toString('utf8', 0, 300)
+    if (
+      (text.includes('<svg') || text.includes('<?xml')) &&
+      text.includes('http://www.w3.org/2000/svg') &&
+      !/<script|javascript:|on\w+=/i.test(data.toString('utf8'))
+    ) {
+      extension = 'svg'
+    } else {
+      res.status(400)
+      throw new Error('Unsupported or unsafe image. Use PNG, JPEG, WebP, SVG or GIF.')
+    }
+  }
+
   await fs.mkdir(uploadDirectory, { recursive: true })
   const name = `${crypto.randomUUID()}.${extension}`
   await fs.writeFile(path.join(uploadDirectory, name), data, { flag: 'wx' })
   sendSuccess(res, { statusCode: 201, data: { media: { name, url: `/api/media/${name}` } } })
 })
+
+export const deleteMedia = asyncHandler(async (req, res) => {
+  const target = req.query.url || req.body?.url || req.query.name || req.body?.name
+  if (!target || typeof target !== 'string') {
+    res.status(400)
+    throw new Error('Image URL or name is required')
+  }
+
+  let filePath = null
+
+  if (target.startsWith('/api/media/')) {
+    const filename = path.basename(target)
+    filePath = path.join(uploadDirectory, filename)
+  } else if (target.startsWith('/images/')) {
+    const relative = target.replace(/^\/images\//, '')
+    const safePath = path.normalize(relative).replace(/^(\.\.[\/\\])+/, '')
+    filePath = path.join(publicDirectory, safePath)
+  } else {
+    const filename = path.basename(target)
+    filePath = path.join(uploadDirectory, filename)
+  }
+
+  try {
+    await fs.unlink(filePath)
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      res.status(404)
+      throw new Error('Image not found or already deleted')
+    }
+    throw err
+  }
+
+  sendSuccess(res, { message: 'Image deleted successfully' })
+})
+

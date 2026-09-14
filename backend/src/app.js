@@ -46,7 +46,7 @@ const corsOptions = {
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }))
 app.use(cors(corsOptions))
 app.options('*', cors(corsOptions))
-app.use(express.json({ limit: '2mb' }))
+app.use(express.json({ limit: '20mb' }))
 app.use(express.urlencoded({ extended: false, limit: '100kb' }))
 if (process.env.NODE_ENV !== 'test') app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'))
 

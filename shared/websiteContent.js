@@ -2942,8 +2942,9 @@ export const websiteContent = {
     },
     "media": {
       "to_1": "/",
-      "src_2": "/images/logo.jpeg"
+      "src_2": "/images/logo.png"
     },
     "sections": {}
   }
 }
+
