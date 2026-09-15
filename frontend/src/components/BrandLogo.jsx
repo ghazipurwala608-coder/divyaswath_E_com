@@ -7,7 +7,7 @@ export default function BrandLogo({ className = '' }) {
   const divya = siteContent?.text?.divya || 'DIVYA'
   const swasth = siteContent?.text?.swasth || 'SWASTH'
   const tagline = siteContent?.text?.natural_healing_holistic_wellness_healthy_fut || 'NATURAL HEALING · HOLISTIC WELLNESS · HEALTHY FUTURE'
-  const logoSrc = siteContent?.media?.src_2 || '/images/logo.png'
+  const logoSrc = siteContent?.media?.src_2 || 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450630/divyaswasth/migrated/c3f4077ffa0cfc7d-logo.png'
   const logoLink = siteContent?.media?.to_1 || '/'
 
   // Render DIVYA with prominent initial 'D' and stylized leaf flourish on 'A'
@@ -90,7 +90,7 @@ export default function BrandLogo({ className = '' }) {
           src={logoSrc}
           alt={`${divya} ${swasth}`}
           className="h-full w-full object-contain"
-          onError={(e) => { e.currentTarget.src = '/images/logo.png' }}
+          onError={(e) => { e.currentTarget.src = 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450630/divyaswasth/migrated/c3f4077ffa0cfc7d-logo.png' }}
         />
       </span>
 

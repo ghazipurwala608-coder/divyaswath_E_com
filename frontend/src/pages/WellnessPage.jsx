@@ -292,7 +292,7 @@ export default function WellnessPage() {
 {selectedGoal && <WellnessQuiz key={selectedGoal} primary={selectedGoal} onReset={() => { setSelectedGoal(''); scrollToGoals() }} />}
 
       <section className="px-4 pb-5 pt-3 sm:px-6 lg:px-8">
-        <div className="relative mx-auto min-h-[138px] max-w-[1200px] overflow-hidden rounded-lg border border-[#1e4a2e] bg-[#063b25] bg-[url('/images/wellness/wellness-quiz-cta-bg.svg')] bg-cover bg-center text-white shadow-2xl">
+        <div className="relative mx-auto min-h-[138px] max-w-[1200px] overflow-hidden rounded-lg border border-[#1e4a2e] bg-[#063b25] bg-[url('https://res.cloudinary.com/djfluwhwu/image/upload/v1789450790/divyaswasth/migrated/7881caa51269c0f6-wellness-quiz-cta-bg.svg')] bg-cover bg-center text-white shadow-2xl">
 
           <div className="relative mx-auto flex min-h-[138px] max-w-[1040px] items-center justify-center gap-3 text-center md:justify-center">
 

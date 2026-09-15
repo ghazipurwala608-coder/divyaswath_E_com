@@ -1,7 +1,6 @@
 import Product from '../models/Product.js'
 import asyncHandler from '../utils/asyncHandler.js'
 import { sendSuccess } from '../utils/apiResponse.js'
-import { initialProducts } from '../../../shared/catalog.js'
 
 const editableFields = ['slug', 'name', 'subtitle', 'category', 'price', 'mrp', 'countInStock', 'badge', 'theme', 'featured', 'shortDescription', 'description', 'ingredients', 'benefits', 'size', 'usage', 'form', 'classification', 'vegetarian', 'storage', 'disclaimer', 'images', 'imageStatus', 'availableForPurchase', 'cardImage', 'sortOrder']
 function productInput(body, res) {
@@ -68,9 +67,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
 })
 
 export const deleteProduct = asyncHandler(async (req, res) => {
-  const existing = await Product.findById(req.params.id)
-  if (initialProducts.some(item => item.slug === existing?.slug)) { res.status(400); throw new Error('Original catalog products are preserved. Update stock or availability instead.') }
   const product = await Product.findByIdAndUpdate(req.params.id, { isActive: false }, { new: true })
   if (!product) { res.status(404); throw new Error('Product not found') }
-  sendSuccess(res, { message: 'Product archived successfully', data: { product } })
+  sendSuccess(res, { message: 'Product deleted successfully', data: { product } })
 })

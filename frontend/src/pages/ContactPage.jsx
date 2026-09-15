@@ -74,7 +74,7 @@ export default function ContactPage() {
   return (
     <div className="contact-reference">
       <section className="contact-banner" aria-labelledby="contact-heading">
-        <img src="/images/contact-ayurveda-hero.png" alt="Ayurvedic herbs, amla and a brass mortar beside a green and gold botanical medallion" fetchPriority="high" />
+        <img src="https://res.cloudinary.com/djfluwhwu/image/upload/v1789450316/divyaswasth/migrated/82af2b98ff6bb0f8-contact-ayurveda-hero.png" alt="Ayurvedic herbs, amla and a brass mortar beside a green and gold botanical medallion" fetchPriority="high" />
         <div className="contact-reference-inner contact-banner-content"><div>
           <nav aria-label="Breadcrumb"><Link to="/">Home</Link><span>/</span>Contact Us</nav>
           <h1 id="contact-heading">CONTACT US</h1>

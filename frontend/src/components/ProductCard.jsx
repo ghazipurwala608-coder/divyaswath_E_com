@@ -2,7 +2,7 @@ import { ArrowRight, ChevronRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 export default function ProductCard({ product }) {
-  const image = product.cardImage || product.images?.[0] || '/images/home/Vital.png'
+  const image = product.cardImage || product.images?.[0] || 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450413/divyaswasth/migrated/cd90920cf0c446e8-Vital.png'
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-[#e3d9b8] bg-[#fffdf8] shadow-[0_7px_20px_rgba(49,68,40,.08)] transition duration-300 hover:-translate-y-1 hover:border-[#c8a452] hover:shadow-[0_16px_36px_rgba(49,68,40,.15)]">

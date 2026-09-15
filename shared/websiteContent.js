@@ -1,5 +1,9 @@
+import { productIngredientImages } from './productIngredientImages.js'
 // Original storefront content. Structure and array sizes preserve the supplied design.
 export const websiteContent = {
+  'product-ingredient-images': productIngredientImages,
+  posters: { items: [] },
+  backgrounds: { contact: 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450314/divyaswasth/migrated/56e7509289e3a80e-con_image.png', journey: 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450332/divyaswasth/migrated/458d42b49581f5db-card_bg.png', policy: 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450258/divyaswasth/migrated/5ad6174d98944ad6-botanical-hero-bg.png' },
   "home": {
     "text": {
       "natural_healing": "NATURAL HEALING",
@@ -37,16 +41,16 @@ export const websiteContent = {
       "take_the_quiz": "Take the quiz "
     },
     "media": {
-      "src_1": "/images/home/hero home.png",
+      "src_1": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450390/divyaswasth/migrated/4da469eae425ac52-hero_home.png",
       "alt_2": "Divya Swasth holistic wellness range with natural ingredients",
       "to_3": "/shop",
       "to_4": "/about",
-      "src_5": "/images/divyaswasth.png",
+      "src_5": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450319/divyaswasth/migrated/7784541ca8767e39-divyaswasth.png",
       "to_6": "/shop",
       "to_7": "/shop",
-      "src_8": "/images/home/banner.png",
+      "src_8": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450324/divyaswasth/migrated/4f47a1b111ededc8-banner.png",
       "to_9": "/ingredients",
-      "src_10": "/images/home/banner center.png",
+      "src_10": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450323/divyaswasth/migrated/b6c56118156edf18-banner_center.png",
       "alt_11": "Sarve Bhavantu Svasthah — May all be healthy",
       "to_12": "/wellness"
     },
@@ -54,23 +58,23 @@ export const websiteContent = {
       "FOOTER_INGREDIENTS": [
         [
           "Ashwagandha",
-          "/images/botanicals/ashwagandha.png"
+          "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450259/divyaswasth/migrated/805a9626f091e837-ashwagandha.png"
         ],
         [
           "Shilajit",
-          "/images/botanicals/shilajit.png"
+          "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450266/divyaswasth/migrated/6111c96c06d3b39c-shilajit.png"
         ],
         [
           "Safed Musli",
-          "/images/botanicals/safed-musli.png"
+          "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450265/divyaswasth/migrated/0f9056942f56f993-safed-musli.png"
         ],
         [
           "Gokshura",
-          "/images/botanicals/gokshura.png"
+          "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450261/divyaswasth/migrated/d32bba2e66f5b986-gokshura.png"
         ],
         [
           "Zinc",
-          "/images/botanicals/zinc.png"
+          "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450268/divyaswasth/migrated/c5830db254048b2e-zinc.png"
         ]
       ],
       "heroBenefits": [
@@ -130,7 +134,7 @@ export const websiteContent = {
         {
           "title": "Balanced living",
           "description": "Support healthy blood sugar levels naturally",
-          "image": "/images/home/balance living.png",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450321/divyaswasth/migrated/bad47e712a608190-balance_living.png",
           "Icon": {
             "$icon": "ShieldCheck"
           }
@@ -138,7 +142,7 @@ export const websiteContent = {
         {
           "title": "Daily vitality",
           "description": "Daily nutrition for energy, immunity & overall wellness",
-          "image": "/images/home/daily vitalti.png",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450345/divyaswasth/migrated/401bc10be74565a9-daily_vitalti.png",
           "Icon": {
             "$icon": "Zap"
           }
@@ -146,7 +150,7 @@ export const websiteContent = {
         {
           "title": "Men's wellness",
           "description": "Boost strength, stamina & vitality naturally",
-          "image": "/images/home/man welness.png",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450402/divyaswasth/migrated/dddeb9ae31b35d5a-man_welness.png",
           "Icon": {
             "$icon": "Award"
           }
@@ -154,7 +158,7 @@ export const websiteContent = {
         {
           "title": "Healthy weight",
           "description": "Natural support for weight management & active living",
-          "image": "/images/home/healthy weight.png",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450378/divyaswasth/migrated/0267e3e175fc4492-healthy_weight.png",
           "Icon": {
             "$icon": "Leaf"
           }
@@ -165,25 +169,25 @@ export const websiteContent = {
           "slug": "sugar-shield-blood-sugar-support",
           "name": "Sugar Shield",
           "type": "Blood Sugar Wellness Support",
-          "image": "/images/home/Suger sheid.png"
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450406/divyaswasth/migrated/f7075424feb83897-Suger_sheid.png"
         },
         {
           "slug": "endless-daily-wellness",
           "name": "Endless",
           "type": "Daily Wellness Support",
-          "image": "/images/home/Endless.png"
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450359/divyaswasth/migrated/a21829f102b07e66-Endless.png"
         },
         {
           "slug": "lean-shape-garcinia-cambogia",
           "name": "Lean Shape",
           "type": "Weight Management Support",
-          "image": "/images/home/Lean.png"
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450395/divyaswasth/migrated/c872d85976a061b2-Lean.png"
         },
         {
           "slug": "vital-infinity-multivitamin",
           "name": "Vital Infinity",
           "type": "Complete Multivitamin Capsules",
-          "image": "/images/home/Vital.png"
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450413/divyaswasth/migrated/cd90920cf0c446e8-Vital.png"
         }
       ],
       "servicePromises": [
@@ -239,12 +243,12 @@ export const websiteContent = {
       "email_address": "Email address"
     },
     "media": {
-      "src_1": "/images/blog/wellness-blog-hero-v2.png",
+      "src_1": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450253/divyaswasth/migrated/0e3066b9326aab1d-wellness-blog-hero-v2.png",
       "alt_2": "Happy Indian family enjoying a wellness-focused lifestyle",
       "to_3": "/shop",
-      "src_4": "/images/blog/daily-herbal-habits.png",
+      "src_4": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450243/divyaswasth/migrated/c9e9f4f93ce57814-daily-herbal-habits.png",
       "alt_5": "Herbal ingredients prepared for a daily wellness ritual",
-      "src_6": "/images/blog/newsletter-botanicals.png",
+      "src_6": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450247/divyaswasth/migrated/790ed87cabfd889f-newsletter-botanicals.png",
       "placeholder_7": "Enter your email address"
     },
     "sections": {
@@ -372,13 +376,13 @@ export const websiteContent = {
       "explore_our_products": "Explore our products "
     },
     "media": {
-      "src_1": "/images/ingredients/hero intge.png",
+      "src_1": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450452/divyaswasth/migrated/c71039a76bd22196-hero_intge.png",
       "alt_2": "Mortar and pestle surrounded by carefully selected herbs and botanicals",
       "to_3": "/ingredients",
       "placeholder_4": "Search an ingredient...",
       "to_5": "/products/lean-shape-garcinia-cambogia",
-      "src_6": "/images/home/banner.png",
-      "src_7": "/images/ingredients/ineven banner.png",
+      "src_6": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450324/divyaswasth/migrated/4f47a1b111ededc8-banner.png",
+      "src_7": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450458/divyaswasth/migrated/220b8117b328e77b-ineven_banner.png",
       "alt_8": "Natural ingredients and Divya Swasth wellness products",
       "to_9": "/shop"
     },
@@ -777,11 +781,11 @@ export const websiteContent = {
       "email_address": "Email address"
     },
     "media": {
-      "src_1": "/images/blog/wellness-blog-hero-v2.png",
+      "src_1": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450253/divyaswasth/migrated/0e3066b9326aab1d-wellness-blog-hero-v2.png",
       "alt_2": "Amla, herbs, spices and a traditional mortar and pestle",
       "placeholder_3": "Search articles...",
-      "src_4": "/images/blog/newsletter-botanicals.png",
-      "src_5": "/images/blog/newsletter-botanicals.png",
+      "src_4": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450247/divyaswasth/migrated/790ed87cabfd889f-newsletter-botanicals.png",
+      "src_5": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450247/divyaswasth/migrated/790ed87cabfd889f-newsletter-botanicals.png",
       "placeholder_6": "Enter your email address"
     },
     "sections": {
@@ -810,7 +814,7 @@ export const websiteContent = {
           "summary": "Discover the remarkable benefits of amla, India’s ancient superfruit rich in vitamin C and antioxidants.",
           "read": "5 min read",
           "updated": "July 15, 2026",
-          "image": "/images/blog/amla-wellness.png",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789403692/divyaswasth/blog/amla-wellness.png",
           "imageAlt": "Fresh green amla fruits with leaves",
           "href": "/ingredients"
         },
@@ -821,7 +825,7 @@ export const websiteContent = {
           "summary": "Learn how this powerful Ayurvedic herb may help the body manage stress and support everyday balance.",
           "read": "6 min read",
           "updated": "July 12, 2026",
-          "image": "/images/blog/ashwagandha-benefits.png",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789403697/divyaswasth/blog/ashwagandha-benefits.png",
           "imageAlt": "Ashwagandha roots and powder on a wooden surface",
           "href": "/ingredients"
         },
@@ -832,7 +836,7 @@ export const websiteContent = {
           "summary": "Build wholesome everyday meals with the right balance of vegetables, grains, protein and healthy fats.",
           "read": "7 min read",
           "updated": "July 08, 2026",
-          "image": "/images/blog/balanced-diet.png",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789403703/divyaswasth/blog/balanced-diet.png",
           "imageAlt": "A colourful balanced meal arranged in a bowl",
           "href": "/wellness/balanced-portions"
         },
@@ -843,7 +847,7 @@ export const websiteContent = {
           "summary": "Simple mindful practices can bring more calm, clarity and purpose into your everyday routine.",
           "read": "5 min read",
           "updated": "July 05, 2026",
-          "image": "/images/blog/mindfulness-practices.png",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789403714/divyaswasth/blog/mindfulness-practices.png",
           "imageAlt": "A woman meditating peacefully above a green mountain valley",
           "href": "/wellness/daily-movement"
         },
@@ -854,7 +858,7 @@ export const websiteContent = {
           "summary": "Start your day with small, intentional habits that support your energy, focus and long-term wellbeing.",
           "read": "6 min read",
           "updated": "July 02, 2026",
-          "image": "/images/blog/morning-habits.png",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450244/divyaswasth/migrated/823297580285b1b3-morning-habits.png",
           "imageAlt": "A man enjoying a calm morning outdoors in a green garden",
           "href": "/wellness/healthy-weight-habits"
         },
@@ -865,7 +869,7 @@ export const websiteContent = {
           "summary": "Explore why tulsi has been treasured in Ayurveda and how it can become part of a mindful daily ritual.",
           "read": "5 min read",
           "updated": "June 28, 2026",
-          "image": "/images/blog/tulsi-healing.png",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450251/divyaswasth/migrated/c20a6425dc2d6465-tulsi-healing.png",
           "imageAlt": "Fresh tulsi leaves in a traditional stone mortar and pestle",
           "href": "/ingredients"
         },
@@ -876,7 +880,7 @@ export const websiteContent = {
           "summary": "Add more naturally nutrient-rich whole foods to your plate and support a stronger everyday diet.",
           "read": "8 min read",
           "updated": "June 24, 2026",
-          "image": "/images/blog/superfoods.png",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450249/divyaswasth/migrated/57d0be1fc0258190-superfoods.png",
           "imageAlt": "Colourful lentils, nuts, seeds and Indian spices in a rustic bowl",
           "href": "/wellness/vitamins-minerals-balanced-diet"
         },
@@ -887,7 +891,7 @@ export const websiteContent = {
           "summary": "Step away from the screen, reconnect with the present and create healthier space for your mind.",
           "read": "6 min read",
           "updated": "June 20, 2026",
-          "image": "/images/blog/natural-stress-relief.png",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450246/divyaswasth/migrated/0153b2e5666e7d71-natural-stress-relief.png",
           "imageAlt": "A woman enjoying a quiet, screen-free moment in a green garden",
           "href": "/wellness/hydration-beyond-eight-glasses"
         }
@@ -979,10 +983,10 @@ export const websiteContent = {
       "email_address": "Email address"
     },
     "media": {
-      "src_1": "/images/wellness/wellness-quiz-hero.png",
+      "src_1": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450799/divyaswasth/migrated/1ae364d8fff906a1-wellness-quiz-hero.png",
       "alt_2": "A healthy woman enjoying a calm morning in nature",
       "to_3": "/shop",
-      "src_4": "/images/blog/newsletter-botanicals.png",
+      "src_4": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450247/divyaswasth/migrated/790ed87cabfd889f-newsletter-botanicals.png",
       "placeholder_5": "Enter your email address"
     },
     "sections": {
@@ -1066,7 +1070,7 @@ export const websiteContent = {
           "Icon": {
             "$icon": "ShieldCheck"
           },
-          "image": "/images/blog/natural-stress-relief.png",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450246/divyaswasth/migrated/0153b2e5666e7d71-natural-stress-relief.png",
           "imageAlt": "Woman enjoying a peaceful cup of herbal tea"
         },
         {
@@ -1075,7 +1079,7 @@ export const websiteContent = {
           "Icon": {
             "$icon": "Zap"
           },
-          "image": "/images/wellness/daily-movement.webp",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450756/divyaswasth/migrated/db428dcb7d50d4ef-daily-movement.webp",
           "imageAlt": "Women enjoying an energising morning walk"
         },
         {
@@ -1084,7 +1088,7 @@ export const websiteContent = {
           "Icon": {
             "$icon": "Utensils"
           },
-          "image": "/images/wellness/balanced-portions.webp",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450755/divyaswasth/migrated/739a47e402703127-balanced-portions.webp",
           "imageAlt": "A nourishing balanced meal"
         },
         {
@@ -1093,7 +1097,7 @@ export const websiteContent = {
           "Icon": {
             "$icon": "Dumbbell"
           },
-          "image": "/images/wellness/sustainable-weight-habits.webp",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450780/divyaswasth/migrated/4b5f59cf70bd2c09-sustainable-weight-habits.webp",
           "imageAlt": "Woman preparing a healthy balanced meal"
         },
         {
@@ -1102,7 +1106,7 @@ export const websiteContent = {
           "Icon": {
             "$icon": "Brain"
           },
-          "image": "/images/blog/mindfulness-practices.png",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789403714/divyaswasth/blog/mindfulness-practices.png",
           "imageAlt": "Woman meditating in a peaceful green landscape"
         },
         {
@@ -1111,7 +1115,7 @@ export const websiteContent = {
           "Icon": {
             "$icon": "Sparkles"
           },
-          "image": "/images/blog/yoga-mind-soul.png",
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450257/divyaswasth/migrated/7cc39a1e5edad7e7-yoga-mind-soul.png",
           "imageAlt": "Woman relaxing in warm natural light"
         }
       ],
@@ -1177,7 +1181,7 @@ export const websiteContent = {
     },
     "media": {
       "to_1": "/wellness",
-      "src_2": "/images/botanical-hero-bg.png",
+      "src_2": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450258/divyaswasth/migrated/5ad6174d98944ad6-botanical-hero-bg.png",
       "to_3": "/wellness",
       "to_4": "/wellness",
       "to_5": "/wellness"
@@ -1221,9 +1225,9 @@ export const websiteContent = {
       "privacy_policy_2": "Privacy policy"
     },
     "media": {
-      "src_1": "/images/conac/con image.png",
+      "src_1": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450314/divyaswasth/migrated/56e7509289e3a80e-con_image.png",
       "alt_2": "A stone mortar with fresh herbs, amla and botanical ingredients",
-      "src_3": "/images/divyaswasth.png",
+      "src_3": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450319/divyaswasth/migrated/7784541ca8767e39-divyaswasth.png",
       "to_4": "/",
       "placeholder_5": "Full name",
       "placeholder_6": "Email address",
@@ -1498,7 +1502,7 @@ export const websiteContent = {
       "clear_filters": "Clear filters"
     },
     "media": {
-      "src_1": "/images/botanical-hero-bg.png",
+      "src_1": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450258/divyaswasth/migrated/5ad6174d98944ad6-botanical-hero-bg.png",
       "placeholder_2": "Search products"
     },
     "sections": {}
@@ -1593,7 +1597,7 @@ export const websiteContent = {
       "to_3": "/ingredients",
       "to_4": "/ingredients",
       "to_5": "/about",
-      "src_6": "/images/home/Vital.png",
+      "src_6": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450413/divyaswasth/migrated/cd90920cf0c446e8-Vital.png",
       "alt_7": "Vital Infinity bottle with fruits and greens"
     },
     "sections": {
@@ -1874,7 +1878,7 @@ export const websiteContent = {
     },
     "media": {
       "to_1": "/",
-      "src_2": "/images/logo.jpeg",
+      "src_2": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450628/divyaswasth/migrated/1282459c18c7948b-logo.jpg",
       "alt_3": "Divya Swasth",
       "href_4": "https://wa.me/919747007253",
       "href_5": "mailto:divyaswasth@gmail.com"
@@ -1931,15 +1935,15 @@ export const websiteContent = {
       "PAYMENT_METHODS": [
         {
           "name": "Visa",
-          "image": "/images/payments/visa.svg"
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450641/divyaswasth/migrated/3cadac8957c14ea6-visa.svg"
         },
         {
           "name": "Mastercard",
-          "image": "/images/payments/mastercard.svg"
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450630/divyaswasth/migrated/af31847a5ff6982a-mastercard.svg"
         },
         {
           "name": "RuPay",
-          "image": "/images/payments/rupay.svg"
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450638/divyaswasth/migrated/1b1aff2e234b9877-rupay.svg"
         },
         {
           "name": "UPI",
@@ -1947,7 +1951,7 @@ export const websiteContent = {
         },
         {
           "name": "Paytm",
-          "image": "/images/payments/paytm.svg"
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450634/divyaswasth/migrated/07cec29b2684fac0-paytm.svg"
         },
         {
           "name": "Google Pay",
@@ -1955,11 +1959,11 @@ export const websiteContent = {
         },
         {
           "name": "PhonePe",
-          "image": "/images/payments/phonepe.svg"
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450636/divyaswasth/migrated/fe321594c34cd0ce-phonepe.svg"
         },
         {
           "name": "Net Banking",
-          "image": "/images/payments/net-banking.svg"
+          "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450632/divyaswasth/migrated/8291338be921eb15-net-banking.svg"
         }
       ],
       "cards4": [
@@ -1996,7 +2000,7 @@ export const websiteContent = {
         "summary": "Build a realistic routine around food quality, consistency, sleep and daily movement.",
         "read": "6 min read",
         "updated": "August 2026",
-        "image": "/images/wellness/sustainable-weight-habits.webp",
+        "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450780/divyaswasth/migrated/4b5f59cf70bd2c09-sustainable-weight-habits.webp",
         "imageAlt": "Woman preparing a balanced meal in a bright home kitchen",
         "intro": "Healthy weight management is not one perfect meal or a short, restrictive plan. It is a repeatable pattern that supports nourishment, movement, rest and emotional wellbeing in a way that fits real life.",
         "takeaways": [
@@ -2068,7 +2072,7 @@ export const websiteContent = {
         "summary": "Simple ways to recognise hunger, fullness and balanced portions in everyday meals.",
         "read": "5 min read",
         "updated": "August 2026",
-        "image": "/images/wellness/balanced-portions.webp",
+        "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450755/divyaswasth/migrated/739a47e402703127-balanced-portions.webp",
         "imageAlt": "Balanced Indian meal with vegetables, rice, chickpeas and roti",
         "intro": "A useful portion is not the same for every person or every day. Appetite and needs can shift with activity, age, health, pregnancy and meal timing. The goal is to build balanced meals and stay aware—not to make eating a constant calculation.",
         "takeaways": [
@@ -2140,7 +2144,7 @@ export const websiteContent = {
         "summary": "A gentle look at walking, mobility and strength as parts of long-term wellbeing.",
         "read": "4 min read",
         "updated": "August 2026",
-        "image": "/images/wellness/daily-movement.webp",
+        "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450756/divyaswasth/migrated/db428dcb7d50d4ef-daily-movement.webp",
         "imageAlt": "Two women enjoying a morning walk through a green park",
         "intro": "Movement does not have to happen in a gym or all at once. Walking to a shop, climbing stairs, gardening, active household work, mobility practice and planned exercise can all contribute to an active day.",
         "takeaways": [
@@ -2212,7 +2216,7 @@ export const websiteContent = {
         "summary": "Food-first context for understanding common micronutrients and variety.",
         "read": "7 min read",
         "updated": "August 2026",
-        "image": "/images/wellness/vitamins-minerals-food.webp",
+        "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450789/divyaswasth/migrated/f305b04c74e55665-vitamins-minerals-food.webp",
         "imageAlt": "Colourful vegetables, lentils, fruits, seeds and nuts arranged on a table",
         "intro": "Vitamins and minerals are needed in relatively small amounts, but each has specific roles. No single “superfood” supplies everything, which is why dietary variety matters more than chasing one ingredient.",
         "takeaways": [
@@ -2284,7 +2288,7 @@ export const websiteContent = {
         "summary": "How climate, movement and food choices can influence everyday hydration needs.",
         "read": "5 min read",
         "updated": "August 2026",
-        "image": "/images/wellness/everyday-hydration.webp",
+        "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450757/divyaswasth/migrated/5d0b52afd5b43c7f-everyday-hydration.webp",
         "imageAlt": "Fresh water, coconut water and hydrating fruit on a shaded veranda",
         "intro": "Eight glasses is a familiar reminder, not a universal requirement. Fluid needs differ with age, body size, pregnancy or breastfeeding, activity, climate, illness and the water contained in food.",
         "takeaways": [
@@ -2356,7 +2360,7 @@ export const websiteContent = {
         "summary": "Why extract type, standardisation, dosage and professional guidance all matter.",
         "read": "8 min read",
         "updated": "August 2026",
-        "image": "/images/wellness/responsible-herbal-extracts.webp",
+        "image": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450773/divyaswasth/migrated/f6fbf53e4e8555b4-responsible-herbal-extracts.webp",
         "imageAlt": "Indian botanicals and amber extract bottles arranged for careful study",
         "intro": "An extract is more than the name of a plant. The species, plant part, extraction method, concentration, dose and product quality can all change what is actually being used. “Natural” describes an origin; it does not guarantee safety or effectiveness.",
         "takeaways": [
@@ -2557,7 +2561,7 @@ export const websiteContent = {
       "divya_swasth_account": "Divya Swasth account"
     },
     "media": {
-      "src_1": "/images/botanical-hero-bg.png"
+      "src_1": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450258/divyaswasth/migrated/5ad6174d98944ad6-botanical-hero-bg.png"
     },
     "sections": {}
   },
@@ -2596,7 +2600,7 @@ export const websiteContent = {
       "track_manage": "Track / manage "
     },
     "media": {
-      "src_1": "/images/botanical-hero-bg.png",
+      "src_1": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450258/divyaswasth/migrated/5ad6174d98944ad6-botanical-hero-bg.png",
       "to_2": "/admin",
       "to_3": "/shop"
     },
@@ -2824,7 +2828,7 @@ export const websiteContent = {
     },
     "media": {
       "to_1": "/account",
-      "src_2": "/images/botanical-hero-bg.png",
+      "src_2": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450258/divyaswasth/migrated/5ad6174d98944ad6-botanical-hero-bg.png",
       "to_3": "/account",
       "to_4": "/contact"
     },
@@ -2878,7 +2882,7 @@ export const websiteContent = {
       "get_in_touch": "Get in touch "
     },
     "media": {
-      "src_1": "/images/divyaswasth.png",
+      "src_1": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450319/divyaswasth/migrated/7784541ca8767e39-divyaswasth.png",
       "placeholder_2": "Enter your full order ID",
       "to_3": "/account",
       "to_4": "/account",
@@ -2942,7 +2946,7 @@ export const websiteContent = {
     },
     "media": {
       "to_1": "/",
-      "src_2": "/images/logo.png"
+      "src_2": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450630/divyaswasth/migrated/c3f4077ffa0cfc7d-logo.png"
     },
     "sections": {}
   }

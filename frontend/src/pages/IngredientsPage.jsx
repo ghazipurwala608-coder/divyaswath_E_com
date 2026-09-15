@@ -120,7 +120,7 @@ export default function IngredientsPage() {
       {/* ── HERO BANNER ── */}
       <section className="relative min-h-[340px] overflow-hidden border-b border-[#e5ddca] bg-[#f7f3e8] px-5 py-8 sm:min-h-[380px] sm:px-8 sm:py-10 lg:min-h-[420px] lg:px-12 lg:py-12">
         <img
-          src="/images/ingredients/hero intge.png"
+          src="https://res.cloudinary.com/djfluwhwu/image/upload/v1789450452/divyaswasth/migrated/c71039a76bd22196-hero_intge.png"
           alt="Divya Swasth Botanical Ingredients"
           className="absolute inset-0 h-full w-full object-cover object-[68%_center]"
         />
@@ -429,7 +429,7 @@ export default function IngredientsPage() {
       {/* ── OUR PROMISES ── */}
       <section className="relative overflow-hidden border-y border-[#e2dccd] bg-[#fbfaf3] px-4 py-8 sm:px-8 lg:px-12 mt-12">
         <img
-          src="/images/home/banner.png"
+          src="https://res.cloudinary.com/djfluwhwu/image/upload/v1789450324/divyaswasth/migrated/4f47a1b111ededc8-banner.png"
           alt=""
           className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center opacity-90"
         />
@@ -453,7 +453,7 @@ export default function IngredientsPage() {
       {/* ── BOTTOM CTA BANNER (WITH 4 BOTTLES IMAGE) ── */}
       <section className="relative min-h-[300px] overflow-hidden border-y border-[#0b5735] bg-[#003c23] sm:min-h-[340px]">
         <img
-          src="/images/ingredients/ineven banner.png"
+          src="https://res.cloudinary.com/djfluwhwu/image/upload/v1789450458/divyaswasth/migrated/220b8117b328e77b-ineven_banner.png"
           alt="Divya Swasth Formulations & Botanical Ingredients"
           className="absolute inset-0 h-full w-full object-cover object-center opacity-90"
         />

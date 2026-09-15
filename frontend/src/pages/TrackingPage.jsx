@@ -237,7 +237,7 @@ export default function TrackingPage() {
           <div className="tracking-hero-artwork" aria-hidden="true">
             <div className="tracking-parcel-box">
               <span className="tracking-parcel-tape" />
-              <img src="/images/divyaswasth.png" alt="Divya Swasth" className="tracking-parcel-emblem" />
+              <img src="https://res.cloudinary.com/djfluwhwu/image/upload/v1789450319/divyaswasth/migrated/7784541ca8767e39-divyaswasth.png" alt="Divya Swasth" className="tracking-parcel-emblem" />
             </div>
           </div>
         </div>

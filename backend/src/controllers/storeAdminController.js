@@ -1,5 +1,7 @@
+import SiteContent from '../models/SiteContent.js'
+import { websiteContent } from '../../../shared/websiteContent.js'
+import * as catalog from '../../../shared/catalog.js'
 import { customerQuery } from '../utils/roles.js'
-import fs from 'node:fs/promises'
 import path from 'node:path'
 import crypto from 'node:crypto'
 import { fileURLToPath } from 'node:url'
@@ -12,9 +14,8 @@ import asyncHandler from '../utils/asyncHandler.js'
 import { sendSuccess } from '../utils/apiResponse.js'
 
 export const uploadDirectory = fileURLToPath(new URL('../../uploads/', import.meta.url))
-const publicDirectory = fileURLToPath(new URL('../../../frontend/public/images/', import.meta.url))
 export const listProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find().sort({ sortOrder: 1, createdAt: 1 })
+  const products = await Product.find({ isActive: true }).sort({ sortOrder: 1, createdAt: 1 })
   sendSuccess(res, { data: { products } })
 })
 export const listCustomers = asyncHandler(async (req, res) => {
@@ -50,20 +51,70 @@ export const updateSubscriber = asyncHandler(async (req, res) => {
   if (!subscriber) { res.status(404); throw new Error('Subscriber not found') }
   sendSuccess(res, { data: { subscriber } })
 })
-async function walk(directory, prefix) {
-  const entries = await fs.readdir(directory, { withFileTypes: true }).catch(() => [])
-  const nested = await Promise.all(entries.map(async entry => {
-    const url = `${prefix}/${entry.name}`
-    if (entry.isDirectory()) return walk(path.join(directory, entry.name), url)
-    return /\.(png|jpe?g|webp|svg|gif|avif|jfif)$/i.test(entry.name) ? [{ name: entry.name, url }] : []
-  }))
-  return nested.flat()
+import cloudinary from '../config/cloudinary.js'
+
+function extractPublicId(target) {
+  try {
+    const url = new URL(target)
+    const prefix = `/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/`
+    if (url.hostname !== 'res.cloudinary.com' || !url.pathname.startsWith(prefix)) return null
+    const id = decodeURIComponent(url.pathname.slice(prefix.length).replace(/^v\d+\//, '').replace(/\.[^/.]+$/, ''))
+    return id.startsWith('divyaswasth/') ? id : null
+  } catch { return null }
 }
+
+function uploadStreamToCloudinary(buffer, options = {}) {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(options, (err, res) => {
+      if (err) return reject(err)
+      resolve(res)
+    })
+    uploadStream.end(buffer)
+  })
+}
+
 export const listMedia = asyncHandler(async (req, res) => {
-  const [builtIn, uploaded] = await Promise.all([walk(publicDirectory, '/images'), walk(uploadDirectory, '/api/media')])
-  sendSuccess(res, { data: { media: [...uploaded, ...builtIn] } })
+  try {
+    const resources = []
+    let cursor
+    do {
+      const page = await cloudinary.api.resources({ type: 'upload', prefix: 'divyaswasth/', max_results: 500, ...(cursor ? { next_cursor: cursor } : {}) })
+      resources.push(...(page.resources || []))
+      cursor = page.next_cursor
+    } while (cursor)
+    const result = { resources }
+
+    const cloudinaryMedia = (result.resources || []).map(item => ({
+      name: item.public_id.split('/').pop(),
+      url: item.secure_url,
+      public_id: item.public_id,
+      format: item.format,
+      bytes: item.bytes,
+      createdAt: item.created_at,
+    }))
+
+    sendSuccess(res, { data: { media: cloudinaryMedia } })
+  } catch (cloudErr) {
+    res.status(502)
+    throw new Error('Image library could not connect to Cloudinary. Check Cloudinary settings on the backend server.')
+  }
 })
+
 export const uploadMedia = asyncHandler(async (req, res) => {
+  if (req.body?.url) {
+    let source
+    try { source = new URL(req.body.url) } catch { res.status(400); throw new Error('Enter a valid public HTTPS image link') }
+    if (source.protocol !== 'https:' || source.username || source.password) { res.status(400); throw new Error('Use a public HTTPS image link without login details') }
+    let result
+    try {
+      result = await cloudinary.uploader.upload(source.href, { public_id: `divyaswasth/uploads/${crypto.randomUUID()}`, resource_type: 'image', timeout: 60000 })
+    } catch { res.status(502); throw new Error('Could not import this image. Use a direct public image link, or download it and upload from your device.') }
+    if (result.bytes > 10 * 1024 * 1024) {
+      await cloudinary.uploader.destroy(result.public_id)
+      res.status(400); throw new Error('Choose an image under 10 MB')
+    }
+    return sendSuccess(res, { statusCode: 201, data: { media: { name: source.pathname.split('/').pop() || 'Imported image', url: result.secure_url, public_id: result.public_id } } })
+  }
   let data = null
   let originalName = ''
 
@@ -76,14 +127,14 @@ export const uploadMedia = asyncHandler(async (req, res) => {
     originalName = req.headers['x-file-name'] ? decodeURIComponent(req.headers['x-file-name']) : ''
   }
 
-  if (!data || !Buffer.isBuffer(data) || data.length < 12 || data.length > 20 * 1024 * 1024) {
+  if (!data || !Buffer.isBuffer(data) || data.length < 12 || data.length > 10 * 1024 * 1024) {
     res.status(400)
-    throw new Error('Choose an image file under 20 MB')
+    throw new Error('Choose an image file under 10 MB')
   }
 
   const fileExt = path.extname(originalName).replace('.', '').toLowerCase()
 
-  let extension
+  let extension = fileExt || 'png'
   if (data.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) {
     extension = 'png'
   } else if (data[0] === 255 && data[1] === 216) {
@@ -95,56 +146,45 @@ export const uploadMedia = asyncHandler(async (req, res) => {
   } else if (['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'avif', 'jfif'].includes(fileExt)) {
     extension = fileExt === 'jpeg' ? 'jpg' : fileExt
   } else {
-    const text = data.toString('utf8', 0, 300)
-    if (
-      (text.includes('<svg') || text.includes('<?xml')) &&
-      text.includes('http://www.w3.org/2000/svg') &&
-      !/<script|javascript:|on\w+=/i.test(data.toString('utf8'))
-    ) {
-      extension = 'svg'
-    } else {
-      res.status(400)
-      throw new Error('Unsupported or unsafe image. Use PNG, JPEG, WebP, SVG or GIF.')
-    }
+    res.status(400); throw new Error('Choose a supported image file')
   }
 
-  await fs.mkdir(uploadDirectory, { recursive: true })
-  const name = `${crypto.randomUUID()}.${extension}`
-  await fs.writeFile(path.join(uploadDirectory, name), data, { flag: 'wx' })
-  sendSuccess(res, { statusCode: 201, data: { media: { name, url: `/api/media/${name}` } } })
+  const cleanName = path.parse(originalName).name.replace(/[^a-zA-Z0-9_-]/g, '_') || crypto.randomUUID()
+  const publicId = `divyaswasth/uploads/${cleanName}_${Date.now()}`
+
+  try {
+    const result = await uploadStreamToCloudinary(data, {
+      public_id: publicId,
+      resource_type: 'image',
+    })
+
+    sendSuccess(res, {
+      statusCode: 201,
+      data: {
+        media: {
+          name: originalName || `${cleanName}.${extension}`,
+          url: result.secure_url,
+          public_id: result.public_id,
+        },
+      },
+    })
+  } catch (err) {
+    console.error('Cloudinary media upload failed:', err?.message || err)
+    res.status(502)
+    throw new Error('Cloudinary upload failed. Check server credentials and try again.')
+  }
 })
 
 export const deleteMedia = asyncHandler(async (req, res) => {
-  const target = req.query.url || req.body?.url || req.query.name || req.body?.name
-  if (!target || typeof target !== 'string') {
-    res.status(400)
-    throw new Error('Image URL or name is required')
+  const target = req.query.url || req.body?.url
+  const publicId = typeof target === 'string' ? extractPublicId(target) : null
+  if (!publicId) { res.status(400); throw new Error('Only this store Cloudinary images can be deleted') }
+  const [products, pages] = await Promise.all([Product.find({ $or: [{ images: target }, { cardImage: target }] }).select('_id').lean(), SiteContent.find().select('content').lean()])
+  const contains = value => typeof value === 'string' ? value === target : value && typeof value === 'object' ? Object.values(value).some(contains) : false
+  if (products.length || pages.some(page => contains(page.content)) || contains(websiteContent) || contains(catalog)) {
+    res.status(409); throw new Error('This image is used by the store. Replace it before deleting.')
   }
-
-  let filePath = null
-
-  if (target.startsWith('/api/media/')) {
-    const filename = path.basename(target)
-    filePath = path.join(uploadDirectory, filename)
-  } else if (target.startsWith('/images/')) {
-    const relative = target.replace(/^\/images\//, '')
-    const safePath = path.normalize(relative).replace(/^(\.\.[\/\\])+/, '')
-    filePath = path.join(publicDirectory, safePath)
-  } else {
-    const filename = path.basename(target)
-    filePath = path.join(uploadDirectory, filename)
-  }
-
-  try {
-    await fs.unlink(filePath)
-  } catch (err) {
-    if (err.code === 'ENOENT') {
-      res.status(404)
-      throw new Error('Image not found or already deleted')
-    }
-    throw err
-  }
-
-  sendSuccess(res, { message: 'Image deleted successfully' })
+  const result = await cloudinary.uploader.destroy(publicId, { invalidate: true })
+  if (!['ok', 'not found'].includes(result.result)) { res.status(502); throw new Error('Cloudinary could not delete this image') }
+  sendSuccess(res, { message: 'Image deleted from Cloudinary' })
 })
-

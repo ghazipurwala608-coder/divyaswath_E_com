@@ -60,7 +60,7 @@ export default function AccountPage() {
   return (
     <section className="member-dashboard min-h-[calc(100svh-76px)] bg-[#f5f2e9]">
       <header className="member-hero">
-        <img className="member-hero-image" src={siteContent.media.account_hero || '/images/account-wellness-hero.png'} alt="Herbal tea, fresh amla and Ayurvedic botanicals in warm sunlight" fetchPriority="high" />
+        <img className="member-hero-image" src={siteContent.media.account_hero || 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789403686/divyaswasth/account-wellness-hero.png'} alt="Herbal tea, fresh amla and Ayurvedic botanicals in warm sunlight" fetchPriority="high" />
         <div className="member-hero-shade" />
         <div className="member-hero-inner">
           <div className="member-hero-top"><span><Sparkles size={14} />{siteContent.text.your_wellness_space}</span><button type="button" onClick={signOut}><LogOut size={15} />{siteContent.text.sign_out}</button></div>

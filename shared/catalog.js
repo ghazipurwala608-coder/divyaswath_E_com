@@ -1,3 +1,4 @@
+import { productGalleries } from './productGalleries.js'
 // Clean 4 products catalog: Sugar Shield, Endless, Lean Shape, Vital Infinity
 export const initialProducts = [
   {
@@ -40,12 +41,12 @@ export const initialProducts = [
     "usage": "Take 1-2 capsules twice daily, 30 minutes before meals with lukewarm water, or as directed by a healthcare professional.",
     "disclaimer": "This product is not intended to diagnose, treat, cure or prevent any disease. Do not exceed the recommended dosage. Keep out of reach of children. Consult a qualified healthcare professional if you are pregnant, breastfeeding, have a medical condition, or take medication.",
     "images": [
-      "/images/home/Suger sheid.png"
+      "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450406/divyaswasth/migrated/f7075424feb83897-Suger_sheid.png"
     ],
     "imageStatus": "Concept",
     "availableForPurchase": true,
     "sortOrder": 0,
-    "cardImage": "/images/home/Suger sheid.png"
+    "cardImage": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450406/divyaswasth/migrated/f7075424feb83897-Suger_sheid.png"
   },
   {
     "slug": "endless-daily-wellness",
@@ -87,12 +88,12 @@ export const initialProducts = [
     "usage": "Take 1 capsule twice daily with milk or water after meals, or as directed by a healthcare professional.",
     "disclaimer": "This product is not intended to diagnose, treat, cure or prevent any disease. Do not exceed the recommended dosage. Keep out of reach of children. Consult a qualified healthcare professional if you are pregnant, breastfeeding, have a medical condition, or take medication.",
     "images": [
-      "/images/home/Endless.png"
+      "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450359/divyaswasth/migrated/a21829f102b07e66-Endless.png"
     ],
     "imageStatus": "Concept",
     "availableForPurchase": true,
     "sortOrder": 1,
-    "cardImage": "/images/home/Endless.png"
+    "cardImage": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450359/divyaswasth/migrated/a21829f102b07e66-Endless.png"
   },
   {
     "slug": "lean-shape-garcinia-cambogia",
@@ -134,17 +135,17 @@ export const initialProducts = [
     "usage": "Take 1 capsule twice daily, 30–45 minutes before meals with a glass of water, or as directed by a healthcare professional.",
     "disclaimer": "This product is not intended to diagnose, treat, cure or prevent any disease. Do not exceed the recommended dosage. Keep out of reach of children. Consult a qualified healthcare professional if you are pregnant, breastfeeding, have a medical condition, or take medication.",
     "images": [
-      "/images/home/Lean.png",
-      "/images/product/WhatsApp Image 2026-09-10 at 1.36.05 PM (1).jpeg",
+      "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450395/divyaswasth/migrated/c872d85976a061b2-Lean.png",
+      "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450730/divyaswasth/migrated/b66e4218b3a190ec-WhatsApp_Image_2026-09-10_at_1_36_05_PM__1_.jpg",
       "/images/product/WhatsApp Image 2026-09-10 at 1.36.05 PM.jpeg",
       "/images/product/WhatsApp Image 2026-09-10 at 1.36.04 PM (3).jpeg",
       "/images/product/WhatsApp Image 2026-09-10 at 1.36.04 PM (1).jpeg",
-      "/images/product/WhatsApp Image 2026-09-10 at 1.36.04 PM.jpeg"
+      "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450726/divyaswasth/migrated/70a04af42d1b2239-WhatsApp_Image_2026-09-10_at_1_36_04_PM.jpg"
     ],
     "imageStatus": "Concept",
     "availableForPurchase": true,
     "sortOrder": 2,
-    "cardImage": "/images/home/Lean.png"
+    "cardImage": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450395/divyaswasth/migrated/c872d85976a061b2-Lean.png"
   },
   {
     "slug": "vital-infinity-multivitamin",
@@ -186,11 +187,15 @@ export const initialProducts = [
     "usage": "Take 1 capsule daily in the morning with water after breakfast, or as directed by a healthcare professional.",
     "disclaimer": "This product is not intended to diagnose, treat, cure or prevent any disease. Do not exceed the recommended dosage. Keep out of reach of children. Consult a qualified healthcare professional if you are pregnant, breastfeeding, have a medical condition, or take medication.",
     "images": [
-      "/images/home/Vital.png"
+      "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450413/divyaswasth/migrated/cd90920cf0c446e8-Vital.png"
     ],
     "imageStatus": "Concept",
     "availableForPurchase": true,
     "sortOrder": 3,
-    "cardImage": "/images/home/Vital.png"
+    "cardImage": "https://res.cloudinary.com/djfluwhwu/image/upload/v1789450413/divyaswasth/migrated/cd90920cf0c446e8-Vital.png"
   }
 ]
+
+for (const product of initialProducts) {
+  if (productGalleries[product.slug]) product.images = productGalleries[product.slug].map(item => item.src)
+}

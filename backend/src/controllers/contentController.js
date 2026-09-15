@@ -27,7 +27,16 @@ export const getAdminContent = asyncHandler(async (req, res) => {
 export const updateContent = asyncHandler(async (req, res) => {
   const template = Object.hasOwn(websiteContent, req.params.key) ? websiteContent[req.params.key] : null
   if (!template) { res.status(404); throw new Error('Page not found') }
-  try { validateContent(req.body.content, template) } catch (error) { res.status(400); throw error }
+  try {
+    if (req.params.key === 'posters') {
+      if (!req.body.content || Object.keys(req.body.content).join() !== 'items' || !Array.isArray(req.body.content.items) || req.body.content.items.length > 20) throw new Error('Add up to 20 posters')
+      req.body.content.items.forEach(item => {
+        validateContent(item, { image: '', alt: '', link: '', enabled: true })
+        if (!/^https:\/\//.test(item.image) && !/^\/(?!\/)/.test(item.image)) throw new Error('Choose a poster image')
+        if (item.link && !/^\/(?!\/)/.test(item.link)) throw new Error('Poster links must be store paths, for example /shop')
+      })
+    } else validateContent(req.body.content, template)
+  } catch (error) { res.status(400); throw error }
   if (req.params.key === 'settings') {
     const { fee, freeAbove, estimatedDays } = req.body.content?.shipping || {}
     if ([fee, freeAbove].some(value => value < 0 || value > 100000) || !Number.isInteger(estimatedDays) || estimatedDays < 1 || estimatedDays > 90) { res.status(400); throw new Error('Enter valid shipping charges and delivery days (1–90)') }

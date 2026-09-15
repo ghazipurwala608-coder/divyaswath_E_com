@@ -9,7 +9,7 @@
 .support-hero-section {
   position: relative;
   min-height: 380px;
-  background: #fbf6ec url('/images/conac/con image.png') right center / auto 100% no-repeat;
+  background: #fbf6ec var(--store-background-contact, url('https://res.cloudinary.com/djfluwhwu/image/upload/v1789450314/divyaswasth/migrated/56e7509289e3a80e-con_image.png')) right center / auto 100% no-repeat;
   display: flex;
   align-items: center;
   padding: 45px clamp(20px, 5vw, 60px);

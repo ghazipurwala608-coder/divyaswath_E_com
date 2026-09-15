@@ -14,7 +14,7 @@ export default function ProductVisual({ product, compact = false }) {
   return (
     <div className={`relative overflow-hidden rounded-[1.35rem] bg-[#edf0e7] ${compact ? 'h-full min-h-[254px] w-full rounded-none' : 'min-h-[440px]'}`}>
       {hasPreview ? <img src={image} alt={`${product.name} temporary concept preview`} className={`h-full w-full mix-blend-multiply ${compact ? 'origin-center object-cover object-center scale-110' : 'object-contain px-2'}`} /> : <div className="flex h-full min-h-[inherit] flex-col items-center justify-center px-7 text-center">
-        <img src="/images/botanical-hero-bg.png" alt="" className="absolute inset-0 h-full w-full object-cover opacity-25" />
+        <img src="https://res.cloudinary.com/djfluwhwu/image/upload/v1789450258/divyaswasth/migrated/5ad6174d98944ad6-botanical-hero-bg.png" alt="" className="absolute inset-0 h-full w-full object-cover opacity-25" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#e7ede2] via-[#edf0e7]/80 to-[#edf0e7]/45" />
         <div className={`absolute inset-0 bg-gradient-to-br ${palettes[product.theme] || palettes.gold} opacity-20`} />
         <span className="absolute left-8 top-8 h-28 w-28 rounded-full border border-[#143c2a]/10" />

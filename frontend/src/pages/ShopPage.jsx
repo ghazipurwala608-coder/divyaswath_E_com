@@ -52,7 +52,7 @@ export default function ShopPage() {
       `}</style>
 
       <section className="shop-collection-hero" aria-labelledby="shop-heading">
-        <img className="shop-collection-art" src={siteContent.media.collection_hero || '/images/shop-collection-hero.png'} alt="Fresh Ayurvedic herbs and amla with a brass mortar on a stone display" fetchPriority="high" />
+        <img className="shop-collection-art" src={siteContent.media.collection_hero || 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450753/divyaswasth/migrated/2d2aad44dbe950ee-shop-collection-hero.png'} alt="Fresh Ayurvedic herbs and amla with a brass mortar on a stone display" fetchPriority="high" />
         <div className="shop-collection-shade" />
         <div className="shop-collection-inner">
           <nav className="shop-collection-breadcrumb" aria-label="Breadcrumb"><Link to="/">Home</Link><ChevronRight size={12} /><span aria-current="page">Our Products</span></nav>

@@ -185,7 +185,7 @@ export default function OrderSuccessPage() {
                     <div key={idx} className="flex items-center gap-3.5 py-3">
                       <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg border border-[#e8e2d4] bg-[#fdfcf9] p-1">
                         <img
-                          src={item.image || '/images/divyaswasth.png'}
+                          src={item.image || 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450319/divyaswasth/migrated/7784541ca8767e39-divyaswasth.png'}
                           alt={item.name}
                           className="h-full w-full object-contain"
                         />

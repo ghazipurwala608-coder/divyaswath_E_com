@@ -1,4 +1,4 @@
-import { ExternalLink, ImagePlus, RefreshCw, Save, Search, Sparkles } from 'lucide-react'
+import { ExternalLink, ImagePlus, Save, Search, Sparkles } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { apiRequest } from '../api/client.js'
@@ -18,6 +18,8 @@ const readable = text => String(text).replace(/([a-z])([A-Z])/g, '$1 $2').replac
 const labels = {
   'brand-logo': 'Brand Logo & Identity',
   home: 'Homepage (Hero & Banners)',
+  posters: 'Homepage Posters',
+  backgrounds: 'Website Background Images',
   header: 'Header & Navigation',
   footer: 'Footer & Contact',
   settings: 'Store Settings',
@@ -94,6 +96,7 @@ export default function ContentPanel({ settingsOnly = false }) {
 
   const handleDirectUpload = async (targetKeyPath, file, labelName) => {
     if (!file) return
+    if (file.size > 10 * 1024 * 1024) return toast.error('Choose an image under 10 MB')
     const toastId = toast.loading(`Uploading ${labelName}…`)
     try {
       const base64Data = await fileToBase64(file)
@@ -210,10 +213,10 @@ export default function ContentPanel({ settingsOnly = false }) {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                   <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#fff', border: '2px solid #c8973a', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4px', boxShadow: '0 2px 8px rgba(200, 151, 58, 0.18)' }}>
                     <img
-                      src={draft?.media?.src_2 || '/images/logo.png'}
+                      src={draft?.media?.src_2 || 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450630/divyaswasth/migrated/c3f4077ffa0cfc7d-logo.png'}
                       alt="Brand Logo Preview"
                       style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                      onError={e => { e.currentTarget.src = '/images/logo.png' }}
+                      onError={e => { e.currentTarget.src = 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450630/divyaswasth/migrated/c3f4077ffa0cfc7d-logo.png' }}
                     />
                   </div>
                   <div>
@@ -226,7 +229,7 @@ export default function ContentPanel({ settingsOnly = false }) {
                     </span>
                     <div style={{ width: '140px', height: '1.5px', background: 'linear-gradient(to right, #be8a2f, #ddae48, transparent)', marginTop: '3px', borderRadius: '2px' }} />
                     <span style={{ fontSize: '10px', color: '#829561', display: 'block', marginTop: '4px', fontFamily: 'monospace' }}>
-                      Path: {draft?.media?.src_2 || '/images/logo.png'}
+                      Path: {draft?.media?.src_2 || 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450630/divyaswasth/migrated/c3f4077ffa0cfc7d-logo.png'}
                     </span>
                   </div>
                 </div>
@@ -309,7 +312,7 @@ export default function ContentPanel({ settingsOnly = false }) {
 
               <div style={{ position: 'relative', width: '100%', maxHeight: '180px', borderRadius: '8px', overflow: 'hidden', border: '1px solid #c8d8c2', background: '#0a1c0e' }}>
                 <img
-                  src={draft?.media?.src_1 || '/images/home/hero home.png'}
+                  src={draft?.media?.src_1 || 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450390/divyaswasth/migrated/4da469eae425ac52-hero_home.png'}
                   alt="Hero Banner Preview"
                   style={{ width: '100%', height: '180px', objectFit: 'cover' }}
                 />
@@ -331,6 +334,8 @@ export default function ContentPanel({ settingsOnly = false }) {
           {draft && (
             <form onSubmit={save}>
               <div className="admin-content-fields">
+                {selected === 'posters' && <div className="admin-toolbar"><button type="button" className="admin-button" disabled={draft.items.length >= 20} onClick={() => change(['items'], [...draft.items, { image: '', alt: '', link: '/shop', enabled: true }])}>Add poster</button></div>}
+                {selected === 'posters' && draft.items.map((_, index) => <button key={index} type="button" className="admin-button secondary" onClick={() => change(['items'], draft.items.filter((_, i) => i !== index))}>Remove poster {index + 1}</button>)}
                 <ContentFields
                   value={draft}
                   path={[selected]}
@@ -404,7 +409,7 @@ function ContentFields({ value, path, onChange, onImage, query }) {
         )
       }
 
-      const isImage = typeof item === 'string' && /\.(png|jpe?g|webp|svg|gif)(\?.*)?$/i.test(item)
+      const isImage = typeof item === 'string' && (/^(src_|image|poster|banner|logo)/i.test(key) || /\.(png|jpe?g|webp|svg|gif|avif|jfif)(\?.*)?$/i.test(item))
       const fieldTitle = getFieldLabel(path, key, Array.isArray(value))
 
       return (

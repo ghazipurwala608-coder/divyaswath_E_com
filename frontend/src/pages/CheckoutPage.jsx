@@ -241,7 +241,7 @@ export default function CheckoutPage() {
                             </div>
                             <div className="paytm-qr-wrapper flex flex-col items-center">
                               <img
-                                src="/images/payments/upi-qr.png"
+                                src="https://res.cloudinary.com/djfluwhwu/image/upload/v1789450640/divyaswasth/migrated/4ce2eacb1d3df6ae-upi-qr.png"
                                 alt="Scan & Pay using any UPI App"
                                 className="w-[140px] h-[175px] object-contain rounded-md shadow-sm border border-[#e2dec9] bg-white p-1"
                               />
@@ -290,7 +290,7 @@ export default function CheckoutPage() {
                         <div className="other-method-expanded">
                           <div className="flex flex-col sm:flex-row items-center gap-4 mb-4 p-3 bg-[#faf9f4] border border-[#e8e4d5] rounded-md">
                             <img
-                              src="/images/payments/upi-qr.png"
+                              src="https://res.cloudinary.com/djfluwhwu/image/upload/v1789450640/divyaswasth/migrated/4ce2eacb1d3df6ae-upi-qr.png"
                               alt="Pay using any UPI App"
                               className="w-[125px] h-[155px] object-contain rounded border border-[#ddd8c8] bg-white p-1 shadow-sm"
                             />
@@ -549,7 +549,7 @@ export default function CheckoutPage() {
                     items.map((item) => (
                       <div key={item._id || item.slug} className="summary-product-row">
                         <img
-                          src={item.images?.[0] || item.cardImage || '/images/home/Vital.png'}
+                          src={item.images?.[0] || item.cardImage || 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450413/divyaswasth/migrated/cd90920cf0c446e8-Vital.png'}
                           alt={item.name}
                         />
                         <div className="summary-product-info">

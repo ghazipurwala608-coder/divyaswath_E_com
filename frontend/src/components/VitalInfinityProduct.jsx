@@ -1,3 +1,4 @@
+import { useSiteContent } from '../context/SiteContentContext.jsx'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
@@ -44,14 +45,14 @@ const productConfigs = {
       [Leaf, 'Herbal Nourishment', 'Crafted with Jamun, Neem, Methi, and natural plant antioxidants.']
     ],
     ingredients: [
-      ['Jamun', 'sugurshield/jammun.png'],
-      ['Vijaysar', 'sugurshield/bijasar.png'],
-      ['Bimbi', 'sugurshield/bimbi.png'],
-      ['Mamraaj', 'sugurshield/mamraaj.png'],
-      ['Methi', 'METHI.png'],
-      ['Neem', 'NEEM.png'],
-      ['Vang Bhasma', 'sugurshield/bang basma.png'],
-      ['Ashwagandha', 'sugurshield/awasghanga.png']
+      ['Jamun', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450576/divyaswasth/migrated/1061fc5d025c5529-jammun.png'],
+      ['Vijaysar', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450550/divyaswasth/migrated/0c5d6f65834142eb-bijasar.png'],
+      ['Bimbi', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450556/divyaswasth/migrated/fb47d9b213f36551-bimbi.png'],
+      ['Mamraaj', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450584/divyaswasth/migrated/1c5f8cf021732766-mamraaj.png'],
+      ['Methi', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450517/divyaswasth/migrated/f2f8ffaf0989f51c-METHI.png'],
+      ['Neem', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450522/divyaswasth/migrated/4cffd1b049f9d2c6-NEEM.png'],
+      ['Vang Bhasma', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450546/divyaswasth/migrated/6f10bedca13a8ccf-bang_basma.png'],
+      ['Ashwagandha', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450539/divyaswasth/migrated/8b02594c139f3494-awasghanga.png']
     ],
     formula: [
       'A convenient capsule format',
@@ -93,14 +94,14 @@ const productConfigs = {
       [ShieldCheck, 'Immune Health', 'Potent adaptogens like Ashwagandha and Shilajit for natural defense.']
     ],
     ingredients: [
-      ['Shilajit', 'Shilajit.png'],
-      ['Ashwagandha', 'ASWAGHANDHA.png'],
-      ['Shatavari', 'satwari.png'],
-      ['Kaunch Beej', 'vital/beej.png'],
-      ['Safed Musli', '/images/botanicals/safed-musli.png'],
-      ['Gokshura', '/images/botanicals/gokshura.png'],
-      ['Kali Musli', '/images/botanicals/black-musli.png'],
-      ['Amla', 'AWALA.png']
+      ['Shilajit', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450533/divyaswasth/migrated/8dc7938b2011a293-Shilajit.png'],
+      ['Ashwagandha', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450423/divyaswasth/migrated/a84b254da2de06ba-ASWAGHANDHA.png'],
+      ['Shatavari', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450527/divyaswasth/migrated/a68cb1672af94d23-satwari.png'],
+      ['Kaunch Beej', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450621/divyaswasth/migrated/bc3454ae8e077d32-beej.png'],
+      ['Safed Musli', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450265/divyaswasth/migrated/0f9056942f56f993-safed-musli.png'],
+      ['Gokshura', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450261/divyaswasth/migrated/d32bba2e66f5b986-gokshura.png'],
+      ['Kali Musli', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450260/divyaswasth/migrated/8d5d5daa4ab6bae8-black-musli.png'],
+      ['Amla', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450428/divyaswasth/migrated/b820178af18d4af3-AWALA.png']
     ],
     formula: [
       'High-potency botanical extracts',
@@ -142,14 +143,14 @@ const productConfigs = {
       [Sprout, 'Digestive Wellness', 'Botanical ginger and piperine for enhanced absorption and comfort.']
     ],
     ingredients: [
-      ['Garcinia', 'carchinia.png'],
-      ['Harad', 'leanshap/Harar.png'],
-      ['Kali Mirch', 'leanshap/Kalinmich.png'],
-      ['Baheda', 'leanshap/baheda.png'],
-      ['Green Tea', 'leanshap/chaa.png'],
-      ['Chitrak', 'leanshap/chitrak.png'],
-      ['Pippali', 'leanshap/pipal.png'],
-      ['Ginger', 'leanshap/saunth.png']
+      ['Garcinia', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450438/divyaswasth/migrated/a12c090f5b7a9fd6-carchinia.png'],
+      ['Harad', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450488/divyaswasth/migrated/a4099b16e68dc39b-Harar.png'],
+      ['Kali Mirch', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450493/divyaswasth/migrated/804bd9059c82a17c-Kalinmich.png'],
+      ['Baheda', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450475/divyaswasth/migrated/5a5a691e15ba2644-baheda.png'],
+      ['Green Tea', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450480/divyaswasth/migrated/7e31a65044337211-chaa.png'],
+      ['Chitrak', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450484/divyaswasth/migrated/350e29c1971d2662-chitrak.png'],
+      ['Pippali', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450502/divyaswasth/migrated/43519a482d717d1b-pipal.png'],
+      ['Ginger', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450512/divyaswasth/migrated/9a8304a4ff27bb00-saunth.png']
     ],
     formula: [
       'Standardized Garcinia Cambogia extract',
@@ -191,12 +192,12 @@ const productConfigs = {
       [Bone, 'Daily nutrition', 'Your everyday multivitamin ritual.']
     ],
     ingredients: [
-      ['Ashwagandha', 'ASWAGHANDHA.png'],
-      ['Amla', 'vital/awala.png'],
-      ['Shatavari', 'satwari.png'],
-      ['Shilajit', 'vital/Shilajit.png'],
-      ['Baheda', 'vital/baheda.png'],
-      ['Kaunch Beej', 'vital/beej.png']
+      ['Ashwagandha', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450423/divyaswasth/migrated/a84b254da2de06ba-ASWAGHANDHA.png'],
+      ['Amla', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450595/divyaswasth/migrated/6173fcaa823e1f94-awala.png'],
+      ['Shatavari', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450527/divyaswasth/migrated/a68cb1672af94d23-satwari.png'],
+      ['Shilajit', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450627/divyaswasth/migrated/355c562275d3f380-Shilajit.png'],
+      ['Baheda', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450603/divyaswasth/migrated/47ae3f168c3dee0b-baheda.png'],
+      ['Kaunch Beej', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450621/divyaswasth/migrated/bc3454ae8e077d32-beej.png']
     ],
     formula: [
       'A convenient capsule format',
@@ -222,19 +223,10 @@ const productConfigs = {
   }
 }
 
-const defaultViews = [
-  { label: 'Full product', position: 'center', scale: 1 },
-  { label: 'Bottle detail', position: 'center 40%', scale: 1.45 },
-  { label: 'Label detail', position: 'center 65%', scale: 2 }
-]
-
-const deliveryBadges = [
-  [Truck, 'Tracked delivery'],
-  [LockKeyhole, 'Secure checkout'],
-  [PackageCheck, 'Tested packaging']
-]
+const deliveryBadges = [[Truck, 'Tracked delivery'], [LockKeyhole, 'Secure checkout'], [PackageCheck, 'Tested packaging']]
 
 export default function VitalInfinityProduct({ product }) {
+  const ingredientImages = useSiteContent('product-ingredient-images')
   const [quantity, setQuantity] = useState(1)
   const [view, setView] = useState(0)
   const { addToCart } = useCart()
@@ -260,10 +252,10 @@ export default function VitalInfinityProduct({ product }) {
       [Bone, 'Holistic Care', 'Your everyday wellness ritual.']
     ],
     ingredients: [
-      ['Ashwagandha', 'ASWAGHANDHA.png'],
-      ['Amla', 'AWALA.png'],
-      ['Shatavari', 'satwari.png'],
-      ['Shilajit', 'Shilajit.png']
+      ['Ashwagandha', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450423/divyaswasth/migrated/a84b254da2de06ba-ASWAGHANDHA.png'],
+      ['Amla', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450428/divyaswasth/migrated/b820178af18d4af3-AWALA.png'],
+      ['Shatavari', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450527/divyaswasth/migrated/a68cb1672af94d23-satwari.png'],
+      ['Shilajit', 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450533/divyaswasth/migrated/8dc7938b2011a293-Shilajit.png']
     ],
     formula: [
       'A convenient capsule format',
@@ -288,7 +280,7 @@ export default function VitalInfinityProduct({ product }) {
     ]
   }
 
-  const artwork = product?.cardImage || product?.images?.[0] || '/images/home/Vital.png'
+  const artwork = product?.cardImage || product?.images?.[0] || 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450413/divyaswasth/migrated/cd90920cf0c446e8-Vital.png'
   const available = product?.availableForPurchase !== false && (product?.countInStock || 0) > 0 && (product?.price || 0) > 0
   const maxStock = Math.min(product?.countInStock || 0, 10)
 
@@ -302,46 +294,11 @@ export default function VitalInfinityProduct({ product }) {
   }
 
   const { EyebrowIcon } = config
-  const curatedGallery = {
-    'sugar-shield-blood-sugar-support': [
-      { src: '/images/home/Suger sheid.png', label: 'Front view' },
-      { src: '/images/product/sugar-shield-benefits-botanical.png', label: 'Benefits & suggested use' },
-      { src: '/images/product/sugar-shield-back-botanical.png', label: 'Product information' },
-      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.01 PM (1).jpeg', label: 'Wellness poster' },
-      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.01 PM (2).jpeg', label: 'Botanical ingredients poster' },
-      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.35.59 PM (1).jpeg', label: 'All bottle views' },
-      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.35.59 PM.jpeg', label: 'Complete label' }
-    ],
-    'lean-shape-garcinia-cambogia': [
-      { src: '/images/home/Lean.png', label: 'Front view' },
-      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.05 PM (1).jpeg', label: 'Transformation & wellness poster' },
-      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.05 PM.jpeg', label: 'Key benefits & ingredients' },
-      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.04 PM (3).jpeg', label: 'Product information' },
-      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.04 PM (1).jpeg', label: 'All bottle views' },
-      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.04 PM.jpeg', label: 'Complete label' }
-    ],
-    'endless-daily-wellness': [
-      { src: '/images/home/Endless.png', label: 'Front view' },
-      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.03 PM (1).jpeg', label: 'Product poster' },
-      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.03 PM (2).jpeg', label: 'Lifestyle poster' },
-      { src: '/images/product/endless-back-botanical.png', label: 'Product information' },
-      { src: '/images/product/endless-all-views-botanical.png', label: 'All bottle views' },
-      { src: '/images/product/WhatsApp Image 2026-09-10 at 1.36.01 PM (3).jpeg', label: 'Complete label' }
-    ],
-    'vital-infinity-multivitamin': [
-      { src: '/images/home/Vital.png', label: 'Front view' },
-      { src: '/images/product/vital-infinity-front-botanical.png', label: 'Front bottle view' },
-      { src: '/images/product/vital-infinity-benefits-botanical.png', label: 'Benefits & ingredients' },
-      { src: '/images/product/vital-infinity-back-botanical.png', label: 'Product information' },
-      { src: '/images/product/WhatsApp Image 2026-09-01 at 7.06.31 PM (1).jpeg', label: 'Product poster' }
-    ]
-  }[product.slug]
 
-  const galleryViews = curatedGallery
-    ? curatedGallery.map(item => ({ ...item, scale: 1, position: 'center' }))
-    : product.images?.length > 1
-      ? product.images.map((src, index) => ({ src, label: `Product image ${index + 1}`, scale: 1, position: 'center' }))
-      : defaultViews.map(item => ({ ...item, src: artwork }))
+
+  const galleryViews = product.images?.length
+    ? product.images.map((src, index) => ({ src, label: `Product image ${index + 1}`, scale: 1, position: 'center' }))
+    : [{ src: artwork, label: 'Product image', scale: 1, position: 'center' }]
 
   const currentView = galleryViews[view] || galleryViews[0]
 
@@ -358,7 +315,7 @@ export default function VitalInfinityProduct({ product }) {
 
       {/* ── HERO ── */}
       <section className="vital-hero" aria-labelledby="vital-title">
-        <div className={`vital-gallery${curatedGallery ? ' vital-gallery-complete' : ''}${view === 0 ? ' sugar-gallery-front' : ''}`}>
+        <div className={`vital-gallery vital-gallery-complete${view === 0 ? ' sugar-gallery-front' : ''}`}>
           <div className="vital-thumbnails">
             {galleryViews.map((item, index) => (
               <button
@@ -395,7 +352,7 @@ export default function VitalInfinityProduct({ product }) {
               }}
             />
           </div>
-          {curatedGallery && <div className="vital-gallery-caption">
+          {galleryViews.length > 0 && <div className="vital-gallery-caption">
             <span aria-live="polite">{currentView.label} · {view + 1} / {galleryViews.length}</span>
             <a href={currentView.src} target="_blank" rel="noreferrer">View full size ↗</a>
           </div>}
@@ -503,7 +460,7 @@ export default function VitalInfinityProduct({ product }) {
                 <span className="vital-ingredient-photo">
                   <img
                     loading="lazy"
-                    src={file.startsWith('/') ? file : `/images/ingredients/${file}`}
+                    src={ingredientImages[product.slug]?.[name] || (file.startsWith('/') || file.startsWith('https://') ? file : `/images/ingredients/${file}`)}
                     alt={name}
                     style={crop ? {
                       position: 'absolute',

@@ -25,6 +25,8 @@ import { useProducts } from '../hooks/useProducts.js'
 
 export default function HomePage() {
   const siteContent = useSiteContent('home', siteIcons)
+  const brand = useSiteContent('brand-logo')
+  const posters = useSiteContent('posters')
 
   const { products } = useProducts()
   const { addToCart } = useCart()
@@ -38,7 +40,7 @@ export default function HomePage() {
     <div className="bg-[#f7f5ee]">
       <section className="home-reference-hero relative aspect-[1974/797] overflow-hidden bg-[#f9f5e8]">
         <img
-          src={siteContent?.media?.src_1 || '/images/home/hero home.png'}
+          src={siteContent?.media?.src_1 || 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450390/divyaswasth/migrated/4da469eae425ac52-hero_home.png'}
           alt={siteContent?.media?.alt_2 || 'Divya Swasth holistic wellness range with natural ingredients'}
           className="absolute inset-0 h-full w-full object-cover"
         />
@@ -170,7 +172,7 @@ export default function HomePage() {
           </div>
 
           <img
-            src="/images/logo.png"
+            src={brand.media.src_2}
             alt="Divya Swasth — Natural Healing, Holistic Wellness, Healthy Future. May all be healthy."
             width={598}
             height={453}
@@ -189,6 +191,7 @@ export default function HomePage() {
         </div>
       </section>
    
+      {posters.items.filter(item => item.enabled && item.image).map((item, index) => <section key={index} className="mx-auto max-w-7xl px-4 py-4">{item.link ? <Link to={item.link}><img src={item.image} alt={item.alt} loading="lazy" className="w-full rounded-xl" /></Link> : <img src={item.image} alt={item.alt} loading="lazy" className="w-full rounded-xl" />}</section>)}
       <section className="bg-[#fbfaf5] px-3 pb-2 pt-6 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl sm:grid-cols-2 lg:grid-cols-4">{siteContent.sections.servicePromises.map(([Icon, title, text], index) => <article key={title} className={`flex min-h-[78px] items-center gap-3 px-3 py-3 sm:px-5 ${index ? 'border-t border-[#aeb8ad] sm:border-l sm:border-t-0' : ''}`}><Icon className="h-8 w-8 shrink-0 text-[#3f5c46]" strokeWidth={1.7} /><div><h2 className="text-[11px] font-black uppercase leading-[1.15] tracking-[.035em] text-[#142c1d]">{title}</h2><p className="mt-1 text-[10px] font-bold uppercase leading-[1.15] tracking-[.02em] text-[#46574b]">{text}</p></div></article>)}</div></section>
     </div>
   )

@@ -168,7 +168,7 @@ export default function PolicyPage({ type = 'shipping' }) {
           <div className="policy-visual-card">
             <div className="policy-visual-wrapper">
               <img
-                src="/images/wellness/shipping-hero.jpg"
+                src="https://res.cloudinary.com/djfluwhwu/image/upload/v1789450779/divyaswasth/migrated/5a2e26ad0efd50b7-shipping-hero.jpg"
                 alt="Ayurvedic Packaging and Safe Delivery"
                 className="policy-visual-img"
               />

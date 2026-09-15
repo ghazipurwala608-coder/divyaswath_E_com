@@ -2,7 +2,6 @@ import { createContext, useCallback, useContext, useEffect, useState } from 'rea
 import { apiRequest } from '../api/client.js'
 import { fallbackProducts } from '../data/products.js'
 
-const validSlugs = new Set(fallbackProducts.map(p => p.slug))
 
 const ProductContext = createContext({ products: fallbackProducts, loading: true, error: '' })
 
@@ -19,8 +18,8 @@ export function ProductProvider({ children }) {
         const next = await apiRequest(`/products?limit=50&page=${page}`)
         all.push(...(next?.products || []))
       }
-      const filtered = all.filter(p => validSlugs.has(p.slug) && p.isActive !== false)
-      setProducts(filtered.length ? filtered : fallbackProducts)
+      const filtered = all.filter(p => p.isActive !== false)
+      setProducts(filtered)
       setError('')
     } catch (err) {
       setError(err.message)

@@ -5,8 +5,8 @@ import { after, before, test } from 'node:test'
 import mongoose from 'mongoose'
 
 try { dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']) } catch {}
-import fs from 'node:fs/promises'
-import path from 'node:path'
+import cloudinary from '../config/cloudinary.js'
+import SiteContent from '../models/SiteContent.js'
 import User from '../models/User.js'
 import Product from '../models/Product.js'
 import Order from '../models/Order.js'
@@ -17,7 +17,6 @@ process.env.NODE_ENV = 'test'
 const dbName = `divya_swasth_test_${Date.now()}`
 let server, base, admin, customer
 const { default: app } = await import('../app.js')
-const { uploadDirectory } = await import('../controllers/storeAdminController.js')
 async function request(route, { token, method = 'GET', body, headers = {} } = {}) {
   const response = await fetch(base + route, { method, headers: { ...(body && { 'Content-Type': 'application/json' }), ...(token && { Authorization: `Bearer ${token}` }), ...headers }, body: Buffer.isBuffer(body) ? body : body ? JSON.stringify(body) : undefined })
   const result = await response.json()
@@ -146,13 +145,50 @@ test('dashboard totals, customers and goal recommendations use database records'
   assert.equal((await request('/wellness/recommendations?goal=3')).payload.products[0].slug, 'lean-shape-garcinia-cambogia')
   assert.equal((await request('/wellness/recommendations?goal=100')).status, 400)
 })
-test('media library lists existing assets and accepts only supported image uploads', async () => {
+test('media library lists existing assets and accepts only supported image uploads', async t => {
+  t.mock.method(cloudinary.api, 'resources', async () => ({ resources: [{ public_id: 'divyaswasth/vital', secure_url: 'https://res.cloudinary.com/demo/image/upload/divyaswasth/vital.png' }] }))
+  t.mock.method(cloudinary.uploader, 'upload_stream', (_options, done) => ({ end() { done(null, { secure_url: 'https://res.cloudinary.com/demo/image/upload/divyaswasth/test.png', public_id: 'divyaswasth/test' }) } }))
   const media = (await request('/admin/media', { token: admin })).payload.media
-  assert.ok(media.some(item => item.url === '/images/home/Vital.png'))
+  assert.ok(media.some(item => item.url === 'https://res.cloudinary.com/demo/image/upload/divyaswasth/vital.png'))
   const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=', 'base64')
   const uploaded = await request('/admin/media', { token: admin, method: 'POST', body: png, headers: { 'Content-Type': 'application/octet-stream' } })
   assert.equal(uploaded.status, 201)
-  try { assert.equal((await fetch(base.replace('/api', '') + uploaded.payload.media.url)).status, 200) }
-  finally { await fs.unlink(path.join(uploadDirectory, uploaded.payload.media.name)) }
+  assert.match(uploaded.payload.media.url, /^https:\/\/res.cloudinary.com\//)
   assert.equal((await request('/admin/media', { token: admin, method: 'POST', body: Buffer.from('<svg>untrusted</svg>'), headers: { 'Content-Type': 'application/octet-stream' } })).status, 400)
+})
+
+
+test('bootstrap preserves added products and saved branding after restart', async () => {
+  const original = await Product.findOne().lean()
+  const { _id, __v, createdAt, updatedAt, ...fields } = original
+  const added = await Product.create({ ...fields, name: 'Admin added product', slug: 'admin-added-product' })
+  const brand = structuredClone(websiteContent['brand-logo'])
+  brand.media.src_2 = 'https://example.com/custom-logo.png'
+  await SiteContent.updateOne({ key: 'brand-logo' }, { $set: { content: brand } })
+  await bootstrapStore()
+  assert.equal((await Product.findById(added._id)).isActive, true)
+  assert.equal((await SiteContent.findOne({ key: 'brand-logo' })).content.media.src_2, brand.media.src_2)
+})
+
+test('admin can save posters and unsafe destinations are rejected', async () => {
+  const content = { items: [{ image: 'https://example.com/poster.png', alt: 'New collection', link: '/shop', enabled: true }] }
+  const saved = await request('/admin/content/posters', { token: admin, method: 'PUT', body: { content, revision: 0 } })
+  assert.equal(saved.status, 200)
+  assert.deepEqual((await request('/content')).payload.pages.posters, content)
+  content.items[0].link = 'javascript:alert(1)'
+  assert.equal((await request('/admin/content/posters', { token: admin, method: 'PUT', body: { content, revision: saved.payload.page.revision } })).status, 400)
+})
+
+
+test('admin can delete original products; deletion survives restart and preserves records', async () => {
+  const product = await Product.findOne({ isActive: true })
+  const route = `/products/id/${product._id}`
+  assert.equal((await request(route, { method: 'DELETE' })).status, 401)
+  assert.equal((await request(route, { method: 'DELETE', token: customer })).status, 403)
+  assert.equal((await request(route, { method: 'DELETE', token: admin })).status, 200)
+  assert.equal((await request(`/products/${product.slug}`)).status, 404)
+  assert.ok(!(await request('/admin/products', { token: admin })).payload.products.some(item => item._id === String(product._id)))
+  await bootstrapStore()
+  assert.equal((await Product.findById(product._id)).isActive, false)
+  assert.ok(!(await request('/products?limit=50')).payload.products.some(item => item._id === String(product._id)))
 })

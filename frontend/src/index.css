@@ -72,7 +72,7 @@ button, a { outline-offset: 4px; }
 .home-reference-hero + section h2 { max-width: none; color: #e2b64f; font-size: clamp(.62rem, .82vw, .78rem); line-height: 1.2; letter-spacing: .025em; }
 .home-reference-hero + section article p { max-width: none; margin-top: .25rem; color: #f5edcf; font-size: clamp(.58rem, .72vw, .69rem); line-height: 1.25; }
 
-.journey-showcase { isolation: isolate; padding-top: 1.25rem; padding-bottom: 1.4rem; background: #fbfaf3 url('/images/home/card bg.png') center center / cover no-repeat; }
+.journey-showcase { isolation: isolate; padding-top: 1.25rem; padding-bottom: 1.4rem; background: #fbfaf3 var(--store-background-journey, url('https://res.cloudinary.com/djfluwhwu/image/upload/v1789450332/divyaswasth/migrated/458d42b49581f5db-card_bg.png')) center center / cover no-repeat; }
 .journey-showcase::before, .journey-showcase::after { content: none; }
 .journey-showcase > .pointer-events-none { display: none; }
 .journey-showcase #premium-formulations { margin-top: 1.4rem; }

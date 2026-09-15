@@ -19,14 +19,15 @@ const DEFAULT_CUSTOMER_CARE = [
 ]
 
 const DEFAULT_CERTIFICATIONS = [
-  { name: 'Made in India', image: '/images/certifications/made-in-india.jpg', label: '100% Authentic Ayurvedic' },
-  { name: 'GMP Certified', image: '/images/certifications/gmp.jpg', label: 'Good Manufacturing Practice' },
-  { name: 'AYUSH Premium', image: '/images/certifications/ayush.jpg', label: 'Ministry of AYUSH Certified' },
-  { name: 'FSSAI Certified', image: '/images/certifications/fssai.jpg', label: 'Food Safety Authority of India' },
-  { name: 'ISO 9001:2015', image: '/images/certifications/iso.jpg', label: 'Quality Management System' }
+  { name: 'Made in India', image: 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450303/divyaswasth/migrated/8936521dc95acab5-made-in-india.jpg', label: '100% Authentic Ayurvedic' },
+  { name: 'GMP Certified', image: 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450286/divyaswasth/migrated/114538309709767c-gmp.jpg', label: 'Good Manufacturing Practice' },
+  { name: 'AYUSH Premium', image: 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450276/divyaswasth/migrated/14a45c024dc87ea9-ayush.jpg', label: 'Ministry of AYUSH Certified' },
+  { name: 'FSSAI Certified', image: 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450281/divyaswasth/migrated/55ffcf694ad2baa5-fssai.jpg', label: 'Food Safety Authority of India' },
+  { name: 'ISO 9001:2015', image: 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450292/divyaswasth/migrated/d4536bfb9f82d200-iso.jpg', label: 'Quality Management System' }
 ]
 
 export default function Footer() {
+  const brand = useSiteContent('brand-logo')
   const siteContent = useSiteContent('footer', siteIcons)
 
   const quickLinks = (siteContent?.sections?.QUICK_LINKS || DEFAULT_QUICK_LINKS).filter(([, href]) => href !== '/contact')
@@ -44,7 +45,7 @@ export default function Footer() {
           <Link to={siteContent.media?.to_1 || '/'} className="group flex items-center gap-3" aria-label="Divya Swasth home">
             <span className="relative h-[52px] w-[52px] shrink-0 overflow-hidden rounded-full border-2 border-[#c8973a]/70 bg-white shadow-md flex items-center justify-center p-1">
               <img
-                src={siteContent.media?.src_2 || '/images/logo.png'}
+                src={brand.media?.src_2 || 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450630/divyaswasth/migrated/c3f4077ffa0cfc7d-logo.png'}
                 alt={siteContent.media?.alt_3 || 'Divya Swasth'}
                 className="h-full w-full object-contain transition duration-300 group-hover:scale-105"
               />

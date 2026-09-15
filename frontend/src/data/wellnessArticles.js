@@ -6,7 +6,7 @@ export const wellnessArticles = [
     summary: 'Build a realistic routine around food quality, consistency, sleep and daily movement.',
     read: '6 min read',
     updated: 'August 2026',
-    image: '/images/wellness/sustainable-weight-habits.webp',
+    image: 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450780/divyaswasth/migrated/4b5f59cf70bd2c09-sustainable-weight-habits.webp',
     imageAlt: 'Woman preparing a balanced meal in a bright home kitchen',
     intro: 'Healthy weight management is not one perfect meal or a short, restrictive plan. It is a repeatable pattern that supports nourishment, movement, rest and emotional wellbeing in a way that fits real life.',
     takeaways: [
@@ -69,7 +69,7 @@ export const wellnessArticles = [
     summary: 'Simple ways to recognise hunger, fullness and balanced portions in everyday meals.',
     read: '5 min read',
     updated: 'August 2026',
-    image: '/images/wellness/balanced-portions.webp',
+    image: 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450755/divyaswasth/migrated/739a47e402703127-balanced-portions.webp',
     imageAlt: 'Balanced Indian meal with vegetables, rice, chickpeas and roti',
     intro: 'A useful portion is not the same for every person or every day. Appetite and needs can shift with activity, age, health, pregnancy and meal timing. The goal is to build balanced meals and stay aware—not to make eating a constant calculation.',
     takeaways: [
@@ -132,7 +132,7 @@ export const wellnessArticles = [
     summary: 'A gentle look at walking, mobility and strength as parts of long-term wellbeing.',
     read: '4 min read',
     updated: 'August 2026',
-    image: '/images/wellness/daily-movement.webp',
+    image: 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450756/divyaswasth/migrated/db428dcb7d50d4ef-daily-movement.webp',
     imageAlt: 'Two women enjoying a morning walk through a green park',
     intro: 'Movement does not have to happen in a gym or all at once. Walking to a shop, climbing stairs, gardening, active household work, mobility practice and planned exercise can all contribute to an active day.',
     takeaways: [
@@ -195,7 +195,7 @@ export const wellnessArticles = [
     summary: 'Food-first context for understanding common micronutrients and variety.',
     read: '7 min read',
     updated: 'August 2026',
-    image: '/images/wellness/vitamins-minerals-food.webp',
+    image: 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450789/divyaswasth/migrated/f305b04c74e55665-vitamins-minerals-food.webp',
     imageAlt: 'Colourful vegetables, lentils, fruits, seeds and nuts arranged on a table',
     intro: 'Vitamins and minerals are needed in relatively small amounts, but each has specific roles. No single “superfood” supplies everything, which is why dietary variety matters more than chasing one ingredient.',
     takeaways: [
@@ -258,7 +258,7 @@ export const wellnessArticles = [
     summary: 'How climate, movement and food choices can influence everyday hydration needs.',
     read: '5 min read',
     updated: 'August 2026',
-    image: '/images/wellness/everyday-hydration.webp',
+    image: 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450757/divyaswasth/migrated/5d0b52afd5b43c7f-everyday-hydration.webp',
     imageAlt: 'Fresh water, coconut water and hydrating fruit on a shaded veranda',
     intro: 'Eight glasses is a familiar reminder, not a universal requirement. Fluid needs differ with age, body size, pregnancy or breastfeeding, activity, climate, illness and the water contained in food.',
     takeaways: [
@@ -321,7 +321,7 @@ export const wellnessArticles = [
     summary: 'Why extract type, standardisation, dosage and professional guidance all matter.',
     read: '8 min read',
     updated: 'August 2026',
-    image: '/images/wellness/responsible-herbal-extracts.webp',
+    image: 'https://res.cloudinary.com/djfluwhwu/image/upload/v1789450773/divyaswasth/migrated/f6fbf53e4e8555b4-responsible-herbal-extracts.webp',
     imageAlt: 'Indian botanicals and amber extract bottles arranged for careful study',
     intro: 'An extract is more than the name of a plant. The species, plant part, extraction method, concentration, dose and product quality can all change what is actually being used. “Natural” describes an origin; it does not guarantee safety or effectiveness.',
     takeaways: [

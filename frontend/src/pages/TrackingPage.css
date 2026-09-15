@@ -13,7 +13,7 @@
 /* Hero Section */
 .tracking-hero {
   position: relative;
-  background: #f7f3e8 url('/images/conac/con image.png') center/cover no-repeat;
+  background: #f7f3e8 var(--store-background-contact, url('https://res.cloudinary.com/djfluwhwu/image/upload/v1789450314/divyaswasth/migrated/56e7509289e3a80e-con_image.png')) center/cover no-repeat;
   border-bottom: 1px solid #e7e3d6;
   padding: 40px 24px 70px;
   overflow: hidden;

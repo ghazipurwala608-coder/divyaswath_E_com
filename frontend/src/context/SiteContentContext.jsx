@@ -17,6 +17,11 @@ export function SiteContentProvider({ children }) {
     window.addEventListener('site-content-updated', refresh)
     return () => { window.removeEventListener('focus', refresh); window.removeEventListener('site-content-updated', refresh) }
   }, [refresh])
+  useEffect(() => {
+    for (const [key, url] of Object.entries(pages.backgrounds || {})) {
+      document.documentElement.style.setProperty(`--store-background-${key}`, `url(${JSON.stringify(url)})`)
+    }
+  }, [pages.backgrounds])
   return <SiteContentContext.Provider value={pages}>{children}</SiteContentContext.Provider>
 }
 function hydrate(value, icons) {
