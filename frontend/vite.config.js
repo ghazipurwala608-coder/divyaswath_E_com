@@ -14,18 +14,21 @@ export default defineConfig(({ mode }) => {
   resolve: {
     dedupe: ['react', 'react-dom'],
   },
-  server: {
-    port: 5173,
-    fs: {
-      allow: [
-        searchForWorkspaceRoot(process.cwd()),
-        path.resolve(__dirname, '..'),
-        path.resolve(__dirname, '../shared'),
-      ],
+    server: {
+      port: 5173,
+      watch: {
+        ignored: ['**/backend/**', '**/uploads/**', '**/.git/**'],
+      },
+      fs: {
+        allow: [
+          searchForWorkspaceRoot(process.cwd()),
+          path.resolve(__dirname, '..'),
+          path.resolve(__dirname, '../shared'),
+        ],
+      },
+      proxy: {
+        '/api': process.env.API_PROXY_TARGET || env.API_PROXY_TARGET || 'http://127.0.0.1:5000',
+      },
     },
-    proxy: {
-      '/api': process.env.API_PROXY_TARGET || env.API_PROXY_TARGET || 'http://127.0.0.1:5000',
-    },
-  },
   }
 })

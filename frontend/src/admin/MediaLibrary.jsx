@@ -1,8 +1,16 @@
-import { Eye, ExternalLink, Upload, ImagePlus, Loader2, RefreshCw, Search, Trash2 } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { Eye, ExternalLink, Upload, ImagePlus, Loader2, RefreshCw, Search, Trash2, Copy, Check, Link2, ArrowUpRight, ImageIcon } from 'lucide-react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { apiRequest } from '../api/client.js'
 import { DataState, EmptyState, Modal, useAdminData } from './AdminUI.jsx'
+
+const fileToBase64 = file =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = error => reject(error)
+  })
 
 export default function MediaLibrary({ onSelect }) {
   const { data, setData, loading, error, reload } = useAdminData('/admin/media')
@@ -14,68 +22,122 @@ export default function MediaLibrary({ onSelect }) {
   const [deletingUrl, setDeletingUrl] = useState(null)
   const [preview, setPreview] = useState(null)
   const [uploadStatus, setUploadStatus] = useState('')
-  const fileInputRef = useRef(null)
+  const [copiedUrl, setCopiedUrl] = useState('')
+  const [showUrlImport, setShowUrlImport] = useState(false)
+  const [importUrl, setImportUrl] = useState('')
+  const [importingUrl, setImportingUrl] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
 
-  const upload = async file => {
+  const uploadFile = async file => {
     if (!file || uploading) return
     setUploadError('')
-    // 10 MB limit
+
     if (file.size > 10 * 1024 * 1024) {
-      setUploadError('Image size must be under 10 MB')
-      return toast.error('Image size must be under 10 MB')
+      const msg = 'Image size must be under 10 MB'
+      setUploadError(msg)
+      return toast.error(msg)
     }
 
     const isValidExt = /\.(png|jpe?g|webp|svg|gif|avif|jfif)$/i.test(file.name)
     const isImageMime = file.type?.startsWith('image/')
     if (!isImageMime && !isValidExt) {
-      setUploadError('Please choose a PNG, JPEG, WebP, SVG, GIF or AVIF image')
-      return toast.error('Please choose a PNG, JPEG, WebP, SVG, GIF or AVIF image')
+      const msg = 'Please choose a PNG, JPEG, WebP, SVG, GIF or AVIF image'
+      setUploadError(msg)
+      return toast.error(msg)
     }
 
     setUploading(true)
-    setUploadStatus(`Uploading ${file.name}...`)
-    const toastId = toast.loading(`Uploading ${file.name}…`)
+    setUploadStatus(`Uploading ${file.name} to Cloudinary...`)
+    const toastId = toast.loading(`Uploading ${file.name} to Cloudinary…`)
     try {
-      setUploadStatus(`Uploading ${file.name}...`)
+      const base64Data = await fileToBase64(file)
       const result = await apiRequest('/admin/media', {
         method: 'POST',
-        signal: AbortSignal.timeout(90000),
-        headers: { 'Content-Type': 'application/octet-stream', 'X-File-Name': encodeURIComponent(file.name) },
-        body: file,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: file.name,
+          data: base64Data,
+        }),
       })
 
       const newMedia = result?.media || result
-      if (!newMedia?.url) throw new Error('The server did not return an uploaded image. Please check the backend connection.')
-      if (newMedia.url) {
-        setRecentUploads(current => [newMedia, ...current.filter(item => item.url !== newMedia.url)])
-        setData(current => ({
-          media: [newMedia, ...(current?.media || []).filter(m => m.url !== newMedia.url)],
-        }))
-        setFilter('uploaded')
-        setQuery('')
-        await reload()
+      if (!newMedia?.url) {
+        throw new Error('The server did not return an uploaded image. Please check Cloudinary connection.')
       }
-      setUploadStatus(`${file.name} uploaded successfully. It is now available in Uploaded.`)
-      toast.success('Image uploaded successfully!', { id: toastId, duration: 5000 })
+
+      setRecentUploads(current => [newMedia, ...current.filter(item => item.url !== newMedia.url)])
+      setData(current => ({
+        media: [newMedia, ...(current?.media || []).filter(m => m.url !== newMedia.url)],
+      }))
+      setFilter('all')
+      setQuery('')
+      setUploadStatus(`${file.name} uploaded successfully to Cloudinary!`)
+      toast.success('Image uploaded successfully to Cloudinary!', { id: toastId, duration: 5000 })
     } catch (err) {
+      console.error('Media upload error:', err)
       setUploadStatus('')
-      setUploadError(err.name === 'TimeoutError' ? 'Upload timed out. Check your internet connection and try again.' : err.message || 'Failed to upload image')
-      toast.error(err.message || 'Failed to upload image', { id: toastId })
+      const msg = err.name === 'TimeoutError'
+        ? 'Upload timed out. Check your internet connection and try again.'
+        : err.message || 'Failed to upload image'
+      setUploadError(msg)
+      toast.error(msg, { id: toastId })
     } finally {
       setUploading(false)
     }
   }
 
+  const handleUrlImport = async e => {
+    e.preventDefault()
+    if (!importUrl.trim() || importingUrl) return
+    let parsed
+    try {
+      parsed = new URL(importUrl.trim())
+    } catch {
+      return toast.error('Please enter a valid https:// image link')
+    }
+    if (parsed.protocol !== 'https:') {
+      return toast.error('Only secure HTTPS image links are supported')
+    }
+
+    setImportingUrl(true)
+    const toastId = toast.loading('Importing image to Cloudinary…')
+    try {
+      const result = await apiRequest('/admin/media', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: importUrl.trim() }),
+      })
+
+      const newMedia = result?.media || result
+      if (!newMedia?.url) throw new Error('Failed to import image to Cloudinary')
+
+      setRecentUploads(current => [newMedia, ...current.filter(item => item.url !== newMedia.url)])
+      setData(current => ({
+        media: [newMedia, ...(current?.media || []).filter(m => m.url !== newMedia.url)],
+      }))
+      setImportUrl('')
+      setShowUrlImport(false)
+      toast.success('Image imported successfully to Cloudinary!', { id: toastId })
+    } catch (err) {
+      toast.error(err.message || 'Failed to import image', { id: toastId })
+    } finally {
+      setImportingUrl(false)
+    }
+  }
+
   const handleDelete = async (event, item) => {
     event.stopPropagation()
-    const confirmDelete = window.confirm(`Are you sure you want to delete "${item.name}"?\n\nURL: ${item.url}`)
+    const confirmDelete = window.confirm(`Are you sure you want to delete "${item.name}" from Cloudinary?\n\nURL: ${item.url}`)
     if (!confirmDelete) return
 
     setDeletingUrl(item.url)
     try {
       await apiRequest('/admin/media', {
         method: 'DELETE',
-        body: JSON.stringify({ url: item.url, name: item.name }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: item.url, public_id: item.public_id, name: item.name }),
       })
       setData(current => ({
         media: (current?.media || []).filter(m => m.url !== item.url),
@@ -89,20 +151,39 @@ export default function MediaLibrary({ onSelect }) {
     }
   }
 
+  const copyUrl = (event, url) => {
+    event.stopPropagation()
+    navigator.clipboard.writeText(url)
+    setCopiedUrl(url)
+    toast.success('Image link copied to clipboard!')
+    setTimeout(() => setCopiedUrl(''), 2500)
+  }
+
+  // Combine recent uploads and fetched media
   const allMedia = [...new Map([...recentUploads, ...(data?.media || [])].map(item => [item.url, item])).values()]
-  const uploadedCount = allMedia.filter(item => (item.url?.startsWith('/api/media/') || item.url?.includes('/divyaswasth/uploads/'))).length
+
+  const isItemUploaded = item =>
+    Boolean(
+      item.public_id?.includes('uploads') ||
+      item.url?.includes('/divyaswasth/uploads/') ||
+      item.url?.startsWith('/api/media/') ||
+      recentUploads.some(r => r.url === item.url)
+    )
+
+  const uploadedCount = allMedia.filter(isItemUploaded).length
   const builtinCount = allMedia.length - uploadedCount
 
   const filteredMedia = allMedia
     .filter(item => {
-      if (filter === 'uploaded') return (item.url?.startsWith('/api/media/') || item.url?.includes('/divyaswasth/uploads/'))
-      if (filter === 'builtin') return !(item.url?.startsWith('/api/media/') || item.url?.includes('/divyaswasth/uploads/'))
+      if (filter === 'uploaded') return isItemUploaded(item)
+      if (filter === 'builtin') return !isItemUploaded(item)
       return true
     })
-    .filter(item => `${item.name} ${item.url}`.toLowerCase().includes(query.toLowerCase()))
+    .filter(item => `${item.name || ''} ${item.url || ''}`.toLowerCase().includes(query.toLowerCase()))
 
   return (
     <div className="admin-media-library">
+      {/* Top Search & Filter Bar */}
       <div className="admin-toolbar" style={{ flexWrap: 'wrap', gap: '10px' }}>
         <label className="admin-search" style={{ minWidth: '240px', flex: 1 }}>
           <Search size={16} />
@@ -136,58 +217,152 @@ export default function MediaLibrary({ onSelect }) {
             Website ({builtinCount})
           </button>
         </div>
-
       </div>
-      <div className="admin-toolbar" style={{ flexWrap: 'wrap', gap: 12, padding: 16, background: '#f4f7f2', borderRadius: 8 }}>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/png,image/jpeg,image/webp,image/svg+xml,image/gif,image/avif,.jfif"
-          disabled={uploading}
-          onChange={event => {
-            const file = event.target.files?.[0]
-            event.target.value = ''
-            if (!file) {
-              setUploadStatus('No image selected.')
-              return
-            }
-            setUploadError('')
-            setUploadStatus('')
-            void upload(file)
-          }}
-          hidden
-        />
+
+      {/* Upload & Import Dropzone Box */}
+      <div
+        onDragOver={e => {
+          e.preventDefault()
+          setIsDragging(true)
+        }}
+        onDragLeave={() => setIsDragging(false)}
+        onDrop={e => {
+          e.preventDefault()
+          setIsDragging(false)
+          const file = e.dataTransfer.files?.[0]
+          if (file) void uploadFile(file)
+        }}
+        style={{
+          border: isDragging ? '2px dashed #2d5a36' : '1px dashed #c4d6b6',
+          borderRadius: 12,
+          padding: '20px 24px',
+          background: isDragging ? '#eaf3e6' : '#f7faf4',
+          marginBottom: 16,
+          transition: 'all 0.2s',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+          gap: 12,
+        }}
+      >
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center', justifyContent: 'center' }}>
+          <label
+            className="admin-button"
+            style={{
+              cursor: uploading ? 'not-allowed' : 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+              opacity: uploading ? 0.7 : 1,
+            }}
+          >
+            {uploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+            <span>{uploading ? 'Uploading to Cloudinary...' : 'Upload Image from Device'}</span>
+            <input
+              type="file"
+              accept="image/*,.png,.jpg,.jpeg,.webp,.svg,.gif,.avif,.jfif"
+              disabled={uploading}
+              onChange={event => {
+                const file = event.target.files?.[0]
+                event.target.value = ''
+                if (file) void uploadFile(file)
+              }}
+              style={{ display: 'none' }}
+            />
+          </label>
+
+          <button
+            type="button"
+            className="admin-button secondary"
+            onClick={() => setShowUrlImport(prev => !prev)}
+            disabled={uploading || importingUrl}
+          >
+            <Link2 size={16} />
+            {showUrlImport ? 'Hide URL Import' : 'Import from Web URL'}
+          </button>
+        </div>
+
+        {showUrlImport && (
+          <form
+            onSubmit={handleUrlImport}
+            style={{ display: 'flex', gap: 8, width: '100%', maxWidth: 520, marginTop: 4 }}
+          >
+            <input
+              type="url"
+              placeholder="https://example.com/image.jpg"
+              value={importUrl}
+              onChange={e => setImportUrl(e.target.value)}
+              required
+              style={{
+                flex: 1,
+                padding: '8px 12px',
+                borderRadius: 6,
+                border: '1px solid #c4d6b6',
+                background: '#fff',
+                fontSize: 13,
+              }}
+            />
+            <button
+              type="submit"
+              className="admin-button"
+              disabled={importingUrl || !importUrl.trim()}
+            >
+              {importingUrl ? <Loader2 size={14} className="animate-spin" /> : <ArrowUpRight size={14} />}
+              Import
+            </button>
+          </form>
+        )}
+
+        <p style={{ margin: 0, fontSize: 12, color: '#55685a' }}>
+          Drag & drop images here, or click upload. Supported formats: <strong>PNG, JPG, WebP, SVG, GIF, AVIF</strong> (up to 10 MB).
+        </p>
+      </div>
+
+      {uploadStatus && (
+        <p role="status" aria-live="polite" className="admin-hint" style={{ color: '#2d5a36', fontWeight: 500 }}>
+          {uploadStatus}
+          {recentUploads[0]?.url && (
+            <a href={recentUploads[0].url} target="_blank" rel="noreferrer" style={{ marginLeft: 8, color: '#1b4332' }}>
+              Open in new tab
+            </a>
+          )}
+        </p>
+      )}
+
+      {uploadError && (
+        <p role="alert" style={{ color: '#b42318', padding: 12, background: '#fff1f0', borderRadius: 8, marginBottom: 12 }}>
+          {uploadError}
+        </p>
+      )}
+
+      {error && allMedia.length > 0 && (
+        <p role="alert" className="admin-hint" style={{ color: '#b42318' }}>
+          Saved uploads are shown below. Library refresh notice: {error}
+        </p>
+      )}
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
         <button
           type="button"
-          className="admin-button"
-          onClick={event => {
-            event.preventDefault()
-            event.stopPropagation()
-            fileInputRef.current?.click()
-          }}
-          disabled={uploading}
+          className="admin-button secondary"
+          onClick={reload}
+          disabled={loading || uploading}
         >
-          {uploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
-          {uploading ? 'Uploading...' : 'Upload Image'}
+          <RefreshCw size={15} className={loading ? 'animate-spin' : ''} /> Refresh gallery
         </button>
+        <span style={{ fontSize: 12, color: '#728577' }}>
+          Showing {filteredMedia.length} of {allMedia.length} images
+        </span>
       </div>
-      <p className="admin-hint">
-        Upload an image directly from your device. Your uploaded image will appear in this gallery. Click View to open it. Supported formats: PNG, JPEG, WebP, SVG, GIF (up to 10 MB).
-      </p>
 
-      {uploadStatus && <p role="status" aria-live="polite" className="admin-hint">
-        {uploadStatus}
-        {recentUploads[0]?.url && <a href={recentUploads[0].url} target="_blank" rel="noreferrer" style={{ marginLeft: 8 }}>Open image</a>}
-      </p>}
-      {uploadError && <p role="alert" style={{ color: '#b42318', padding: 12, background: '#fff1f0', borderRadius: 8 }}>{uploadError}</p>}
-      {error && allMedia.length > 0 && <p role="alert" className="admin-hint">Saved uploads are shown below. Library refresh failed: {error}</p>}
-      <button type="button" className="admin-button secondary" onClick={reload} disabled={loading || uploading} style={{ marginBottom: 12 }}><RefreshCw size={16} /> Refresh gallery</button>
       <DataState loading={loading && !allMedia.length} error={!allMedia.length ? error : ''} retry={reload}>
         {filteredMedia.length ? (
           <div className="admin-media-grid">
             {filteredMedia.map(item => {
-              const isUploaded = (item.url?.startsWith('/api/media/') || item.url?.includes('/divyaswasth/uploads/'))
+              const uploaded = isItemUploaded(item)
               const isDeleting = deletingUrl === item.url
+              const isCopied = copiedUrl === item.url
 
               return (
                 <div key={item.url} className="admin-media-item">
@@ -199,16 +374,30 @@ export default function MediaLibrary({ onSelect }) {
                     }}
                     role="button"
                     tabIndex={0}
-                    title={onSelect ? 'Click to select image' : 'View image'}
-                    onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); if (onSelect) onSelect(item.url); else setPreview(item) } }}
+                    title={onSelect ? 'Click to select image' : 'View full image'}
+                    onKeyDown={event => {
+                      if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault()
+                        if (onSelect) onSelect(item.url)
+                        else setPreview(item)
+                      }
+                    }}
                   >
-                    <img src={item.url} alt={item.name} loading="lazy" />
-                    {isUploaded && <span className="admin-media-tag">Uploaded</span>}
+                    <img
+                      src={item.url}
+                      alt={item.name || 'Image'}
+                      loading="lazy"
+                      onError={e => {
+                        e.target.style.display = 'none'
+                        e.target.parentElement.classList.add('admin-img-fallback')
+                      }}
+                    />
+                    {uploaded && <span className="admin-media-tag">Uploaded</span>}
                   </div>
 
                   <div className="admin-media-info">
                     <span className="admin-media-name" title={item.name}>{item.name}</span>
-
+                    <span className="admin-media-url" title={item.url}>{item.url}</span>
                   </div>
 
                   <div className="admin-media-actions">
@@ -226,15 +415,24 @@ export default function MediaLibrary({ onSelect }) {
                         className="admin-media-btn"
                         onClick={() => setPreview(item)}
                       >
-                        <Eye size={13} />
-                        View
+                        <Eye size={13} /> View
                       </button>
                     )}
 
                     <button
                       type="button"
+                      className="admin-media-btn"
+                      title="Copy Image URL"
+                      onClick={e => copyUrl(e, item.url)}
+                    >
+                      {isCopied ? <Check size={13} color="#2d5a36" /> : <Copy size={13} />}
+                      {isCopied ? 'Copied' : 'Copy'}
+                    </button>
+
+                    <button
+                      type="button"
                       className="admin-media-btn danger"
-                      title="Delete Image"
+                      title="Delete from Cloudinary"
                       disabled={isDeleting}
                       onClick={e => handleDelete(e, item)}
                     >
@@ -253,8 +451,47 @@ export default function MediaLibrary({ onSelect }) {
           />
         )}
       </DataState>
-      {preview && <Modal title="View image" onClose={() => setPreview(null)} wide><div className="admin-modal-body"><img src={preview.url} alt={preview.name} style={{ display: 'block', width: '100%', maxHeight: '70vh', objectFit: 'contain' }} /><p>{preview.name}</p><a className="admin-button secondary" href={preview.url} target="_blank" rel="noreferrer"><ExternalLink size={16} /> Open full image</a>{onSelect && <button type="button" className="admin-button" onClick={() => { onSelect(preview.url); setPreview(null) }}>Use this image</button>}</div></Modal>}
+
+      {preview && (
+        <Modal title="View image" onClose={() => setPreview(null)} wide>
+          <div className="admin-modal-body" style={{ textAlign: 'center' }}>
+            <div style={{ background: '#f8faf4', padding: 16, borderRadius: 8, marginBottom: 12 }}>
+              <img
+                src={preview.url}
+                alt={preview.name}
+                style={{ display: 'block', margin: '0 auto', maxWidth: '100%', maxHeight: '65vh', objectFit: 'contain' }}
+              />
+            </div>
+            <p style={{ fontWeight: 600, fontSize: 14, margin: '8px 0 4px', wordBreak: 'break-all' }}>{preview.name}</p>
+            <p style={{ fontSize: 12, color: '#68786b', wordBreak: 'break-all', marginBottom: 16 }}>{preview.url}</p>
+            <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
+              <button
+                type="button"
+                className="admin-button secondary"
+                onClick={e => copyUrl(e, preview.url)}
+              >
+                {copiedUrl === preview.url ? <Check size={16} /> : <Copy size={16} />}
+                {copiedUrl === preview.url ? 'Link Copied!' : 'Copy Link'}
+              </button>
+              <a className="admin-button secondary" href={preview.url} target="_blank" rel="noreferrer">
+                <ExternalLink size={16} /> Open full image
+              </a>
+              {onSelect && (
+                <button
+                  type="button"
+                  className="admin-button"
+                  onClick={() => {
+                    onSelect(preview.url)
+                    setPreview(null)
+                  }}
+                >
+                  Use this image
+                </button>
+              )}
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   )
 }
-
