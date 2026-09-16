@@ -654,6 +654,7 @@ export default function CheckoutPage() {
                   <a href="tel:+919747007253">
                     <Phone size={14} className="text-[#c8973a]" />
                     <span>+91 97470 07253</span>
+                    <span>+91 92117 41619</span>
                   </a>
                   <a href="mailto:divyaswasth@gmail.com">
                     <Mail size={14} className="text-[#c8973a]" />

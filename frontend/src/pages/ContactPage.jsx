@@ -1,4 +1,4 @@
-import toast from 'react-hot-toast'
+﻿import toast from 'react-hot-toast'
 import { useState } from 'react'
 import {
   ArrowRight,
@@ -210,7 +210,8 @@ export default function ContactPage() {
           </div>
           <aside className="contact-details">
             <h2>Get in Touch</h2>
-            <div className="contact-detail"><span><Phone /></span><div><h3>Call Us</h3><a href="tel:+919747007253">+91 97470 07253</a><p>For product enquiries & order support</p></div></div>
+            <div className="contact-detail"><span><Phone /></span><div><h3>Call Us</h3><a href="tel:+919747007253">+91 97470 07253<br/>+91 9211741619</a><p>For product enquiries & order support</p></div></div>
+             
             <div className="contact-detail"><span><Mail /></span><div><h3>Email Us</h3><a href="mailto:divyaswasth@gmail.com">divyaswasth@gmail.com</a><p>We&apos;d love to hear from you</p></div></div>
             <div className="contact-detail"><span><MapPin /></span><div><h3>Our Office</h3><p>Pocket 1, Okhla Phase 1,<br />New Delhi, Delhi 110020,<br />India</p></div></div>
             <div className="contact-detail"><span><MessageCircle /></span><div><h3>WhatsApp Support</h3><a href="https://wa.me/919747007253" target="_blank" rel="noreferrer">+91 97470 07253</a><p>Chat with our customer care team</p></div></div>

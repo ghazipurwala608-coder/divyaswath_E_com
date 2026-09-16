@@ -1256,7 +1256,7 @@ export const websiteContent = {
             "$icon": "Phone"
           },
           "Call us",
-          "+91 97470 07253"
+          "+91 97470 07253","+91 9211741619"
         ],
         [
           {
@@ -1867,7 +1867,7 @@ export const websiteContent = {
       "quick_links": "Quick Links",
       "customer_care": "Customer Care",
       "contact_us": "Contact Us",
-      "_91_98765_43210": "+91 97470 07253",
+      "+91 9211741619": "+91 97470 07253",
       "care_divyaswasth_com": "divyaswasth@gmail.com",
       "saketri_panchkula": "Pocket 1, Okhla Phase 1,",
       "haryana_134114_india": "New Delhi, Delhi 110020, India",
@@ -2437,7 +2437,7 @@ export const websiteContent = {
     "store": {
       "name": "Divya Swasth",
       "email": "divyaswasth@gmail.com",
-      "phone": "+91 97470 07253"
+      "phone": ["+91 97470 07253", "+91 92117 41619"]
     },
     "recommendations": [
       {

@@ -185,7 +185,7 @@ export default function Footer() {
               <Phone className="mt-0.5 h-4 w-4 shrink-0 text-[#c8973a]" />
               <a href="tel:+919747007253" className="text-[13px] leading-snug text-[#9eb59d] hover:text-[#c8973a] transition">
                 +91 97470 07253,<br/>
-                +91 92711741619 
+                +91 92117 41619 
               </a><br/>
                
             </li>

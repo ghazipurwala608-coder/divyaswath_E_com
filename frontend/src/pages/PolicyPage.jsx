@@ -30,7 +30,7 @@ export default function PolicyPage({ type = 'shipping' }) {
         ],
         [
           'Delivery issues',
-          'If you face any delivery delay or incorrect status update, contact our care team immediately at +91 97470 07253 or divyaswasth@gmail.com.'
+          'If you face any delivery delay or incorrect status update, contact our care team immediately at +91 97470 07253,|+91 92117 41619 or divyaswasth@gmail.com.'
         ],
         [
           'Damaged package',
@@ -227,6 +227,7 @@ export default function PolicyPage({ type = 'shipping' }) {
             <div>
               <h4>Dedicated Care</h4>
               <p>+91 97470 07253</p>
+              <p>+91 92117 41619</p>
             </div>
           </div>
         </section>}

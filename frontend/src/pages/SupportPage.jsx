@@ -261,6 +261,7 @@ export default function SupportPage() {
               </div>
               <h3>WHATSAPP SUPPORT</h3>
               <p className="channel-detail">+91 97470 07253</p>
+              <p className="channel-detail">+91 92117 41619</p>
               <p className="channel-time">Mon - Sat: 9:00 AM - 6:00 PM</p>
               <a
                 href="https://wa.me/919747007253"
