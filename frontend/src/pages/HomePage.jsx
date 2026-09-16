@@ -25,7 +25,6 @@ import { useProducts } from '../hooks/useProducts.js'
 
 export default function HomePage() {
   const siteContent = useSiteContent('home', siteIcons)
-  const brand = useSiteContent('brand-logo')
   const posters = useSiteContent('posters')
 
   const { products } = useProducts()
@@ -172,7 +171,7 @@ export default function HomePage() {
           </div>
 
           <img
-            src={brand.media.src_2}
+            src="https://res.cloudinary.com/djfluwhwu/image/upload/v1789450630/divyaswasth/migrated/c3f4077ffa0cfc7d-logo.png"
             alt="Divya Swasth — Natural Healing, Holistic Wellness, Healthy Future. May all be healthy."
             width={598}
             height={453}
