@@ -1,18 +1,24 @@
+import { copyWithToast } from '../utils/clipboard.js'
 import { Eye, ExternalLink, Upload, ImagePlus, Loader2, RefreshCw, Search, Trash2, Copy, Check, Link2, ArrowUpRight, ImageIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { apiRequest } from '../api/client.js'
 import { DataState, EmptyState, Modal, useAdminData } from './AdminUI.jsx'
 
-const fileToBase64 = file =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = () => resolve(reader.result)
-    reader.onerror = error => reject(error)
-  })
-
 export default function MediaLibrary({ onSelect }) {
+  const uploadInFlight = useRef(false)
+  useEffect(() => {
+    // Dropping outside the upload zone must not navigate away to the local file.
+    const preventFileNavigation = event => {
+      if (Array.from(event.dataTransfer?.types || []).includes('Files')) event.preventDefault()
+    }
+    window.addEventListener('dragover', preventFileNavigation)
+    window.addEventListener('drop', preventFileNavigation)
+    return () => {
+      window.removeEventListener('dragover', preventFileNavigation)
+      window.removeEventListener('drop', preventFileNavigation)
+    }
+  }, [])
   const { data, setData, loading, error, reload } = useAdminData('/admin/media')
   const [recentUploads, setRecentUploads] = useState([])
   const [query, setQuery] = useState('')
@@ -29,7 +35,7 @@ export default function MediaLibrary({ onSelect }) {
   const [isDragging, setIsDragging] = useState(false)
 
   const uploadFile = async file => {
-    if (!file || uploading) return
+    if (!file || uploadInFlight.current) return
     setUploadError('')
 
     if (file.size > 10 * 1024 * 1024) {
@@ -46,23 +52,28 @@ export default function MediaLibrary({ onSelect }) {
       return toast.error(msg)
     }
 
+    uploadInFlight.current = true
     setUploading(true)
     setUploadStatus(`Uploading ${file.name} to Cloudinary...`)
     const toastId = toast.loading(`Uploading ${file.name} to Cloudinary…`)
     try {
-      const base64Data = await fileToBase64(file)
-      const result = await apiRequest('/admin/media', {
+      const signed = await apiRequest('/admin/media/signature', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           name: file.name,
-          data: base64Data,
         }),
       })
 
-      const newMedia = result?.media || result
+      const body = new FormData()
+      for (const [key, value] of Object.entries(signed.params)) body.append(key, String(value))
+      body.append('file', file)
+      const response = await fetch(signed.uploadUrl, { method: 'POST', body, signal: AbortSignal.timeout(120000) })
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error?.message || 'Cloudinary upload failed')
+      const newMedia = { name: file.name, url: result.secure_url, public_id: result.public_id, format: result.format, bytes: result.bytes, createdAt: result.created_at }
       if (!newMedia?.url) {
         throw new Error('The server did not return an uploaded image. Please check Cloudinary connection.')
       }
@@ -84,6 +95,7 @@ export default function MediaLibrary({ onSelect }) {
       setUploadError(msg)
       toast.error(msg, { id: toastId })
     } finally {
+      uploadInFlight.current = false
       setUploading(false)
     }
   }
@@ -151,11 +163,11 @@ export default function MediaLibrary({ onSelect }) {
     }
   }
 
-  const copyUrl = (event, url) => {
+  const copyUrl = async (event, url) => {
     event.stopPropagation()
-    navigator.clipboard.writeText(url)
+    if (!await copyWithToast(url, 'Image link copied to clipboard!')) return
     setCopiedUrl(url)
-    toast.success('Image link copied to clipboard!')
+
     setTimeout(() => setCopiedUrl(''), 2500)
   }
 

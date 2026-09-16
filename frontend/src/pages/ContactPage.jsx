@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast'
 import { useState } from 'react'
 import {
   ArrowRight,
@@ -64,9 +65,11 @@ export default function ContactPage() {
       })
       setReference(result?.referenceId || null)
       setStatus('sent')
+      toast.success('Your message has been sent successfully')
       setForm({ name: '', email: '', phone: '', topic: topics[0], message: '' })
     } catch (err) {
       setError(err.message || 'Unable to send your message. Please try again.')
+      toast.error(err.message || 'Unable to send your message. Please try again.')
       setStatus('idle')
     }
   }

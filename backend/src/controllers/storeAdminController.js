@@ -73,6 +73,26 @@ function uploadStreamToCloudinary(buffer, options = {}) {
   })
 }
 
+export const signMediaUpload = asyncHandler(async (req, res) => {
+  const { cloud_name, api_key, api_secret } = cloudinary.config()
+  if (!cloud_name || !api_key || !api_secret) {
+    res.status(503)
+    throw new Error('Cloudinary credentials are missing on the backend server.')
+  }
+  const name = String(req.body?.name || 'image').replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 100) || 'image'
+  const params = {
+    timestamp: Math.floor(Date.now() / 1000),
+    public_id: `divyaswasth/uploads/${name}_${crypto.randomUUID()}`,
+    overwrite: false,
+    allowed_formats: 'png,jpg,jpeg,webp,svg,gif,avif',
+  }
+  res.set('Cache-Control', 'no-store')
+  sendSuccess(res, { data: {
+    uploadUrl: `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+    params: { ...params, api_key, signature: cloudinary.utils.api_sign_request(params, api_secret) },
+  } })
+})
+
 export const listMedia = asyncHandler(async (req, res) => {
   try {
     const resources = []

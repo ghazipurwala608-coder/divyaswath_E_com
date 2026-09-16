@@ -1,14 +1,27 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import cloudinary from '../config/cloudinary.js'
-import { uploadMedia, deleteMedia, listMedia } from '../controllers/storeAdminController.js'
+import { uploadMedia, deleteMedia, listMedia, signMediaUpload } from '../controllers/storeAdminController.js'
 
 async function invoke(handler, req) {
-  const res = { code: 200, status(code) { this.code = code; return this }, json(body) { this.body = body; return this } }
+  const res = { code: 200, set() { return this }, status(code) { this.code = code; return this }, json(body) { this.body = body; return this } }
   await handler({ headers: {}, query: {}, ...req }, res, error => { res.error = error })
   return res
 }
 const png = Buffer.from('89504e470d0a1a0a0000000000000000', 'hex')
+
+test('direct upload signs server-controlled parameters without exposing the secret', async t => {
+  t.mock.method(cloudinary, 'config', () => ({ cloud_name: 'demo', api_key: 'key', api_secret: 'private-secret' }))
+  const result = await invoke(signMediaUpload, { body: { name: '../../photo.png', public_id: 'outside/folder' } })
+  const { uploadUrl, params } = result.body.data
+  assert.equal(uploadUrl, 'https://api.cloudinary.com/v1_1/demo/image/upload')
+  assert.match(params.public_id, /^divyaswasth\/uploads\/[a-zA-Z0-9_-]+$/)
+  assert.equal(params.overwrite, false)
+  const { signature, api_key, ...signed } = params
+  assert.equal(api_key, 'key')
+  assert.equal(signature, cloudinary.utils.api_sign_request(signed, 'private-secret'))
+  assert.ok(!JSON.stringify(result.body).includes('private-secret'))
+})
 test('upload returns the Cloudinary URL and does not duplicate the folder', async t => {
   t.mock.method(cloudinary.uploader, 'upload_stream', (options, done) => {
     assert.equal(options.resource_type, 'image')

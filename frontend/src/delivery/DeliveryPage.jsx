@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
@@ -101,8 +102,10 @@ export default function DeliveryPage() {
     const values = Object.fromEntries(new FormData(event.currentTarget))
     try {
       await login({ ...values, portal: 'delivery' })
+      toast.success('Welcome back')
     } catch (err) {
       setError(err.message)
+      toast.error(err.message)
     } finally {
       setLoading(false)
     }
@@ -512,12 +515,14 @@ function DeliveryJobCard({ order, onUpdated }) {
         { method: complete ? 'POST' : 'PUT', body: JSON.stringify(body) }
       )
       onUpdated(data.order)
+      toast.success(complete ? 'Delivery completed successfully' : 'Tracking update shared with customer')
       setOtp('')
       setCoordinates(null)
       setNote('')
       setMessage(complete ? '🎉 Delivery successfully verified and completed!' : '✓ Tracking update shared with customer.')
     } catch (err) {
       setError(err.message)
+      toast.error(err.message)
     } finally {
       setBusy(false)
     }
@@ -527,16 +532,19 @@ function DeliveryJobCard({ order, onUpdated }) {
     setError('')
     if (!navigator.geolocation) {
       setError('GPS is unavailable on this device. Please enter area manually.')
+      toast.error('GPS is unavailable on this device. Please enter area manually.')
       return
     }
     setBusy(true)
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setCoordinates({ latitude: position.coords.latitude, longitude: position.coords.longitude })
+        toast.success('Current location captured')
         setBusy(false)
       },
       () => {
         setError('Unable to fetch GPS. Allow location access in browser or enter area manually.')
+        toast.error('Unable to fetch GPS. Allow location access or enter area manually.')
         setBusy(false)
       },
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }

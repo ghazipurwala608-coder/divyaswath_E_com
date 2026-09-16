@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   LayoutDashboard,
@@ -95,8 +96,10 @@ export default function SuperAdminDashboard() {
       setEditing(null)
       await load()
       setMessage(id ? 'Admin account & subscription updated successfully.' : 'New store admin created successfully!')
+      toast.success(id ? 'Admin account and subscription updated' : 'Store admin created')
     } catch (err) {
       setError(err.message)
+      toast.error(err.message)
     } finally {
       setBusy(false)
     }

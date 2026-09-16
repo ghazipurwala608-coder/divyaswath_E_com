@@ -47,7 +47,12 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     let active = true
     const syncSession = event => {
-      if (!event || event.key === null || ['divyaSwasthToken', 'divyaSwasthUser'].includes(event.key)) setUser(readSession())
+      if (!event || event.key === null || ['divyaSwasthToken', 'divyaSwasthUser'].includes(event.key)) {
+        const session = readSession()
+        // File pickers restore window focus. Keep the same user reference when
+        // the stored session is unchanged so access guards do not reset forms.
+        setUser(current => JSON.stringify(current) === JSON.stringify(session) ? current : session)
+      }
     }
     const syncOnFocus = () => syncSession()
 

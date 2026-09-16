@@ -1,3 +1,4 @@
+import { copyWithToast } from '../utils/clipboard.js'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
@@ -231,8 +232,7 @@ export default function CheckoutPage() {
                                   className="px-2.5 py-1 bg-[#17482b] text-white text-[10px] font-bold rounded hover:bg-[#205e3a] transition"
                                   onClick={(e) => {
                                     e.stopPropagation()
-                                    navigator.clipboard.writeText('s6554013798782732@slc')
-                                    toast.success('UPI ID copied!')
+                                    void copyWithToast('s6554013798782732@slc', 'UPI ID copied!')
                                   }}
                                 >
                                   COPY
@@ -304,8 +304,7 @@ export default function CheckoutPage() {
                                 className="mt-2.5 px-3 py-1 bg-[#17492c] text-white text-[10px] font-bold rounded hover:bg-[#21613b] transition"
                                 onClick={(e) => {
                                   e.stopPropagation()
-                                  navigator.clipboard.writeText('s6554013798782732@slc')
-                                  toast.success('UPI ID copied!')
+                                  void copyWithToast('s6554013798782732@slc', 'UPI ID copied!')
                                 }}
                               >
                                 COPY UPI ID

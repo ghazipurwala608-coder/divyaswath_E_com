@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Plus, Truck, RefreshCw } from 'lucide-react'
@@ -29,8 +30,8 @@ export default function DeliveryPanel() {
   }, [])
   const mutate = async (path, body, method = 'PUT') => {
     setBusy(true); setError(''); setMessage('')
-    try { await apiRequest(path, { method, body: JSON.stringify(body) }); await load(); setMessage('Delivery team updated successfully.'); return true }
-    catch (err) { setError(err.message); return false } finally { setBusy(false) }
+    try { await apiRequest(path, { method, body: JSON.stringify(body) }); await load(); setMessage('Delivery team updated successfully.'); toast.success('Delivery team updated successfully.'); return true }
+    catch (err) { setError(err.message); toast.error(err.message); return false } finally { setBusy(false) }
   }
   const addDriver = async event => {
     event.preventDefault()

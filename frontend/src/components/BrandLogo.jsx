@@ -95,10 +95,10 @@ export default function BrandLogo({ className = '' }) {
       </span>
 
       {/* Brand Text Details */}
-      <span className="flex flex-col justify-center min-w-0">
+      <span className="brand-logo-text flex flex-col justify-center min-w-0">
         {/* Main Title: DIVYA SWASTH */}
         <span
-          className="flex items-baseline gap-1.5 leading-none tracking-[0.03em]"
+          className="brand-logo-title flex items-baseline gap-1.5 leading-none tracking-[0.03em]"
           style={{ fontFamily: "'Cinzel', 'Playfair Display', Georgia, serif" }}
         >
           {renderDivya()}
@@ -106,7 +106,7 @@ export default function BrandLogo({ className = '' }) {
         </span>
 
         {/* Tagline / Subtitle */}
-        <span className="mt-[3px] block text-[5.5px] sm:text-[5.5px] font-semibold uppercase tracking-[0.14em] text-gray-500 whitespace-nowrap leading-none">
+        <span className="brand-logo-tagline mt-[3px] block text-[5.5px] sm:text-[5.5px] font-semibold uppercase tracking-[0.14em] text-gray-500 whitespace-nowrap leading-none">
           {tagline}
         </span>
 
@@ -118,6 +118,5 @@ export default function BrandLogo({ className = '' }) {
 }
 
 const siteIcons = {}
-
 
 

@@ -34,8 +34,8 @@ export default function LoginReference({ initialSignup = false }) {
   const submit = async event => {
     event.preventDefault()
     if (loading) return
-    if (signup && !form.name.trim()) { setError('Please enter your full name'); return }
-    if (signup && form.password !== form.confirmPassword) { setError('Passwords do not match'); return }
+    if (signup && !form.name.trim()) { setError('Please enter your full name'); toast.error('Please enter your full name'); return }
+    if (signup && form.password !== form.confirmPassword) { setError('Passwords do not match'); toast.error('Passwords do not match'); return }
     setLoading(true)
     setError('')
     try {
@@ -49,7 +49,7 @@ export default function LoginReference({ initialSignup = false }) {
       const safeRequested = typeof requested === 'string' && requested.startsWith('/') && !requested.startsWith('//')
       const staffDestination = requested?.split('?')[0] === destination ? requested : destination
       navigate(roleOf(signedIn) === 'customer' ? (safeRequested && !/^\/(admin|super-admin|delivery)([/?]|$)/.test(requested) ? requested : destination) : staffDestination, { replace: true })
-    } catch (err) { setError(err.message || 'Unable to sign in. Please try again.') }
+    } catch (err) { setError(err.message || 'Unable to sign in. Please try again.'); toast.error(err.message || 'Unable to sign in. Please try again.') }
     finally { setLoading(false) }
   }
 

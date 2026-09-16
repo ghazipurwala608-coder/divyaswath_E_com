@@ -1,3 +1,4 @@
+import { copyWithToast } from '../utils/clipboard.js'
 import { useSiteContent } from '../context/SiteContentContext.jsx'
 import {
   ArrowRight,
@@ -18,7 +19,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import toast from 'react-hot-toast'
+
 import { apiRequest } from '../api/client.js'
 
 export default function OrderSuccessPage() {
@@ -34,12 +35,12 @@ export default function OrderSuccessPage() {
       .catch(() => {})
   }, [id])
 
-  const copyOrderId = () => {
+  const copyOrderId = async () => {
     if (!id) return
     const orderRef = id.slice(-8).toUpperCase()
-    navigator.clipboard.writeText(orderRef)
+    if (!await copyWithToast(orderRef, `Order ID #${orderRef} copied!`)) return
     setCopied(true)
-    toast.success(`Order ID #${orderRef} copied!`)
+
     setTimeout(() => setCopied(false), 2000)
   }
 
