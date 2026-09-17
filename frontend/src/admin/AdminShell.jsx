@@ -13,6 +13,7 @@ import {
   PanelLeftOpen,
   Settings,
   ShoppingBag,
+  Sparkles,
   UsersRound,
   X
 } from 'lucide-react'
@@ -24,6 +25,7 @@ import ProductsPanel from './ProductsPanel.jsx'
 import ContentPanel from './ContentPanel.jsx'
 import MediaLibrary from './MediaLibrary.jsx'
 import PeoplePanel from './PeoplePanel.jsx'
+import LeadsPanel from './LeadsPanel.jsx'
 import OrderManagement from './OrderManagement.jsx'
 import DeliveryPanel from './DeliveryPanel.jsx'
 import AdminUserMenu from './AdminUserMenu.jsx'
@@ -33,6 +35,7 @@ import './Admin.css'
 const tabs = [
   ['overview', 'Overview', LayoutDashboard, 'A clear view of your wellness business.'],
   ['orders', 'Orders', ShoppingBag, 'Manage orders, payments and delivery updates.'],
+  ['leads', 'Health Leads', Sparkles, 'Prospective patient assessment submissions and consultation follow-ups.'],
   ['delivery', 'Delivery team', UsersRound, 'Manage delivery partners, assign orders and follow every update.'],
   ['products', 'Products', Boxes, 'Your complete catalog, pricing and inventory.'],
   ['customers', 'Customers', UsersRound, 'Get to know the people behind your orders.'],
@@ -176,6 +179,7 @@ export default function AdminShell() {
 
           {tab[0] === 'overview' && <Overview navigate={select} />}
           {tab[0] === 'orders' && <OrderManagement />}
+          {tab[0] === 'leads' && <LeadsPanel />}
           {tab[0] === 'delivery' && <DeliveryPanel />}
           {tab[0] === 'products' && <ProductsPanel />}
           {['customers', 'messages', 'subscribers'].includes(tab[0]) && <PeoplePanel key={tab[0]} type={tab[0]} />}

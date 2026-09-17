@@ -1,27 +1,22 @@
-import { useSiteContent } from '../context/SiteContentContext.jsx'
-import { Award, BadgeCheck,ArrowRight, ChevronRight, FlaskConical, Leaf, Sprout, PackageCheck, RotateCw, ShieldCheck, ShoppingBag, Truck, Zap } from 'lucide-react'
-import { useState } from 'react'
+
+
+
+
+
+
+
+
+
+
  
+
+import { useSiteContent } from '../context/SiteContentContext.jsx'
+import { Award, BadgeCheck, ArrowRight, ChevronRight, FlaskConical, Leaf, Sprout, PackageCheck, RotateCw, ShieldCheck, ShoppingBag, Truck, Zap } from 'lucide-react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom' 
 import { useCart } from '../context/CartContext.jsx'
 import { useProducts } from '../hooks/useProducts.js'
-
-
-
- 
-
-// Retained for the existing hero markup, which is visually hidden behind the supplied banner.
-
-
-
-
-
-
-
-
-
-
- 
+import ProductStoryAssessment from '../components/ProductStoryAssessment.jsx'
 
 export default function HomePage() {
   const siteContent = useSiteContent('home', siteIcons)
@@ -86,6 +81,9 @@ export default function HomePage() {
       </section>
 
       <section className="bg-[#f7f5ee] px-4 py-5 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl overflow-hidden rounded-[2rem] border border-[#d5aa50]/25 bg-[linear-gradient(105deg,#111411_0%,#050705_52%,#121412_100%)] px-3 text-white shadow-[0_14px_35px_rgba(9,15,10,.18)] sm:grid-cols-2 lg:grid-cols-4">{siteContent.sections.valueStrip.map(([Icon, title, text], index) => <article key={title} className={`flex min-h-[116px] items-center gap-4 px-5 py-5 ${index ? 'border-t border-white/10 sm:border-l sm:border-t-0' : ''}`}><Icon className={`h-9 w-9 shrink-0 ${index === 0 ? 'text-[#79a84d]' : 'text-[#d9aa4b]'}`} strokeWidth={1.7} /><div><h2 className="max-w-[180px] text-[12px] font-black uppercase leading-[1.35] tracking-[.035em] text-white">{title}</h2><p className="mt-2 max-w-[190px] text-[10px] leading-[1.55] text-white/58">{text}</p></div></article>)}</div></section>
+
+      {/* Interactive Product Story & Ayurvedic Health Consultation Assessment */}
+      <ProductStoryAssessment />
 
       <section className="journey-showcase relative overflow-hidden bg-[#fbfaf3] px-4 py-12 sm:px-6 lg:px-8">
         <div className="pointer-events-none absolute -left-20 bottom-0 h-56 w-56 rounded-full bg-[#dce8bf]/45 blur-3xl" />

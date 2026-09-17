@@ -10,14 +10,18 @@ import User from '../models/User.js'
 import Order from '../models/Order.js'
 import ContactMessage from '../models/ContactMessage.js'
 import Subscriber from '../models/Subscriber.js'
+import AssessmentLead from '../models/AssessmentLead.js'
 import asyncHandler from '../utils/asyncHandler.js'
 import { sendSuccess } from '../utils/apiResponse.js'
+import cloudinary from '../config/cloudinary.js'
 
 export const uploadDirectory = fileURLToPath(new URL('../../uploads/', import.meta.url))
+
 export const listProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({ isActive: true }).sort({ sortOrder: 1, createdAt: 1 })
   sendSuccess(res, { data: { products } })
 })
+
 export const listCustomers = asyncHandler(async (req, res) => {
   const customers = await User.aggregate([
     { $match: customerQuery },
@@ -31,27 +35,77 @@ export const listCustomers = asyncHandler(async (req, res) => {
   ])
   sendSuccess(res, { data: { customers } })
 })
+
 export const customerDetail = asyncHandler(async (req, res) => {
   const customer = await User.findOne({ _id: req.params.id, ...customerQuery }).select('name email phone createdAt')
   if (!customer) { res.status(404); throw new Error('Customer not found') }
   const orders = await Order.find({ user: customer._id }).sort({ createdAt: -1 })
   sendSuccess(res, { data: { customer, orders } })
 })
+
 export const listMessages = asyncHandler(async (req, res) => sendSuccess(res, { data: { messages: await ContactMessage.find().sort({ createdAt: -1 }) } }))
+
 export const updateMessage = asyncHandler(async (req, res) => {
   if (!['New', 'In progress', 'Resolved'].includes(req.body.status)) { res.status(400); throw new Error('Invalid enquiry status') }
   const message = await ContactMessage.findByIdAndUpdate(req.params.id, { $set: { status: req.body.status } }, { new: true, runValidators: true })
   if (!message) { res.status(404); throw new Error('Enquiry not found') }
   sendSuccess(res, { data: { message } })
 })
+
 export const listSubscribers = asyncHandler(async (req, res) => sendSuccess(res, { data: { subscribers: await Subscriber.find().sort({ createdAt: -1 }) } }))
+
 export const updateSubscriber = asyncHandler(async (req, res) => {
   if (req.body.status !== 'Unsubscribed') { res.status(400); throw new Error('Only a new customer consent can resubscribe an email') }
   const subscriber = await Subscriber.findByIdAndUpdate(req.params.id, { $set: { status: 'Unsubscribed' } }, { new: true })
   if (!subscriber) { res.status(404); throw new Error('Subscriber not found') }
   sendSuccess(res, { data: { subscriber } })
 })
-import cloudinary from '../config/cloudinary.js'
+
+// Assessment Leads Handlers for Admin
+export const listLeads = asyncHandler(async (req, res) => {
+  const leads = await AssessmentLead.find().sort({ createdAt: -1 })
+  sendSuccess(res, { data: { leads } })
+})
+
+export const updateLead = asyncHandler(async (req, res) => {
+  const { status, notes } = req.body
+  const validStatuses = ['New Lead', 'Contacted', 'Consulted', 'Converted', 'Closed']
+  const updateData = {}
+  
+  if (status) {
+    if (!validStatuses.includes(status)) {
+      res.status(400)
+      throw new Error('Invalid lead status')
+    }
+    updateData.status = status
+  }
+  
+  if (typeof notes === 'string') {
+    updateData.notes = notes
+  }
+
+  const lead = await AssessmentLead.findByIdAndUpdate(
+    req.params.id,
+    { $set: updateData },
+    { new: true, runValidators: true }
+  )
+
+  if (!lead) {
+    res.status(404)
+    throw new Error('Lead not found')
+  }
+
+  sendSuccess(res, { data: { lead } })
+})
+
+export const deleteLead = asyncHandler(async (req, res) => {
+  const lead = await AssessmentLead.findByIdAndDelete(req.params.id)
+  if (!lead) {
+    res.status(404)
+    throw new Error('Lead not found')
+  }
+  sendSuccess(res, { message: 'Lead deleted successfully' })
+})
 
 function extractPublicId(target) {
   try {
@@ -110,68 +164,43 @@ export const listMedia = asyncHandler(async (req, res) => {
       public_id: item.public_id,
       format: item.format,
       bytes: item.bytes,
-      createdAt: item.created_at,
+      created_at: item.created_at,
     }))
 
-    cloudinaryMedia.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-
     sendSuccess(res, { data: { media: cloudinaryMedia } })
-  } catch (cloudErr) {
-    console.error('Cloudinary listMedia error:', cloudErr?.message || cloudErr)
+  } catch (err) {
+    console.error('Cloudinary listing error:', err?.message || err)
     res.status(502)
-    throw new Error('Image library could not connect to Cloudinary: ' + (cloudErr?.message || 'Check Cloudinary settings on the backend server.'))
+    throw new Error('Could not retrieve media from Cloudinary: ' + (err?.message || 'Unknown error'))
   }
 })
 
 export const uploadMedia = asyncHandler(async (req, res) => {
-  if (req.body?.url) {
+  const sourceUrl = req.body?.url
+  if (sourceUrl && typeof sourceUrl === 'string') {
     let source
-    try { source = new URL(req.body.url) } catch { res.status(400); throw new Error('Enter a valid public HTTPS image link') }
-    if (source.protocol !== 'https:' || source.username || source.password) { res.status(400); throw new Error('Use a public HTTPS image link without login details') }
-
-    let fileData = null
     try {
-      const response = await fetch(source.href, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-          'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
-        },
-        signal: AbortSignal.timeout(30000),
-      })
-      if (!response.ok) {
-        throw new Error(`Target website returned HTTP ${response.status}`)
-      }
-      const arrayBuffer = await response.arrayBuffer()
-      fileData = Buffer.from(arrayBuffer)
-    } catch (fetchErr) {
-      console.warn('Direct fetch failed, falling back to Cloudinary remote upload:', fetchErr?.message)
+      source = new URL(sourceUrl)
+    } catch {
+      res.status(400)
+      throw new Error('Provide a valid absolute image URL')
     }
-
-    const cleanName = path.parse(source.pathname).name.replace(/[^a-zA-Z0-9_-]/g, '_') || 'imported_image'
+    if (!['http:', 'https:'].includes(source.protocol)) {
+      res.status(400)
+      throw new Error('Image URL must use http or https')
+    }
+    const cleanName = path.parse(source.pathname).name.replace(/[^a-zA-Z0-9_-]/g, '_') || crypto.randomUUID()
     const publicId = `divyaswasth/uploads/${cleanName}_${Date.now()}`
-
     let result
     try {
-      if (fileData && fileData.length >= 12) {
-        result = await uploadStreamToCloudinary(fileData, {
-          public_id: publicId,
-          resource_type: 'image',
-        })
-      } else {
-        result = await cloudinary.uploader.upload(source.href, {
-          public_id: publicId,
-          resource_type: 'image',
-          timeout: 60000,
-        })
-      }
+      result = await cloudinary.uploader.upload(source.toString(), {
+        public_id: publicId,
+        resource_type: 'image',
+      })
     } catch (err) {
-      console.error('Cloudinary URL upload failed:', err?.message || err)
-      res.status(502); throw new Error('Could not import this image URL. Make sure it is a direct image link (ending in .jpg, .png, .webp), or download the image to your computer and use "Upload Image from Device".')
-    }
-
-    if (result.bytes > 10 * 1024 * 1024) {
-      await cloudinary.uploader.destroy(result.public_id)
-      res.status(400); throw new Error('Choose an image under 10 MB')
+      console.error('Cloudinary import error:', err?.message || err)
+      res.status(502)
+      throw new Error('Cloudinary could not fetch and save that image URL: ' + (err?.message || 'Check URL and try again.'))
     }
     return sendSuccess(res, { statusCode: 201, data: { media: { name: source.pathname.split('/').pop() || 'Imported image', url: result.secure_url, public_id: result.public_id } } })
   }

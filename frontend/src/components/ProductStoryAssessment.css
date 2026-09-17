@@ -1,0 +1,32 @@
+/* Product Story & Health Consultation Funnel Styles - Flat & Crisp Luxury */
+
+.product-story-section {
+  width: 100%;
+  background-color: #f7f5ee;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+.product-story-section button,
+.product-story-section [role="button"] {
+  cursor: pointer;
+  outline: none;
+}
+
+.product-story-section button:focus-visible {
+  outline: 2px solid #0e3b24;
+  outline-offset: 1px;
+}
